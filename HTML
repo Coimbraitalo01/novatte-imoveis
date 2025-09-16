@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novatte - Venda e Locação de Imóveis em Santo Antônio de Pádua</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas na paleta fornecida */
+        :root {
+            --verde-escuro: #003602;
+            --laranja: #FE4700;
+            --marrom: #86450A;
+            --bege: #F7EEE9;
+            --branco: #FFFFFF;
+            --cinza: #333333;
+        }
+        
+        /* Estilos gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--branco);
+            color: var(--cinza);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: var(--laranja);
+            color: var(--branco);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--marrom);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--verde-escuro);
+            border: 2px solid var(--verde-escuro);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--verde-escuro);
+            color: var(--branco);
+        }
+        
+        section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--verde-escuro);
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--laranja);
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--marrom);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Header e Navegação */
+        header {
+            background-color: var(--branco);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            color: var(--verde-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--laranja);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--cinza);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--laranja);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--verde-escuro);
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 54, 2, 0.7), rgba(0, 54, 2, 0.7)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--branco);
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        .search-box {
+            background-color: var(--branco);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-option {
+            flex: 1;
+            min-width: 200px;
+            margin: 10px;
+        }
+        
+        .search-option select, .search-option input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: var(--bege);
+        }
+        
+        .search-btn {
+            flex: 1;
+            min-width: 200px;
+            margin: 10px;
+        }
+        
+        /* Destaques */
+        .properties {
+            background-color: var(--bege);
+        }
+        
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .property-card {
+            background-color: var(--branco);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .property-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .property-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .property-card:hover .property-img img {
+            transform: scale(1.1);
+        }
+        
+        .property-info {
+            padding: 20px;
+        }
+        
+        .property-info h3 {
+            color: var(--verde-escuro);
+            margin-bottom: 10px;
+        }
+        
+        .property-location {
+            color: var(--marrom);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .property-location i {
+            margin-right: 5px;
+        }
+        
+        .property-price {
+            color: var(--laranja);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .property-features {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature i {
+            margin-right: 5px;
+            color: var(--verde-escuro);
+        }
+        
+        /* Sobre */
+        .about-content {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 30px;
+        }
+        
+        .about-text h3 {
+            color: var(--verde-escuro);
+            margin-bottom: 20px;
+        }
+        
+        .about-text p {
+            margin-bottom: 15px;
+        }
+        
+        .about-img {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-img img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Parceiros */
+        .partners {
+            background-color: var(--bege);
+            text-align: center;
+        }
+        
+        .partners-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .partner-logo {
+            background-color: var(--branco);
+            padding: 20px;
+            border-radius: 8px;
+            width: 150px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .partner-logo img {
+            max-width: 100%;
+            max-height: 60px;
+        }
+        
+        /* Contato */
+        .contact-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .contact-info h3 {
+            color: var(--verde-escuro);
+            margin-bottom: 20px;
+        }
+        
+        .contact-details {
+            margin-bottom: 30px;
+        }
+        
+        .contact-details p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-details i {
+            margin-right: 10px;
+            color: var(--laranja);
+            width: 20px;
+        }
+        
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: var(--bege);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--verde-escuro);
+            color: var(--branco);
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--laranja);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: var(--branco);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--laranja);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--branco);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--laranja);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background-color: var(--branco);
+                transition: all 0.3s ease;
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            nav ul li {
+                margin: 0 0 15px 0;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-option, .search-btn {
+                margin: 5px 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <h1>Nova<span>tte</span></h1>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#properties">Imóveis</a></li>
+                    <li><a href="#about">Sobre</a></li>
+                    <li><a href="#partners">Parceiros</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Encontre o imóvel dos seus sonhos em Santo Antônio de Pádua</h2>
+                <p>Somos a ponte entre você e as melhores oportunidades de venda e locação na região</p>
+                <a href="#properties" class="btn btn-primary">Ver Imóveis</a>
+                
+                <div class="search-box">
+                    <div class="search-option">
+                        <select>
+                            <option>Tipo de Imóvel</option>
+                            <option>Casa</option>
+                            <option>Apartamento</option>
+                            <option>Terreno</option>
+                            <option>Comercial</option>
+                        </select>
+                    </div>
+                    <div class="search-option">
+                        <select>
+                            <option>Operação</option>
+                            <option>Venda</option>
+                            <option>Locação</option>
+                        </select>
+                    </div>
+                    <div class="search-option">
+                        <select>
+                            <option>Bairro</option>
+                            <option>Centro</option>
+                            <option>Vila Maria</option>
+                            <option>Alto do Amparo</option>
+                            <option>São Benedito</option>
+                        </select>
+                    </div>
+                    <div class="search-btn">
+                        <button class="btn btn-primary" style="width: 100%">Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destaques -->
+    <section class="properties" id="properties">
+        <div class="container">
+            <div class="section-title">
+                <h2>Imóveis em Destaque</h2>
+                <p>Confira algumas das melhores oportunidades em Santo Antônio de Pádua</p>
+            </div>
+            
+            <div class="property-grid">
+                <!-- Propriedade 1 -->
+                <div class="property-card">
+                    <div class="property-img">
+                        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Casa à venda">
+                    </div>
+                    <div class="property-info">
+                        <h3>Casa Residencial</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Centro, Santo Antônio de Pádua</p>
+                        <p class="property-price">R$ 350.000</p>
+                        <div class="property-features">
+                            <div class="feature">
+                                <i class="fas fa-bed"></i> 3 Quartos
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-bath"></i> 2 Banheiros
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-ruler-combined"></i> 180m²
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Propriedade 2 -->
+                <div class="property-card">
+                    <div class="property-img">
+                        <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Apartamento para alugar">
+                    </div>
+                    <div class="property-info">
+                        <h3>Apartamento</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Vila Maria, Santo Antônio de Pádua</p>
+                        <p class="property-price">R$ 1.200/mês</p>
+                        <div class="property-features">
+                            <div class="feature">
+                                <i class="fas fa-bed"></i> 2 Quartos
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-bath"></i> 1 Banheiro
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-ruler-combined"></i> 70m²
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Propriedade 3 -->
+                <div class="property-card">
+                    <div class="property-img">
+                        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Casa com piscina">
+                    </div>
+                    <div class="property-info">
+                        <h3>Casa com Piscina</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Alto do Amparo, Santo Antônio de Pádua</p>
+                        <p class="property-price">R$ 550.000</p>
+                        <div class="property-features">
+                            <div class="feature">
+                                <i class="fas fa-bed"></i> 4 Quartos
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-bath"></i> 3 Banheiros
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-ruler-combined"></i> 280m²
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#" class="btn btn-outline">Ver Todos os Imóveis</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sobre a Novatte</h2>
+                <p>Conheça nossa história e o que nos torna diferentes no mercado imobiliário de Santo Antônio de Pádua</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Conectando você ao seu próximo lar</h3>
+                    <p>A Novatte nasceu com o propósito de simplificar o processo de compra, venda e locação de imóveis em Santo Antônio de Pádua. Nossa plataforma conecta você às melhores oportunidades da região, com transparência e eficiência.</p>
+                    <p>Trabalhamos em parceria com as principais imobiliárias locais para oferecer um portfólio diversificado de opções, sempre com informações verídicas e atualizadas.</p>
+                    <p>Nossa missão é tornar a experiência de encontrar um imóvel a mais agradável possível, com ferramentas intuitivas e um atendimento personalizado.</p>
+                    <a href="#contact" class="btn btn-primary">Entre em Contato</a>
+                </div>
+                <div class="about-img">
+                    <img src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Equipe Novatte">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parceiros -->
+    <section class="partners" id="partners">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossos Parceiros</h2>
+                <p>Trabalhamos com as melhores imobiliárias de Santo Antônio de Pádua</p>
+            </div>
+            
+            <div class="partners-grid">
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/120x60?text=Imobiliária+A" alt="Imobiliária A">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/120x60?text=Imobiliária+B" alt="Imobiliária B">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/120x60?text=Imobiliária+C" alt="Imobiliária C">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/120x60?text=Imobiliária+D" alt="Imobiliária D">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/120x60?text=Imobiliária+E" alt="Imobiliária E">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Entre em Contato</h2>
+                <p>Estamos à disposição para ajudar você a encontrar o imóvel perfeito</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Fale Conosco</h3>
+                    <div class="contact-details">
+                        <p><i class="fas fa-map-marker-alt"></i> Av. Principal, 123 - Centro, Santo Antônio de Pádua - RJ</p>
+                        <p><i class="fas fa-phone"></i> (22) 9999-9999</p>
+                        <p><i class="fas fa-envelope"></i> contato@novatte.com.br</p>
+                        <p><i class="fas fa-clock"></i> Segunda a Sexta: 9h às 18h | Sábado: 9h às 13h</p>
+                    </div>
+                    
+                    <h3>Siga-nos</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefone</label>
+                            <input type="tel" id="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensagem</label>
+                            <textarea id="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Novatte</h3>
+                    <p>Sua plataforma de confiança para compra, venda e locação de imóveis em Santo Antônio de Pádua.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#properties">Imóveis</a></li>
+                        <li><a href="#about">Sobre</a></li>
+                        <li><a href="#partners">Parceiros</a></li>
+                        <li><a href="#contact">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Tipos de Imóveis</h3>
+                    <ul>
+                        <li><a href="#">Casas</a></li>
+                        <li><a href="#">Apartamentos</a></li>
+                        <li><a href="#">Terrenos</a></li>
+                        <li><a href="#">Comerciais</a></li>
+                        <li><a href="#">Chácaras</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Principal, 123 - Centro</li>
+                        <li><i class="fas fa-phone"></i> (22) 9999-9999</li>
+                        <li><i class="fas fa-envelope"></i> contato@novatte.com.br</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Novatte - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu mobile toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('nav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+        
+        // Fechar menu ao clicar em um link
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
