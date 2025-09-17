@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novatte - Venda e Locação de Imóveis em Santo Antônio de Pádua</title>
+    <title>Novatte Soluções Imobiliárias - Venda e Locação de Imóveis no Noroeste Fluminense</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -16,669 +16,98 @@
             --cinza: #333333;
             --cinza-claro: #f5f5f5;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        body {
-            background-color: var(--branco);
-            color: var(--cinza);
-            line-height: 1.6;
-            padding-top: 80px;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 25px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-align: center;
-        }
-        
-        .btn-primary {
-            background-color: var(--laranja);
-            color: var(--branco);
-            border: none;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--marrom);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            color: var(--verde-escuro);
-            border: 2px solid var(--verde-escuro);
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--verde-escuro);
-            color: var(--branco);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        section {
-            padding: 80px 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-            color: var(--verde-escuro);
-        }
-        
-        .section-title h2 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background-color: var(--laranja);
-        }
-        
-        .section-title p {
-            font-size: 1.1rem;
-            color: var(--marrom);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        /* Header e Navegação */
-        header {
-            background-color: var(--branco);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 15px 0;
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo h1 {
-            color: var(--verde-escuro);
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        .logo span {
-            color: var(--laranja);
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-left: 30px;
-        }
-        
-        nav ul li a {
-            text-decoration: none;
-            color: var(--cinza);
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-        
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--laranja);
-            transition: width 0.3s ease;
-        }
-        
-        nav ul li a:hover {
-            color: var(--laranja);
-        }
-        
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            color: var(--verde-escuro);
-            cursor: pointer;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(0, 54, 2, 0.8), rgba(0, 54, 2, 0.8)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            color: var(--branco);
-            padding: 120px 0;
-            text-align: center;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .hero h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-        
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            opacity: 0.9;
-        }
-        
-        .search-box {
-            background-color: var(--branco);
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 40px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        .search-option {
-            flex: 1;
-            min-width: 200px;
-            margin: 10px;
-        }
-        
-        .search-option select, .search-option input {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            background-color: var(--bege);
-            font-size: 1rem;
-        }
-        
-        .search-btn {
-            flex: 1;
-            min-width: 200px;
-            margin: 10px;
-        }
-        
-        /* Destaques */
-        .properties {
-            background-color: var(--bege);
-        }
-        
-        .property-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .property-card {
-            background-color: var(--branco);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .property-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        .property-img {
-            height: 220px;
-            overflow: hidden;
-        }
-        
-        .property-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .property-card:hover .property-img img {
-            transform: scale(1.1);
-        }
-        
-        .property-info {
-            padding: 25px;
-        }
-        
-        .property-info h3 {
-            color: var(--verde-escuro);
-            margin-bottom: 12px;
-            font-size: 1.4rem;
-        }
-        
-        .property-location {
-            color: var(--marrom);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            font-size: 0.95rem;
-        }
-        
-        .property-location i {
-            margin-right: 8px;
-        }
-        
-        .property-price {
-            color: var(--laranja);
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        
-        .property-features {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-            margin-top: 20px;
-        }
-        
-        .feature {
-            display: flex;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-        
-        .feature i {
-            margin-right: 8px;
-            color: var(--verde-escuro);
-        }
-        
-        /* Sobre */
-        .about-content {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .about-text {
-            flex: 1;
-            min-width: 300px;
-            padding-right: 40px;
-        }
-        
-        .about-text h3 {
-            color: var(--verde-escuro);
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-        }
-        
-        .about-text p {
-            margin-bottom: 20px;
-            line-height: 1.8;
-        }
-        
-        .about-img {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .about-img img {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* Parceiros */
-        .partners {
-            background-color: var(--bege);
-            text-align: center;
-        }
-        
-        .partners-grid {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 40px;
-        }
-        
-        .partner-logo {
-            background-color: var(--branco);
-            padding: 25px;
-            border-radius: 10px;
-            width: 180px;
-            height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease;
-        }
-        
-        .partner-logo:hover {
-            transform: translateY(-5px);
-        }
-        
-        .partner-logo img {
-            max-width: 100%;
-            max-height: 70px;
-        }
-        
-        /* Contato */
-        .contact-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 50px;
-        }
-        
-        .contact-info {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .contact-info h3 {
-            color: var(--verde-escuro);
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-        }
-        
-        .contact-details {
-            margin-bottom: 40px;
-        }
-        
-        .contact-details p {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            font-size: 1.05rem;
-        }
-        
-        .contact-details i {
-            margin-right: 15px;
-            color: var(--laranja);
-            width: 20px;
-            font-size: 1.2rem;
-        }
-        
-        .contact-form {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--verde-escuro);
-        }
-        
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            background-color: var(--bege);
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-        
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--laranja);
-            outline: none;
-        }
-        
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--verde-escuro);
-            color: var(--branco);
-            padding: 80px 0 30px;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-bottom: 50px;
-        }
-        
-        .footer-column {
-            flex: 1;
-            min-width: 250px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-column h3 {
-            font-size: 1.4rem;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background-color: var(--laranja);
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-column ul li a {
-            color: var(--branco);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-size: 1.05rem;
-        }
-        
-        .footer-column ul li a:hover {
-            color: var(--laranja);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: var(--branco);
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-        }
-        
-        .social-links a:hover {
-            background-color: var(--laranja);
-            transform: translateY(-3px);
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.95rem;
-            opacity: 0.8;
-        }
-        
-        /* Responsividade */
-        @media (max-width: 992px) {
-            .hero h2 {
-                font-size: 2.5rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            .about-text {
-                padding-right: 0;
-                margin-bottom: 40px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                padding-top: 70px;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            nav {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 80%;
-                height: calc(100vh - 70px);
-                background-color: var(--branco);
-                transition: all 0.3s ease;
-                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
-                z-index: 999;
-            }
-            
-            nav.active {
-                left: 0;
-            }
-            
-            nav ul {
-                flex-direction: column;
-                padding: 30px;
-            }
-            
-            nav ul li {
-                margin: 0 0 20px 0;
-            }
-            
-            nav ul li a {
-                font-size: 1.1rem;
-            }
-            
-            .hero {
-                padding: 80px 0;
-            }
-            
-            .hero h2 {
-                font-size: 2rem;
-            }
-            
-            .search-box {
-                flex-direction: column;
-            }
-            
-            .search-option, .search-btn {
-                margin: 8px 0;
-                width: 100%;
-            }
-            
-            .section-title h2 {
-                font-size: 2rem;
-            }
-            
-            .property-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .contact-content {
-                gap: 30px;
-            }
-            
-            .footer-column {
-                min-width: 100%;
-            }
-        }
-        
-        /* Animações */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .fade-in {
-            animation: fadeIn 1s ease forwards;
-        }
-        
-        .delay-1 {
-            animation-delay: 0.2s;
-        }
-        
-        .delay-2 {
-            animation-delay: 0.4s;
-        }
-        
-        .delay-3 {
-            animation-delay: 0.6s;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--branco); color: var(--cinza); line-height: 1.6; padding-top: 80px; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        .btn { display: inline-block; padding: 12px 25px; border-radius: 4px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; cursor: pointer; text-align: center; }
+        .btn-primary { background-color: var(--laranja); color: var(--branco); border: none; }
+        .btn-primary:hover { background-color: var(--marrom); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .btn-outline { background-color: transparent; color: var(--verde-escuro); border: 2px solid var(--verde-escuro); }
+        .btn-outline:hover { background-color: var(--verde-escuro); color: var(--branco); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        section { padding: 80px 0; }
+        .section-title { text-align: center; margin-bottom: 50px; color: var(--verde-escuro); }
+        .section-title h2 { font-size: 2.5rem; margin-bottom: 15px; position: relative; display: inline-block; }
+        .section-title h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 3px; background-color: var(--laranja); }
+        .section-title p { font-size: 1.1rem; color: var(--marrom); max-width: 700px; margin: 0 auto; }
+        header { background-color: var(--branco); box-shadow: 0 2px 15px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 15px 0; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; }
+        .logo h1 { color: var(--verde-escuro); font-size: 2rem; font-weight: 700; }
+        .logo span { color: var(--laranja); }
+        .logo .sub { font-size: 1rem; font-weight: 400; color: var(--marrom); margin-left: 8px; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 30px; }
+        nav ul li a { text-decoration: none; color: var(--cinza); font-weight: 500; transition: color 0.3s ease; position: relative; }
+        nav ul li a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background-color: var(--laranja); transition: width 0.3s ease; }
+        nav ul li a:hover { color: var(--laranja); }
+        nav ul li a:hover::after { width: 100%; }
+        .mobile-menu-btn { display: none; font-size: 1.5rem; background: none; border: none; color: var(--verde-escuro); cursor: pointer; }
+        .hero { background: linear-gradient(rgba(0,54,2,0.8),rgba(0,54,2,0.8)),url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; color: var(--branco); padding: 120px 0; text-align: center; }
+        .hero-content { max-width: 800px; margin: 0 auto; }
+        .hero h2 { font-size: 3rem; margin-bottom: 20px; line-height: 1.2; }
+        .hero p { font-size: 1.3rem; margin-bottom: 40px; opacity: 0.9; }
+        .search-box { background-color: var(--branco); border-radius: 10px; padding: 25px; margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: space-between; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .search-option { flex: 1; min-width: 200px; margin: 10px; }
+        .search-option select, .search-option input { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 6px; background-color: var(--bege); font-size: 1rem; }
+        .search-btn { flex: 1; min-width: 200px; margin: 10px; }
+        .properties { background-color: var(--bege); }
+        .property-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 30px; }
+        .property-card { background-color: var(--branco); border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .property-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .property-img { height: 220px; overflow: hidden; }
+        .property-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .property-card:hover .property-img img { transform: scale(1.1); }
+        .property-info { padding: 25px; }
+        .property-info h3 { color: var(--verde-escuro); margin-bottom: 12px; font-size: 1.4rem; }
+        .property-location { color: var(--marrom); margin-bottom: 15px; display: flex; align-items: center; font-size: 0.95rem; }
+        .property-location i { margin-right: 8px; }
+        .property-price { color: var(--laranja); font-size: 1.6rem; font-weight: 700; margin-bottom: 20px; }
+        .property-features { display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; }
+        .feature { display: flex; align-items: center; font-size: 0.9rem; }
+        .feature i { margin-right: 8px; color: var(--verde-escuro); }
+        .about-content { display: flex; align-items: center; flex-wrap: wrap; }
+        .about-text { flex: 1; min-width: 300px; padding-right: 40px; }
+        .about-text h3 { color: var(--verde-escuro); margin-bottom: 25px; font-size: 1.8rem; }
+        .about-text p { margin-bottom: 20px; line-height: 1.8; }
+        .about-img { flex: 1; min-width: 300px; }
+        .about-img img { width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .partners { background-color: var(--bege); text-align: center; }
+        .partners-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 40px; }
+        .partner-logo { background-color: var(--branco); padding: 25px; border-radius: 10px; width: 180px; height: 120px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: transform 0.3s ease; }
+        .partner-logo:hover { transform: translateY(-5px); }
+        .partner-logo img { max-width: 100%; max-height: 70px; }
+        .contact-content { display: flex; flex-wrap: wrap; gap: 50px; }
+        .contact-info { flex: 1; min-width: 300px; }
+        .contact-info h3 { color: var(--verde-escuro); margin-bottom: 25px; font-size: 1.8rem; }
+        .contact-details { margin-bottom: 40px; }
+        .contact-details p { margin-bottom: 15px; display: flex; align-items: center; font-size: 1.05rem; }
+        .contact-details i { margin-right: 15px; color: var(--laranja); width: 20px; font-size: 1.2rem; }
+        .contact-form { flex: 1; min-width: 300px; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--verde-escuro); }
+        .form-group input, .form-group textarea { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 6px; background-color: var(--bege); font-size: 1rem; transition: border-color 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--laranja); outline: none; }
+        .form-group textarea { min-height: 150px; resize: vertical; }
+        footer { background-color: var(--verde-escuro); color: var(--branco); padding: 80px 0 30px; }
+        .footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 50px; }
+        .footer-column { flex: 1; min-width: 250px; margin-bottom: 40px; }
+        .footer-column h3 { font-size: 1.4rem; margin-bottom: 25px; position: relative; padding-bottom: 15px; }
+        .footer-column h3::after { content: ''; position: absolute; bottom: 0; left: 0; width: 50px; height: 3px; background-color: var(--laranja); }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 12px; }
+        .footer-column ul li a { color: var(--branco); text-decoration: none; transition: color 0.3s ease; font-size: 1.05rem; }
+        .footer-column ul li a:hover { color: var(--laranja); }
+        .social-links { display: flex; gap: 15px; margin-top: 20px; }
+        .social-links a { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background-color: rgba(255,255,255,0.1); border-radius: 50%; color: var(--branco); transition: all 0.3s ease; font-size: 1.2rem; }
+        .social-links a:hover { background-color: var(--laranja); transform: translateY(-3px); }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.95rem; opacity: 0.8; }
+        @media (max-width: 992px) { .hero h2 { font-size: 2.5rem; } .hero p { font-size: 1.1rem; } .about-text { padding-right: 0; margin-bottom: 40px; } }
+        @media (max-width: 768px) { body { padding-top: 70px; } .mobile-menu-btn { display: block; } nav { position: fixed; top: 70px; left: -100%; width: 80%; height: calc(100vh - 70px); background-color: var(--branco); transition: all 0.3s ease; box-shadow: 5px 0 15px rgba(0,0,0,0.1); z-index: 999; } nav.active { left: 0; } nav ul { flex-direction: column; padding: 30px; } nav ul li { margin: 0 0 20px 0; } nav ul li a { font-size: 1.1rem; } .hero { padding: 80px 0; } .hero h2 { font-size: 2rem; } .search-box { flex-direction: column; } .search-option, .search-btn { margin: 8px 0; width: 100%; } .section-title h2 { font-size: 2rem; } .property-grid { grid-template-columns: 1fr; } .contact-content { gap: 30px; } .footer-column { min-width: 100%; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 1s ease forwards; }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
     </style>
 </head>
 <body>
@@ -686,7 +115,7 @@
     <header>
         <div class="container header-container">
             <div class="logo">
-                <h1>Nova<span>tte</span></h1>
+                <h1>Nova<span>tte</span> <span class="sub">Soluções Imobiliárias</span></h1>
             </div>
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
@@ -702,15 +131,13 @@
             </nav>
         </div>
     </header>
-
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content fade-in">
-                <h2>Encontre o imóvel dos seus sonhos em Santo Antônio de Pádua</h2>
-                <p>Somos a ponte entre você e as melhores oportunidades de venda e locação na região</p>
+                <h2>Encontre o imóvel dos seus sonhos no Noroeste Fluminense</h2>
+                <p>Conectamos você às melhores oportunidades de venda e locação em toda a região: Pádua, Miracema, Itaocara, Cambuci, Aperibé, e mais!</p>
                 <a href="#properties" class="btn btn-primary">Ver Imóveis</a>
-                
                 <div class="search-box fade-in delay-1">
                     <div class="search-option">
                         <select>
@@ -719,6 +146,7 @@
                             <option>Apartamento</option>
                             <option>Terreno</option>
                             <option>Comercial</option>
+                            <option>Chácara</option>
                         </select>
                     </div>
                     <div class="search-option">
@@ -730,11 +158,12 @@
                     </div>
                     <div class="search-option">
                         <select>
-                            <option>Bairro</option>
-                            <option>Centro</option>
-                            <option>Monte Líbano</option>
-                            <option>Tavares</option>
-                            <option>São Félix</option>
+                            <option>Cidade</option>
+                            <option>Santo Antônio de Pádua</option>
+                            <option>Miracema</option>
+                            <option>Itaocara</option>
+                            <option>Cambuci</option>
+                            <option>Aperibé</option>
                         </select>
                     </div>
                     <div class="search-btn">
@@ -744,104 +173,116 @@
             </div>
         </div>
     </section>
-
     <!-- Destaques -->
     <section class="properties" id="properties">
         <div class="container">
             <div class="section-title fade-in">
                 <h2>Imóveis em Destaque</h2>
-                <p>Confira algumas das melhores oportunidades em Santo Antônio de Pádua</p>
+                <p>Confira oportunidades em Pádua, Miracema, Itaocara, Cambuci, Aperibé e toda região!</p>
             </div>
-            
             <div class="property-grid">
-                <!-- Propriedade 1 -->
+                <!-- Pádua -->
                 <div class="property-card fade-in delay-1">
                     <div class="property-img">
-                        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Casa à venda">
+                        <img src="https://img.olx.com.br/thumbs700x500/44/448588561985745.webp" alt="Casa Residencial Pádua">
                     </div>
                     <div class="property-info">
                         <h3>Casa Residencial</h3>
                         <p class="property-location"><i class="fas fa-map-marker-alt"></i> Centro, Santo Antônio de Pádua</p>
                         <p class="property-price">R$ 350.000</p>
                         <div class="property-features">
-                            <div class="feature">
-                                <i class="fas fa-bed"></i> 3 Quartos
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-bath"></i> 2 Banheiros
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-ruler-combined"></i> 180m²
-                            </div>
+                            <div class="feature"><i class="fas fa-bed"></i> 3 Quartos</div>
+                            <div class="feature"><i class="fas fa-bath"></i> 2 Banheiros</div>
+                            <div class="feature"><i class="fas fa-ruler-combined"></i> 180m²</div>
                         </div>
+                        <a href="https://rj.olx.com.br/rio-de-janeiro-e-regiao/imoveis/casa-geminada-com-2-quartos-para-alugar-em-belo-horizonte-1437693452" target="_blank" class="btn btn-outline" style="margin-top:12px;">Ver anúncio original</a>
                     </div>
                 </div>
-                
-                <!-- Propriedade 2 -->
+                <!-- Miracema -->
                 <div class="property-card fade-in delay-2">
                     <div class="property-img">
-                        <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Apartamento para alugar">
+                        <img src="https://img.olx.com.br/thumbs700x500/97/973599445025270.webp" alt="Apartamento Miracema">
                     </div>
                     <div class="property-info">
-                        <h3>Apartamento</h3>
-                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Vila Maria, Santo Antônio de Pádua</p>
+                        <h3>Apartamento Moderno</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Centro, Miracema</p>
                         <p class="property-price">R$ 1.200/mês</p>
                         <div class="property-features">
-                            <div class="feature">
-                                <i class="fas fa-bed"></i> 2 Quartos
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-bath"></i> 1 Banheiro
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-ruler-combined"></i> 70m²
-                            </div>
+                            <div class="feature"><i class="fas fa-bed"></i> 2 Quartos</div>
+                            <div class="feature"><i class="fas fa-bath"></i> 1 Banheiro</div>
+                            <div class="feature"><i class="fas fa-ruler-combined"></i> 70m²</div>
                         </div>
+                        <a href="https://sp.olx.com.br/vale-do-paraiba-e-litoral-norte/imoveis/apartamento-com-2-dormitorios-a-venda-64-m-por-r-335-000-00-jardim-paulista-1437718219" target="_blank" class="btn btn-outline" style="margin-top:12px;">Ver anúncio original</a>
                     </div>
                 </div>
-                
-                <!-- Propriedade 3 -->
+                <!-- Itaocara -->
                 <div class="property-card fade-in delay-3">
                     <div class="property-img">
-                        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Casa com piscina">
+                        <img src="https://img.olx.com.br/thumbs700x500/18/180588566328558.webp" alt="Terreno Itaocara">
                     </div>
                     <div class="property-info">
-                        <h3>Casa com Piscina</h3>
-                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Alto do Amparo, Santo Antônio de Pádua</p>
-                        <p class="property-price">R$ 550.000</p>
+                        <h3>Terreno Plano</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Itaocara</p>
+                        <p class="property-price">R$ 120.000</p>
                         <div class="property-features">
-                            <div class="feature">
-                                <i class="fas fa-bed"></i> 4 Quartos
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-bath"></i> 3 Banheiros
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-ruler-combined"></i> 280m²
-                            </div>
+                            <div class="feature"><i class="fas fa-ruler-combined"></i> 400m²</div>
+                            <div class="feature"><i class="fas fa-map"></i> Escriturado</div>
+                            <div class="feature"><i class="fas fa-tree"></i> Próximo ao centro</div>
                         </div>
+                        <a href="https://es.olx.com.br/norte-do-espirito-santo/imoveis/apartamento-para-locacao-praia-de-itaparica-vila-velha-es-1437648339" target="_blank" class="btn btn-outline" style="margin-top:12px;">Ver anúncio original</a>
+                    </div>
+                </div>
+                <!-- Cambuci -->
+                <div class="property-card fade-in delay-2">
+                    <div class="property-img">
+                        <img src="https://img.olx.com.br/thumbs700x500/54/542581327878269.webp" alt="Sala Comercial Cambuci">
+                    </div>
+                    <div class="property-info">
+                        <h3>Sala Comercial</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Centro, Cambuci</p>
+                        <p class="property-price">R$ 900/mês</p>
+                        <div class="property-features">
+                            <div class="feature"><i class="fas fa-ruler-combined"></i> 45m²</div>
+                            <div class="feature"><i class="fas fa-building"></i> 1 Banheiro</div>
+                            <div class="feature"><i class="fas fa-door-open"></i> Pronta para uso</div>
+                        </div>
+                        <a href="https://rj.olx.com.br/rio-de-janeiro-e-regiao/comercio-e-industria/excelente-loja-em-alcantara-1437717964" target="_blank" class="btn btn-outline" style="margin-top:12px;">Ver anúncio original</a>
+                    </div>
+                </div>
+                <!-- Aperibé -->
+                <div class="property-card fade-in delay-3">
+                    <div class="property-img">
+                        <img src="https://img.olx.com.br/thumbs700x500/89/890559682090742.webp" alt="Chácara Aperibé">
+                    </div>
+                    <div class="property-info">
+                        <h3>Chácara com Lago</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Zona Rural, Aperibé</p>
+                        <p class="property-price">R$ 320.000</p>
+                        <div class="property-features">
+                            <div class="feature"><i class="fas fa-tree"></i> 2.000m²</div>
+                            <div class="feature"><i class="fas fa-water"></i> Lago natural</div>
+                            <div class="feature"><i class="fas fa-home"></i> Casa simples</div>
+                        </div>
+                        <a href="https://se.olx.com.br/sergipe/imoveis/apartamento-para-locacao-coroa-do-meio-aracaju-se-1437651490" target="_blank" class="btn btn-outline" style="margin-top:12px;">Ver anúncio original</a>
                     </div>
                 </div>
             </div>
-            
             <div style="text-align: center; margin-top: 40px;">
                 <a href="#" class="btn btn-outline fade-in">Ver Todos os Imóveis</a>
             </div>
         </div>
     </section>
-
     <!-- Sobre -->
     <section class="about" id="about">
         <div class="container">
             <div class="section-title fade-in">
                 <h2>Sobre a Novatte</h2>
-                <p>Conheça nossa história e o que nos torna diferentes no mercado imobiliário de Santo Antônio de Pádua</p>
+                <p>Conheça nossa história e o que nos torna diferentes no mercado imobiliário do Noroeste Fluminense</p>
             </div>
-            
             <div class="about-content">
                 <div class="about-text fade-in delay-1">
                     <h3>Conectando você ao seu próximo lar</h3>
-                    <p>A Novatte nasceu com o propósito de simplificar o processo de compra, venda e locação de imóveis em Santo Antônio de Pádua. Nossa plataforma conecta você às melhores oportunidades da região, com transparência e eficiência.</p>
+                    <p>A Novatte nasceu com o propósito de simplificar o processo de compra, venda e locação de imóveis em toda a região do Noroeste Fluminense. Nossa plataforma conecta você às melhores oportunidades, com transparência e eficiência.</p>
                     <p>Trabalhamos em parceria com as principais imobiliárias locais para oferecer um portfólio diversificado de opções, sempre com informações verídicas e atualizadas.</p>
                     <p>Nossa missão é tornar a experiência de encontrar um imóvel a mais agradável possível, com ferramentas intuitivas e um atendimento personalizado.</p>
                     <a href="#contact" class="btn btn-primary">Entre em Contato</a>
@@ -852,15 +293,13 @@
             </div>
         </div>
     </section>
-
     <!-- Parceiros -->
     <section class="partners" id="partners">
         <div class="container">
             <div class="section-title fade-in">
                 <h2>Nossos Parceiros</h2>
-                <p>Trabalhamos com as melhores imobiliárias de Santo Antônio de Pádua</p>
+                <p>Trabalhamos com as melhores imobiliárias do Noroeste Fluminense</p>
             </div>
-            
             <div class="partners-grid">
                 <div class="partner-logo fade-in delay-1">
                     <img src="https://via.placeholder.com/150x80?text=Imobiliária+A" alt="Imobiliária A">
@@ -880,7 +319,6 @@
             </div>
         </div>
     </section>
-
     <!-- Contato -->
     <section class="contact" id="contact">
         <div class="container">
@@ -888,7 +326,6 @@
                 <h2>Entre em Contato</h2>
                 <p>Estamos à disposição para ajudar você a encontrar o imóvel perfeito</p>
             </div>
-            
             <div class="contact-content">
                 <div class="contact-info fade-in delay-1">
                     <h3>Fale Conosco</h3>
@@ -898,7 +335,6 @@
                         <p><i class="fas fa-envelope"></i> contato@novatte.com.br</p>
                         <p><i class="fas fa-clock"></i> Segunda a Sexta: 9h às 18h | Sábado: 9h às 13h</p>
                     </div>
-                    
                     <h3>Siga-nos</h3>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -906,7 +342,6 @@
                         <a href="#"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
-                
                 <div class="contact-form fade-in delay-2">
                     <form>
                         <div class="form-group">
@@ -931,16 +366,14 @@
             </div>
         </div>
     </section>
-
     <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column fade-in">
-                    <h3>Novatte</h3>
-                    <p>Sua plataforma de confiança para compra, venda e locação de imóveis em Santo Antônio de Pádua.</p>
+                    <h3>Novatte Soluções Imobiliárias</h3>
+                    <p>Sua plataforma de confiança para compra, venda e locação de imóveis em todo o Noroeste Fluminense.</p>
                 </div>
-                
                 <div class="footer-column fade-in delay-1">
                     <h3>Links Rápidos</h3>
                     <ul>
@@ -951,7 +384,6 @@
                         <li><a href="#contact">Contato</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-column fade-in delay-2">
                     <h3>Tipos de Imóveis</h3>
                     <ul>
@@ -962,7 +394,6 @@
                         <li><a href="#">Chácaras</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-column fade-in delay-1">
                     <h3>Contato</h3>
                     <ul>
@@ -972,48 +403,23 @@
                     </ul>
                 </div>
             </div>
-            
             <div class="footer-bottom">
-                <p>&copy; 2023 Novatte - Todos os direitos reservados</p>
+                <p>&copy; 2025 Novatte Soluções Imobiliárias - Todos os direitos reservados</p>
             </div>
         </div>
     </footer>
-
     <script>
         // Menu mobile toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const nav = document.querySelector('nav');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            nav.classList.toggle('active');
-        });
-        
+        mobileMenuBtn.addEventListener('click', () => { nav.classList.toggle('active'); });
         // Fechar menu ao clicar em um link
         const navLinks = document.querySelectorAll('nav ul li a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                nav.classList.remove('active');
-            });
-        });
-        
+        navLinks.forEach(link => { link.addEventListener('click', () => { nav.classList.remove('active'); }); });
         // Animação de scroll
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('animated'); } }); }, observerOptions);
+        document.querySelectorAll('.fade-in').forEach(el => { observer.observe(el); });
     </script>
 </body>
 </html>
