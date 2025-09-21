@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novatte Imóveis - Noroeste Fluminense</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary-color: #003602;
+            --secondary-color: #FE4700;
+            --accent-color: #86450A;
+            --light-color: #F7EEE9;
+            --dark-color: #333;
+            --text-color: #333;
+            --background-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e03e00;
+            border-color: #e03e00;
+        }
+        
+        .btn-outline-primary {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-outline-secondary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 54, 2, 0.8), rgba(0, 54, 2, 0.8)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1973&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 40px;
+        }
+        
+        .property-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 8px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            height: 100%;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .property-img {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .property-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+        
+        .price-tag {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+        
+        .filter-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .property-detail-img {
+            height: 400px;
+            object-fit: cover;
+            width: 100%;
+            border-radius: 8px;
+        }
+        
+        .detail-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .amenity-badge {
+            background-color: var(--light-color);
+            color: var(--accent-color);
+            padding: 8px 15px;
+            border-radius: 30px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+            border: 1px solid #e9dcd2;
+        }
+        
+        .contact-form {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pagination {
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .page-link {
+            color: var(--primary-color);
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .map-container {
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .carousel-control-prev, .carousel-control-next {
+            width: 5%;
+        }
+        
+        .featured-carousel .property-card {
+            margin: 0 10px;
+        }
+        
+        .badge.bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        
+        .badge.bg-secondary {
+            background-color: var(--secondary-color) !important;
+        }
+        
+        .property-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .property-actions .btn {
+            flex: 1;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        
+        /* Ajuste para o slogan em mobile */
+        @media (max-width: 768px) {
+            .slogan {
+                line-height: 1.3;
+                margin-top: 5px;
+                font-size: 1rem;
+            }
+            
+            .hero-section {
+                padding: 40px 0;
+            }
+            
+            .property-img {
+                height: 180px;
+            }
+            
+            .property-detail-img {
+                height: 250px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+            
+            .property-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <!-- Logo - use um caminho relativo simples -->
+                <img src="logo.png" alt="Novatte Imóveis" class="logo">
+                Novatte Imóveis
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Comprar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Alugar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Lançamentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contato</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">Encontre seu imóvel no Noroeste Fluminense</h1>
+            <p class="lead mb-4 slogan">Soluções imobiliárias para toda a região</p>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control form-control-lg" placeholder="Digite o bairro, cidade ou palavra-chave">
+                        <button class="btn btn-primary" type="button">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <span class="badge bg-light text-dark">Santo Antônio de Pádua</span>
+                        <span class="badge bg-light text-dark">Itaperuna</span>
+                        <span class="badge bg-light text-dark">Miracema</span>
+                        <span class="badge bg-light text-dark">Itaocara</span>
+                        <span class="badge bg-light text-dark">Aperibé</span>
+                        <span class="badge bg-light text-dark">Cambuci</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Carrossel de Destaques -->
+        <h3 class="mb-4">Imóveis em Destaque</h3>
+        <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel">
+            <div class="carousel-inner" id="featured-properties">
+                <!-- Conteúdo carregado via JavaScript -->
+                <div class="loading-spinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filter-section">
+            <h4 class="mb-4">Filtre sua busca</h4>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Tipo de Imóvel</label>
+                    <select class="form-select" id="filter-type">
+                        <option value="" selected>Todos</option>
+                        <option value="casa">Casa</option>
+                        <option value="apartamento">Apartamento</option>
+                        <option value="terreno">Terreno</option>
+                        <option value="comercial">Comercial</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Cidade</label>
+                    <select class="form-select" id="filter-city">
+                        <option value="" selected>Todas</option>
+                        <option value="Santo Antônio de Pádua">Santo Antônio de Pádua</option>
+                        <option value="Itaperuna">Itaperuna</option>
+                        <option value="Miracema">Miracema</option>
+                        <option value="Itaocara">Itaocara</option>
+                        <option value="Aperibé">Aperibé</option>
+                        <option value="Cambuci">Cambuci</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Preço Máximo</label>
+                    <select class="form-select" id="filter-price">
+                        <option value="" selected>Qualquer preço</option>
+                        <option value="150000">R$ 150.000</option>
+                        <option value="300000">R$ 300.000</option>
+                        <option value="500000">R$ 500.000</option>
+                        <option value="750000">R$ 750.000</option>
+                        <option value="1000000">R$ 1.000.000</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Quartos</label>
+                    <select class="form-select" id="filter-bedrooms">
+                        <option value="" selected>Qualquer</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-end">
+                <button class="btn btn-outline-secondary me-2" id="clear-filters">Limpar</button>
+                <button class="btn btn-primary" id="apply-filters">Aplicar Filtros</button>
+            </div>
+        </div>
+
+        <!-- Lista de Imóveis -->
+        <h3 class="mb-4">Todos os Imóveis</h3>
+        
+        <div class="row" id="property-list">
+            <!-- Conteúdo carregado via JavaScript -->
+            <div class="loading-spinner">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Carregando imóveis...</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Paginação -->
+        <nav aria-label="Navegação de página" id="pagination-container">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Próxima</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Modal para Detalhes do Imóvel -->
+    <div class="modal fade" id="propertyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="propertyModalTitle">Detalhes do Imóvel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="property-detail-content">
+                        <!-- Conteúdo será carregado via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Novatte Imóveis</h5>
+                    <p>Encontre o imóvel perfeito para você na região Noroeste Fluminense. Temos as melhores opções para compra, venda e locação.</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Início</a></li>
+                        <li><a href="#" class="text-white">Sobre</a></li>
+                        <li><a href="#" class="text-white">Imóveis</a></li>
+                        <li><a href="#" class="text-white">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Contato</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-telephone"></i> (22) 3456-7890</li>
+                        <li><i class="bi bi-whatsapp"></i> (22) 98765-4321</li>
+                        <li><i class="bi bi-envelope"></i> contato@novatte.com</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Redes Sociais</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white"><i class="bi bi-facebook fs-4"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-instagram fs-4"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-twitter fs-4"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-youtube fs-4"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center py-3">
+                <p class="mb-0">&copy; 2023 Novatte Imóveis. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Configuração da API
+        const API_BASE_URL = 'http://localhost:3001/api'; // Altere para a URL do seu backend
+
+        // Estado da aplicação
+        let currentPage = 1;
+        let propertiesPerPage = 6;
+        let allProperties = [];
+        let filteredProperties = [];
+
+        // Elementos do DOM
+        const propertyList = document.getElementById('property-list');
+        const featuredProperties = document.getElementById('featured-properties');
+        const paginationContainer = document.getElementById('pagination-container');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const clearFiltersBtn = document.getElementById('clear-filters');
+
+        // Função para buscar imóveis da API
+        async function fetchProperties() {
+            try {
+                showLoading(propertyList);
+                
+                const response = await fetch(`${API_BASE_URL}/properties`);
+                
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar imóveis');
+                }
+                
+                const properties = await response.json();
+                allProperties = properties;
+                filteredProperties = [...allProperties];
+                
+                renderProperties();
+                renderFeaturedProperties();
+                setupPagination();
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                propertyList.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-exclamation-triangle display-1 text-danger"></i>
+                        <h3 class="mt-3">Erro ao carregar imóveis</h3>
+                        <p>${error.message}</p>
+                        <button class="btn btn-primary mt-3" onclick="fetchProperties()">
+                            Tentar Novamente
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Função para mostrar loading
+        function showLoading(container) {
+            container.innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Função para renderizar imóveis
+        function renderProperties() {
+            if (filteredProperties.length === 0) {
+                propertyList.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-house display-1 text-muted"></i>
+                        <h3 class="mt-3">Nenhum imóvel encontrado</h3>
+                        <p>Tente ajustar os filtros de busca</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const startIndex = (currentPage - 1) * propertiesPerPage;
+            const endIndex = startIndex + propertiesPerPage;
+            const currentProperties = filteredProperties.slice(startIndex, endIndex);
+
+            propertyList.innerHTML = currentProperties.map(property => `
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card property-card">
+                        <span class="badge ${property.type === 'Venda' ? 'bg-primary' : 'bg-secondary'} property-badge">${property.type}</span>
+                        <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
+                        <div class="card-body">
+                            <h5 class="card-title">${property.title}</h5>
+                            <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="price-tag">${property.price}</span>
+                                </div>
+                                <div>
+                                    <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
+                                    <span class="me-2"><i class="bi bi-droplet"></i> ${property.bathrooms}</span>
+                                    <span><i class="bi bi-car-front"></i> ${property.parking}</span>
+                                </div>
+                            </div>
+                            <div class="property-actions">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${property.id}">
+                                    <i class="bi bi-eye"></i> Visualizar
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="window.open('property-detail.html?id=${property.id}', '_blank')">
+                                    <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Função para renderizar imóveis em destaque
+        function renderFeaturedProperties() {
+            const featured = allProperties.filter(prop => prop.featured).slice(0, 3);
+            
+            if (featured.length === 0) return;
+            
+            featuredProperties.innerHTML = `
+                <div class="carousel-item active">
+                    <div class="row">
+                        ${featured.map((property, index) => `
+                            <div class="col-md-4">
+                                <div class="card property-card">
+                                    <span class="badge ${property.type === 'Venda' ? 'bg-primary' : 'bg-secondary'} property-badge">${property.type}</span>
+                                    <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${property.title}</h5>
+                                        <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="price-tag">${property.price}</span>
+                                            </div>
+                                            <div>
+                                                <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
+                                                <span class="me-2"><i class="bi bi-droplet"></i> ${property.bathrooms}</span>
+                                                <span><i class="bi bi-car-front"></i> ${property.parking}</span>
+                                            </div>
+                                        </div>
+                                        <div class="property-actions">
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${property.id}">
+                                                <i class="bi bi-eye"></i> Visualizar
+                                            </button>
+                                            <button class="btn btn-outline-secondary" onclick="window.open('property-detail.html?id=${property.id}', '_blank')">
+                                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Função para configurar paginação
+        function setupPagination() {
+            const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
+            
+            if (totalPages <= 1) {
+                paginationContainer.style.display = 'none';
+                return;
+            }
+            
+            paginationContainer.style.display = 'flex';
+            
+            let paginationHTML = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Anterior</a>
+                </li>
+            `;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `
+                    <li class="page-item ${currentPage === i ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                    </li>
+                `;
+            }
+            
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Próxima</a>
+                </li>
+            `;
+            
+            paginationContainer.querySelector('ul').innerHTML = paginationHTML;
+        }
+
+        // Função para mudar de página
+        function changePage(page) {
+            currentPage = page;
+            renderProperties();
+            setupPagination();
+            window.scrollTo({ top: propertyList.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        // Função para aplicar filtros
+        function applyFilters() {
+            const type = document.getElementById('filter-type').value;
+            const city = document.getElementById('filter-city').value;
+            const price = document.getElementById('filter-price').value;
+            const bedrooms = document.getElementById('filter-bedrooms').value;
+            
+            filteredProperties = allProperties.filter(property => {
+                const matchesType = !type || property.type.toLowerCase() === type.toLowerCase();
+                const matchesCity = !city || property.location.includes(city);
+                const matchesPrice = !price || parseFloat(property.price.replace(/\D/g, '')) <= parseInt(price);
+                const matchesBedrooms = !bedrooms || property.bedrooms >= parseInt(bedrooms);
+                
+                return matchesType && matchesCity && matchesPrice && matchesBedrooms;
+            });
+            
+            currentPage = 1;
+            renderProperties();
+            setupPagination();
+        }
+
+        // Função para limpar filtros
+        function clearFilters() {
+            document.getElementById('filter-type').value = '';
+            document.getElementById('filter-city').value = '';
+            document.getElementById('filter-price').value = '';
+            document.getElementById('filter-bedrooms').value = '';
+            
+            filteredProperties = [...allProperties];
+            currentPage = 1;
+            renderProperties();
+            setupPagination();
+        }
+
+        // Event Listeners
+        applyFiltersBtn.addEventListener('click', applyFilters);
+        clearFiltersBtn.addEventListener('click', clearFilters);
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchProperties();
+            
+            // Configurar modal (mantido do código anterior)
+            const propertyModal = document.getElementById('propertyModal');
+            propertyModal.addEventListener('show.bs.modal', function(event) {
+                // Sua lógica existente para o modal aqui
+            });
+        });
+
+        // Para desenvolvimento - mock data se a API não estiver disponível
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            window.mockData = true;
+        }
+    </script>
+</body>
+</html>

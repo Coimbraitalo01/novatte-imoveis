@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Encontre o imóvel perfeito no Noroeste Fluminense com a Novatte Imóveis. Casas, apartamentos e terrenos para venda e aluguel.">
+    <title>Novatte Imóveis - Noroeste Fluminense</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary-color: #003602;
+            --secondary-color: #FE4700;
+            --accent-color: #86450A;
+            --light-color: #F7EEE9;
+            --dark-color: #333;
+            --text-color: #333;
+            --background-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 40px;
+            width: 40px;
+            margin-right: 10px;
+            background-color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e03e00;
+            border-color: #e03e00;
+        }
+        
+        .btn-outline-primary {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-outline-secondary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 54, 2, 0.8), rgba(0, 54, 2, 0.8)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1973&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 40px;
+        }
+        
+        .property-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 8px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            height: 100%;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .property-img {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .property-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+        
+        .price-tag {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+        
+        .filter-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .property-detail-img {
+            height: 400px;
+            object-fit: cover;
+            width: 100%;
+            border-radius: 8px;
+        }
+        
+        .detail-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .amenity-badge {
+            background-color: var(--light-color);
+            color: var(--accent-color);
+            padding: 8px 15px;
+            border-radius: 30px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+            border: 1px solid #e9dcd2;
+        }
+        
+        .contact-form {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pagination {
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .page-link {
+            color: var(--primary-color);
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .map-container {
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .carousel-control-prev, .carousel-control-next {
+            width: 5%;
+        }
+        
+        .featured-carousel .property-card {
+            margin: 0 10px;
+        }
+        
+        .badge.bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        
+        .badge.bg-secondary {
+            background-color: var(--secondary-color) !important;
+        }
+        
+        .property-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .property-actions .btn {
+            flex: 1;
+        }
+        
+        .amenities-table {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .amenity-item {
+            background-color: var(--light-color);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9dcd2;
+        }
+        
+        .map-error {
+            color: #dc3545;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 40px 0;
+            }
+            
+            .property-img {
+                height: 180px;
+            }
+            
+            .property-detail-img {
+                height: 250px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+            
+            .property-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .amenities-table {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .amenities-table {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" aria-label="Página inicial da Novatte Imóveis">
+                <img src="src/assets/logo.png" alt="Logo Novatte Imóveis" class="logo" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.logo-placeholder').style.display='flex'">
+                <div class="logo-placeholder logo" style="display: none;">N</div>
+                Novatte Imóveis
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" aria-current="page">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Comprar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Alugar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Lançamentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contato</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">Encontre seu imóvel no Noroeste Fluminense</h1>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control form-control-lg" placeholder="Digite o bairro, cidade ou palavra-chave" aria-label="Pesquisar imóveis por bairro, cidade ou palavra-chave">
+                        <button class="btn btn-primary" type="button" aria-label="Buscar imóveis">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <span class="badge bg-light text-dark">Santo Antônio de Pádua</span>
+                        <span class="badge bg-light text-dark">Itaperuna</span>
+                        <span class="badge bg-light text-dark">Miracema</span>
+                        <span class="badge bg-light text-dark">Itaocara</span>
+                        <span class="badge bg-light text-dark">Aperibé</span>
+                        <span class="badge bg-light text-dark">Cambuci</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Carrossel de Destaques -->
+        <h2 class="mb-4">Imóveis em Destaque</h2>
+        <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <!-- Destaque 1 -->
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-primary property-badge">Venda</span>
+                                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa moderna em Itaperuna">
+                                <div class="card-body">
+                                    <h5 class="card-title">Casa Moderna com Piscina</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Itaperuna, RJ</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">R$ 550.000</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> 120m²</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
+                                            <span><i class="bi bi-car-front"></i> 2</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="1" aria-label="Visualizar detalhes da Casa Moderna com Piscina">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="1" aria-label="Abrir Casa Moderna com Piscina em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Destaque 2 -->
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-secondary property-badge">Aluguel</span>
+                                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Santo Antônio de Pádua">
+                                <div class="card-body">
+                                    <h5 class="card-title">Apartamento com Varanda</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Santo Antônio de Pádua, RJ</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">R$ 1.200/mês</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> 70m²</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
+                                            <span><i class="bi bi-car-front"></i> 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="2" aria-label="Visualizar detalhes do Apartamento com Varanda">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="2" aria-label="Abrir Apartamento com Varanda em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Destaque 3 -->
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-primary property-badge">Venda</span>
+                                <img src="https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa com jardim em Miracema">
+                                <div class="card-body">
+                                    <h5 class="card-title">Casa Familiar com Jardim</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Miracema, RJ</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">R$ 380.000</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> 150m²</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> 4</span>
+                                            <span><i class="bi bi-car-front"></i> 2</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="3" aria-label="Visualizar detalhes da Casa Familiar com Jardim">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="3" aria-label="Abrir Casa Familiar com Jardim em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <!-- Destaque 4 -->
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-secondary property-badge">Aluguel</span>
+                                <img src="https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa próxima ao centro em Itaocara">
+                                <div class="card-body">
+                                    <h5 class="card-title">Casa Próxima ao Centro</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Itaocara, RJ</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">R$ 1.500/mês</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> 90m²</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
+                                            <span><i class="bi bi-car-front"></i> 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="4" aria-label="Visualizar detalhes da Casa Próxima ao Centro">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="4" aria-label="Abrir Casa Próxima ao Centro em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Destaque 5 -->
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-primary property-badge">Venda</span>
+                                <img src="https://images.unsplash.com/photo-1565182999561-18d7dc61c393?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Sítio em Aperibé">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sítio com Área Verde</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Aperibé, RJ</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">R$ 620.000</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> 180m²</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
+                                            <span><i class="bi bi-car-front"></i> 4</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="5" aria-label="Visualizar detalhes do Sítio com Área Verde">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="5" aria-label="Abrir Sítio com Área Verde em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Destaque 6 -->
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-secondary property-badge">Aluguel</span>
+                                <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Cambuci">
+                                <div class="card-body">
+                                    <h5 class="card-title">Apartamento Reformado</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Cambuci, RJ</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">R$ 980/mês</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> 65m²</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> 1</span>
+                                            <span><i class="bi bi-car-front"></i> 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="6" aria-label="Visualizar detalhes do Apartamento Reformado">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="6" aria-label="Abrir Apartamento Reformado em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev" aria-label="Slide anterior">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next" aria-label="Próximo slide">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filter-section">
+            <h3 class="mb-4">Filtre sua busca</h3>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="property-type" class="form-label">Tipo de Imóvel</label>
+                    <select id="property-type" class="form-select">
+                        <option selected>Todos</option>
+                        <option>Casa</option>
+                        <option>Apartamento</option>
+                        <option>Terreno</option>
+                        <option>Comercial</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="city" class="form-label">Cidade</label>
+                    <select id="city" class="form-select">
+                        <option selected>Todas</option>
+                        <option>Santo Antônio de Pádua</option>
+                        <option>Itaperuna</option>
+                        <option>Miracema</option>
+                        <option>Itaocara</option>
+                        <option>Aperibé</option>
+                        <option>Cambuci</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="max-price" class="form-label">Preço Máximo</label>
+                    <select id="max-price" class="form-select">
+                        <option selected>Qualquer preço</option>
+                        <option>R$ 150.000</option>
+                        <option>R$ 300.000</option>
+                        <option>R$ 500.000</option>
+                        <option>R$ 750.000</option>
+                        <option>R$ 1.000.000</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="bedrooms" class="form-label">Quartos</label>
+                    <select id="bedrooms" class="form-select">
+                        <option selected>Qualquer</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4+</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-end">
+                <button class="btn btn-outline-secondary me-2" aria-label="Limpar filtros">Limpar</button>
+                <button class="btn btn-primary" aria-label="Aplicar filtros">Aplicar Filtros</button>
+            </div>
+        </div>
+
+        <!-- Lista de Imóveis -->
+        <h2 class="mb-4">Todos os Imóveis</h2>
+        <div class="row" id="property-list">
+            <!-- Imóvel 1 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card property-card">
+                    <span class="badge bg-primary property-badge">Venda</span>
+                    <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa moderna em Itaperuna">
+                    <div class="card-body">
+                        <h5 class="card-title">Casa Moderna com Piscina</h5>
+                        <p class="card-text"><i class="bi bi-geo-alt"></i> Itaperuna, RJ</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="price-tag">R$ 550.000</span>
+                            </div>
+                            <div>
+                                <span class="me-2"><i class="bi bi-house-door"></i> 120m²</span>
+                                <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
+                                <span><i class="bi bi-car-front"></i> 2</span>
+                            </div>
+                        </div>
+                        <div class="property-actions">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="1" aria-label="Visualizar detalhes da Casa Moderna com Piscina">
+                                <i class="bi bi-eye"></i> Visualizar
+                            </button>
+                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="1" aria-label="Abrir Casa Moderna com Piscina em nova guia">
+                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Imóvel 2 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card property-card">
+                    <span class="badge bg-secondary property-badge">Aluguel</span>
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Santo Antônio de Pádua">
+                    <div class="card-body">
+                        <h5 class="card-title">Apartamento com Varanda</h5>
+                        <p class="card-text"><i class="bi bi-geo-alt"></i> Santo Antônio de Pádua, RJ</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="price-tag">R$ 1.200/mês</span>
+                            </div>
+                            <div>
+                                <span class="me-2"><i class="bi bi-house-door"></i> 70m²</span>
+                                <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
+                                <span><i class="bi bi-car-front"></i> 1</span>
+                            </div>
+                        </div>
+                        <div class="property-actions">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="2" aria-label="Visualizar detalhes do Apartamento com Varanda">
+                                <i class="bi bi-eye"></i> Visualizar
+                            </button>
+                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="2" aria-label="Abrir Apartamento com Varanda em nova guia">
+                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Imóvel 3 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card property-card">
+                    <span class="badge bg-primary property-badge">Venda</span>
+                    <img src="https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa com jardim em Miracema">
+                    <div class="card-body">
+                        <h5 class="card-title">Casa Familiar com Jardim</h5>
+                        <p class="card-text"><i class="bi bi-geo-alt"></i> Miracema, RJ</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="price-tag">R$ 380.000</span>
+                            </div>
+                            <div>
+                                <span class="me-2"><i class="bi bi-house-door"></i> 150m²</span>
+                                <span class="me-2"><i class="bi bi-droplet"></i> 4</span>
+                                <span><i class="bi bi-car-front"></i> 2</span>
+                            </div>
+                        </div>
+                        <div class="property-actions">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="3" aria-label="Visualizar detalhes da Casa Familiar com Jardim">
+                                <i class="bi bi-eye"></i> Visualizar
+                            </button>
+                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="3" aria-label="Abrir Casa Familiar com Jardim em nova guia">
+                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Imóvel 4 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card property-card">
+                    <span class="badge bg-secondary property-badge">Aluguel</span>
+                    <img src="https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa próxima ao centro em Itaocara">
+                    <div class="card-body">
+                        <h5 class="card-title">Casa Próxima ao Centro</h5>
+                        <p class="card-text"><i class="bi bi-geo-alt"></i> Itaocara, RJ</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="price-tag">R$ 1.500/mês</span>
+                            </div>
+                            <div>
+                                <span class="me-2"><i class="bi bi-house-door"></i> 90m²</span>
+                                <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
+                                <span><i class="bi bi-car-front"></i> 1</span>
+                            </div>
+                        </div>
+                        <div class="property-actions">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="4" aria-label="Visualizar detalhes da Casa Próxima ao Centro">
+                                <i class="bi bi-eye"></i> Visualizar
+                            </button>
+                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="4" aria-label="Abrir Casa Próxima ao Centro em nova guia">
+                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Imóvel 5 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card property-card">
+                    <span class="badge bg-primary property-badge">Venda</span>
+                    <img src="https://images.unsplash.com/photo-1565182999561-18d7dc61c393?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Sítio em Aperibé">
+                    <div class="card-body">
+                        <h5 class="card-title">Sítio com Área Verde</h5>
+                        <p class="card-text"><i class="bi bi-geo-alt"></i> Aperibé, RJ</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="price-tag">R$ 620.000</span>
+                            </div>
+                            <div>
+                                <span class="me-2"><i class="bi bi-house-door"></i> 180m²</span>
+                                <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
+                                <span><i class="bi bi-car-front"></i> 4</span>
+                            </div>
+                        </div>
+                        <div class="property-actions">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="5" aria-label="Visualizar detalhes do Sítio com Área Verde">
+                                <i class="bi bi-eye"></i> Visualizar
+                            </button>
+                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="5" aria-label="Abrir Sítio com Área Verde em nova guia">
+                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Imóvel 6 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card property-card">
+                    <span class="badge bg-secondary property-badge">Aluguel</span>
+                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Cambuci">
+                    <div class="card-body">
+                        <h5 class="card-title">Apartamento Reformado</h5>
+                        <p class="card-text"><i class="bi bi-geo-alt"></i> Cambuci, RJ</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="price-tag">R$ 980/mês</span>
+                            </div>
+                            <div>
+                                <span class="me-2"><i class="bi bi-house-door"></i> 65m²</span>
+                                <span class="me-2"><i class="bi bi-droplet"></i> 1</span>
+                                <span><i class="bi bi-car-front"></i> 1</span>
+                            </div>
+                        </div>
+                        <div class="property-actions">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="6" aria-label="Visualizar detalhes do Apartamento Reformado">
+                                <i class="bi bi-eye"></i> Visualizar
+                            </button>
+                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="6" aria-label="Abrir Apartamento Reformado em nova guia">
+                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginação -->
+        <nav aria-label="Navegação de página">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                </li>
+                <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Próxima</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Modal para Detalhes do Imóvel -->
+    <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="propertyModalTitle">Detalhes do Imóvel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="property-detail-content">
+                        <!-- Conteúdo será carregado via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Novatte Imóveis</h5>
+                    <p>Encontre o imóvel perfeito para você na região Noroeste Fluminense. Temos as melhores opções para compra, venda e locação.</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Início</a></li>
+                        <li><a href="#" class="text-white">Sobre</a></li>
+                        <li><a href="#" class="text-white">Imóveis</a></li>
+                        <li><a href="#" class="text-white">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Contato</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-telephone"></i> (22) 3456-7890</li>
+                        <li><i class="bi bi-whatsapp"></i> (22) 98765-4321</li>
+                        <li><i class="bi bi-envelope"></i> contato@novatte.com</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Redes Sociais</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white" aria-label="Facebook da Novatte Imóveis"><i class="bi bi-facebook fs-4"></i></a>
+                        <a href="#" class="text-white" aria-label="Instagram da Novatte Imóveis"><i class="bi bi-instagram fs-4"></i></a>
+                        <a href="#" class="text-white" aria-label="Twitter da Novatte Imóveis"><i class="bi bi-twitter fs-4"></i></a>
+                        <a href="#" class="text-white" aria-label="YouTube da Novatte Imóveis"><i class="bi bi-youtube fs-4"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center py-3">
+                <p class="mb-0">&copy; 2025 Novatte Imóveis. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Dados de exemplo para os imóveis da região Noroeste Fluminense
+        const properties = {
+            1: {
+                title: "Casa Moderna com Piscina",
+                type: "Venda",
+                price: "R$ 550.000",
+                location: "Itaperuna, RJ",
+                address: "Rua Major Porfírio Henriques, 123",
+                size: "120m²",
+                bedrooms: 3,
+                bathrooms: 3,
+                parking: 2,
+                description: "Excelente casa moderna localizada em Itaperuna. A propriedade conta com piscina, área gourmet, jardim amplo e acabamentos de primeira linha. Perfeita para quem busca conforto e sofisticação.",
+                amenities: ["Piscina", "Área Gourmet", "Jardim", "Varanda", "Churrasqueira", "Mobiliada"],
+                images: [
+                    "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1586448900407-7397af48d116?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                map: { lat: -21.205, lng: -41.887 } // Coordenadas de Itaperuna
+            },
+            2: {
+                title: "Apartamento com Varanda",
+                type: "Aluguel",
+                price: "R$ 1.200/mês",
+                location: "Santo Antônio de Pádua, RJ",
+                address: "Av. Presidente Kennedy, 456",
+                size: "70m²",
+                bedrooms: 2,
+                bathrooms: 2,
+                parking: 1,
+                description: "Apartamento bem localizado no centro de Santo Antônio de Pádua. O imóvel possui varanda ampla, acabamentos de qualidade e está próximo ao comércio e serviços da cidade.",
+                amenities: ["Varanda", "Portaria", "Próximo ao Centro", "Mobiliado"],
+                images: [
+                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1493663284031-b7e3aaa4c4b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                map: { lat: -21.539, lng: -42.180 } // Coordenadas de Santo Antônio de Pádua
+            },
+            3: {
+                title: "Casa Familiar com Jardim",
+                type: "Venda",
+                price: "R$ 380.000",
+                location: "Miracema, RJ",
+                address: "Rua Dr. Raul Veiga, 789",
+                size: "150m²",
+                bedrooms: 4,
+                bathrooms: 3,
+                parking: 2,
+                description: "Casa espaçosa perfeita para famílias, localizada em um bairro tranquilo e arborizado de Miracema. A propriedade possui amplo jardim, área de lazer, quartos espaçosos e ótima localização próximo a escolas e comércio.",
+                amenities: ["Jardim", "Área de Lazer", "Quintal", "Varanda", "Churrasqueira", "Sala Ampliada"],
+                images: [
+                    "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1565182999561-18d7dc61c393?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                map: { lat: -21.412, lng: -42.196 } // Coordenadas de Miracema
+            },
+            4: {
+                title: "Casa Próxima ao Centro",
+                type: "Aluguel",
+                price: "R$ 1.500/mês",
+                location: "Itaocara, RJ",
+                address: "Rua Barão de Itaocara, 321",
+                size: "90m²",
+                bedrooms: 2,
+                bathrooms: 2,
+                parking: 1,
+                description: "Confortável casa próxima ao centro de Itaocara, com fácil acesso a comércio, bancos e serviços. Imóvel bem conservado com área de serviço e quintal.",
+                amenities: ["Próximo ao Centro", "Quintal", "Área de Serviço", "Reformado"],
+                images: [
+                    "https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1586448900407-7397af48d116?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                map: { lat: -21.669, lng: -42.076 } // Coordenadas de Itaocara
+            },
+            5: {
+                title: "Sítio com Área Verde",
+                type: "Venda",
+                price: "R$ 620.000",
+                location: "Aperibé, RJ",
+                address: "Estrada Aperibé-Miracema, KM 5",
+                size: "180m²",
+                bedrooms: 3,
+                bathrooms: 3,
+                parking: 4,
+                description: "Sítio encantador localizado em Aperibé, com área verde, árvores frutíferas e espaço amplo. Ideal para quem busca tranquilidade e contato com a natureza sem estar distante da cidade.",
+                amenities: ["Área Verde", "Frutíferas", "Rio Particular", "Churrasqueira", "Galpão"],
+                images: [
+                    "https://images.unsplash.com/photo-1565182999561-18d7dc61c393?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                map: { lat: -21.625, lng: -42.102 } // Coordenadas de Aperibé
+            },
+            6: {
+                title: "Apartamento Reformado",
+                type: "Aluguel",
+                price: "R$ 980/mês",
+                location: "Cambuci, RJ",
+                address: "Rua São João, 654",
+                size: "65m²",
+                bedrooms: 1,
+                bathrooms: 1,
+                parking: 1,
+                description: "Apartamento totalmente reformado no centro de Cambuci, com acabamentos modernos e ótima localização. Próximo a mercados, farmácias e ponto de ônibus.",
+                amenities: ["Reformado", "Próximo ao Centro", "Acabamentos Modernos", "Varanda"],
+                images: [
+                    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1493663284031-b7e3aaa4c4b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                map: { lat: -21.575, lng: -41.911 } // Coordenadas de Cambuci
+            }
+        };
+
+        // Função para abrir anúncio em nova guia
+        function openPropertyInNewTab(propertyId) {
+            const property = properties[propertyId];
+            if (!property) return;
+
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="pt-BR">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${property.title} - Novatte Imóveis</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+                    <style>
+                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f8f9fa; }
+                        .property-detail-img { height: 400px; object-fit: cover; width: 100%; border-radius: 8px; }
+                        .price-tag { font-weight: 700; color: #FE4700; }
+                        .amenity-badge { background-color: #F7EEE9; color: #86450A; padding: 8px 15px; 
+                                        border-radius: 30px; margin-right: 10px; margin-bottom: 10px; 
+                                        display: inline-block; border: 1px solid #e9dcd2; }
+                        .map-container { height: 300px; border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+                        .contact-form { background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+                        .map-error { color: #dc3545; text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="detail-header mb-4">
+                            <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'}">${property.type}</span>
+                            <h1 class="mt-2">${property.title}</h1>
+                            <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location} - ${property.address}</p>
+                            <h3 class="price-tag">${property.price}</h3>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-7">
+                                <img src="${property.images[0]}" class="property-detail-img" alt="${property.title}">
+                                <div class="map-container mt-4" id="property-map"></div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="mb-3 p-3 bg-light rounded">
+                                    <h5>Resumo do Imóvel</h5>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><i class="bi bi-house-door"></i> Área útil:</span>
+                                        <span>${property.size}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><i class="bi bi-droplet"></i> Banheiros:</span>
+                                        <span>${property.bathrooms}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><i class="bi bi-door-closed"></i> Quartos:</span>
+                                        <span>${property.bedrooms}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span><i class="bi bi-car-front"></i> Vagas:</span>
+                                        <span>${property.parking}</span>
+                                    </div>
+                                </div>
+                                <div class="contact-form">
+                                    <h5>Entre em Contato</h5>
+                                    <p>Interessado neste imóvel? Preencha o formulário abaixo que um de nossos corretores entrará em contato.</p>
+                                    <form id="contactForm">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Nome</label>
+                                            <input type="text" class="form-control" id="name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="phone" class="form-label">Telefone</label>
+                                            <input type="tel" class="form-control" id="phone" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message" class="form-label">Mensagem</label>
+                                            <textarea class="form-control" id="message" rows="3">Tenho interesse no imóvel ${property.title} e gostaria de mais informações.</textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Enviar Mensagem</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5>Descrição</h5>
+                                <p>${property.description}</p>
+                                <h5 class="mt-4">Comodidades</h5>
+                                <div class="amenities-list">
+                                    ${property.amenities.map(amenity => `<span class="amenity-badge">${amenity}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>
+                    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"><\/script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const mapElement = document.getElementById('property-map');
+                            if (mapElement && ${JSON.stringify(property.map)}) {
+                                try {
+                                    const map = L.map(mapElement).setView([${property.map.lat}, ${property.map.lng}], 14);
+                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    }).addTo(map);
+                                    L.marker([${property.map.lat}, ${property.map.lng}])
+                                        .addTo(map)
+                                        .bindPopup('${property.title}')
+                                        .openPopup();
+                                } catch (e) {
+                                    mapElement.innerHTML = '<p class="map-error">Não foi possível carregar o mapa. Verifique sua conexão com a internet.</p>';
+                                }
+                            }
+                            const form = document.getElementById('contactForm');
+                            if (form) {
+                                form.addEventListener('submit', (e) => {
+                                    e.preventDefault();
+                                    alert('Mensagem enviada com sucesso! Em breve um corretor entrará em contato.');
+                                    window.close();
+                                });
+                            }
+                        });
+                    <\/script>
+                </body>
+                </html>
+            `);
+            newWindow.document.close();
+        }
+
+        // Inicialização do modal e eventos
+        document.addEventListener('DOMContentLoaded', function() {
+            const propertyModal = document.getElementById('propertyModal');
+            if (!propertyModal) return;
+
+            // Evento para abrir o modal com detalhes do imóvel
+            propertyModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const propertyId = button.getAttribute('data-property-id');
+                const property = properties[propertyId];
+
+                if (!property) return;
+
+                const modalTitle = propertyModal.querySelector('.modal-title');
+                const modalBody = propertyModal.querySelector('#property-detail-content');
+
+                modalTitle.textContent = property.title;
+
+                modalBody.innerHTML = `
+                    <div class="detail-header">
+                        <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'}">${property.type}</span>
+                        <h3 class="mt-2">${property.title}</h3>
+                        <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location} - ${property.address}</p>
+                        <h4 class="price-tag">${property.price}</h4>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-7">
+                            <div id="propertyCarousel-${propertyId}" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    ${property.images.map((img, index) => `
+                                        <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                                            <img src="${img}" class="d-block w-100 property-detail-img" alt="${property.title}">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel-${propertyId}" data-bs-slide="prev" aria-label="Imagem anterior">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Anterior</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel-${propertyId}" data-bs-slide="next" aria-label="Próxima imagem">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Próximo</span>
+                                </button>
+                            </div>
+                            <div class="map-container mt-4" id="property-map-${propertyId}"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="mb-3 p-3 bg-light rounded">
+                                <h5>Resumo do Imóvel</h5>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><i class="bi bi-house-door"></i> Área útil:</span>
+                                    <span>${property.size}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><i class="bi bi-droplet"></i> Banheiros:</span>
+                                    <span>${property.bathrooms}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><i class="bi bi-door-closed"></i> Quartos:</span>
+                                    <span>${property.bedrooms}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span><i class="bi bi-car-front"></i> Vagas:</span>
+                                    <span>${property.parking}</span>
+                                </div>
+                            </div>
+                            <div class="contact-form">
+                                <h5>Entre em Contato</h5>
+                                <p>Interessado neste imóvel? Preencha o formulário abaixo que um de nossos corretores entrará em contato.</p>
+                                <form id="contactForm-${propertyId}">
+                                    <div class="mb-3">
+                                        <label for="name-${propertyId}" class="form-label">Nome</label>
+                                        <input type="text" class="form-control" id="name-${propertyId}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email-${propertyId}" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email-${propertyId}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone-${propertyId}" class="form-label">Telefone</label>
+                                        <input type="tel" class="form-control" id="phone-${propertyId}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message-${propertyId}" class="form-label">Mensagem</label>
+                                        <textarea class="form-control" id="message-${propertyId}" rows="3">Tenho interesse no imóvel ${property.title} e gostaria de mais informações.</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Enviar Mensagem</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>Descrição</h5>
+                            <p>${property.description}</p>
+                            <h5 class="mt-4">Comodidades</h5>
+                            <div class="amenities-list">
+                                ${property.amenities.map(amenity => `<span class="amenity-badge">${amenity}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Inicializar o mapa
+                const mapElement = document.getElementById(`property-map-${propertyId}`);
+                if (mapElement && property.map) {
+                    try {
+                        const map = L.map(mapElement).setView([property.map.lat, property.map.lng], 14);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }).addTo(map);
+                        L.marker([property.map.lat, property.map.lng])
+                            .addTo(map)
+                            .bindPopup(property.title)
+                            .openPopup();
+                    } catch (e) {
+                        mapElement.innerHTML = '<p class="map-error">Não foi possível carregar o mapa. Verifique sua conexão com a internet.</p>';
+                    }
+                }
+
+                // Adicionar evento ao formulário
+                const form = document.getElementById(`contactForm-${propertyId}`);
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        alert('Mensagem enviada com sucesso! Em breve um corretor entrará em contato.');
+                        const modal = bootstrap.Modal.getInstance(propertyModal);
+                        modal.hide();
+                    });
+                }
+            });
+
+            // Evento para botões "Nova Guia"
+            document.querySelectorAll('.new-tab-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const propertyId = this.getAttribute('data-property-id');
+                    if (propertyId) {
+                        openPropertyInNewTab(propertyId);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "novatte-imoveis",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
