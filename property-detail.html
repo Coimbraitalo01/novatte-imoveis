@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Imóvel - Novatte Imóveis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #003602;
+            --secondary-color: #FE4700;
+            --accent-color: #86450A;
+            --light-color: #F7EEE9;
+            --dark-color: #333;
+            --text-color: #333;
+            --background-color: #f8f9fa;
+            --top-color: #f0f8ff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .price-tag {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="property-title">Detalhes do Imóvel</h1>
+        <p id="property-details">Carregando...</p>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            const properties = {
+                1: { title: "Casa Moderna com Piscina", price: "R$ 550.000", location: "Itaperuna, RJ", size: "120m²", bedrooms: 3, bathrooms: 3, parking: 2 },
+                2: { title: "Apartamento com Varanda", price: "R$ 1.200/mês", location: "Santo Antônio de Pádua, RJ", size: "70m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+                3: { title: "Casa Familiar com Jardim", price: "R$ 380.000", location: "Miracema, RJ", size: "150m²", bedrooms: 4, bathrooms: 3, parking: 2 },
+                4: { title: "Casa Próxima ao Centro", price: "R$ 1.500/mês", location: "Itaocara, RJ", size: "90m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+                5: { title: "Sítio com Área Verde", price: "R$ 620.000", location: "Aperibé, RJ", size: "180m²", bedrooms: 3, bathrooms: 3, parking: 4 },
+                6: { title: "Apartamento Reformado", price: "R$ 980/mês", location: "Cambuci, RJ", size: "65m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+                7: { title: "Casa com Vista Panorâmica", price: "R$ 700.000", location: "Itaperuna, RJ", size: "200m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+                8: { title: "Apartamento Compacto", price: "R$ 800/mês", location: "Miracema, RJ", size: "50m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+                9: { title: "Casa Térrea Espaçosa", price: "R$ 450.000", location: "Santo Antônio de Pádua, RJ", size: "140m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+                10: { title: "Casa com Quintal Grande", price: "R$ 1.800/mês", location: "Itaocara, RJ", size: "110m²", bedrooms: 2, bathrooms: 2, parking: 2 },
+                11: { title: "Terreno para Construção", price: "R$ 200.000", location: "Aperibé, RJ", size: "300m²", bedrooms: 0, bathrooms: 0, parking: 0 },
+                12: { title: "Loja Comercial Central", price: "R$ 2.500/mês", location: "Cambuci, RJ", size: "80m²", bedrooms: 0, bathrooms: 1, parking: 0 },
+                13: { title: "Casa com Área Gourmet", price: "R$ 600.000", location: "Itaperuna, RJ", size: "160m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+                14: { title: "Apartamento Mobiliado", price: "R$ 1.600/mês", location: "Santo Antônio de Pádua, RJ", size: "75m²", bedrooms: 2, bathrooms: 1, parking: 1 },
+                15: { title: "Casa com Piscina", price: "R$ 650.000", location: "Miracema, RJ", size: "180m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+                16: { title: "Apartamento no Centro", price: "R$ 1.300/mês", location: "Itaocara, RJ", size: "70m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+                17: { title: "Sítio com Lago", price: "R$ 800.000", location: "Aperibé, RJ", size: "200m²", bedrooms: 3, bathrooms: 3, parking: 4 },
+                18: { title: "Apartamento Econômico", price: "R$ 900/mês", location: "Cambuci, RJ", size: "60m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+                19: { title: "Casa Duplex Moderna", price: "R$ 750.000", location: "Itaperuna, RJ", size: "220m²", bedrooms: 4, bathrooms: 4, parking: 3 },
+                20: { title: "Apartamento com Sacada", price: "R$ 1.400/mês", location: "Santo Antônio de Pádua, RJ", size: "80m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+                21: { title: "Casa com Jardim Amplo", price: "R$ 420.000", location: "Miracema, RJ
