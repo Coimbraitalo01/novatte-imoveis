@@ -327,7 +327,7 @@
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#" aria-label="Página inicial da Novatte Imóveis">
-                <img src="src/assets/logo.png" alt="Logo Novatte Imóveis" class="logo" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.logo-placeholder').style.display='flex'">
+                <img src="/logo.png" alt="Logo Novatte Imóveis" class="logo" onerror="this.onerror=null; this.src='src/assets/logo.png'; this.onerror=null; this.style.display='none'; document.querySelector('.logo-placeholder').style.display='flex'">
                 <div class="logo-placeholder logo" style="display: none;">N</div>
                 Novatte Imóveis
             </a>
@@ -735,8 +735,12 @@
 
         // Função para carregar imóveis na lista
         function loadProperties(page = 1) {
+            console.log('Carregando imóveis, página:', page); // Debug
             const propertyList = document.getElementById('property-list');
-            if (!propertyList) return;
+            if (!propertyList) {
+                console.error('Elemento property-list não encontrado!');
+                return;
+            }
 
             const startIndex = (page - 1) * propertiesPerPage;
             const endIndex = startIndex + propertiesPerPage;
@@ -787,14 +791,17 @@
                 propertyList.innerHTML += html;
             }
 
-            // Atualizar visibilidade do botão "Ver Mais"
+            console.log('Imóveis carregados, total:', document.querySelectorAll('.property-card').length); // Debug
             updateLoadMoreButton();
         }
 
         // Função para atualizar o botão "Ver Mais"
         function updateLoadMoreButton() {
             const loadMoreBtn = document.getElementById('loadMoreBtn');
-            if (!loadMoreBtn) return;
+            if (!loadMoreBtn) {
+                console.error('Botão loadMoreBtn não encontrado!');
+                return;
+            }
 
             const totalPages = Math.ceil(totalProperties / propertiesPerPage);
             
@@ -814,6 +821,7 @@
 
         // Inicialização do modal e eventos
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado, iniciando scripts'); // Debug
             // Carregar primeira página de imóveis
             loadProperties(currentPage);
 
@@ -821,6 +829,9 @@
             const loadMoreBtn = document.getElementById('loadMoreBtn');
             if (loadMoreBtn) {
                 loadMoreBtn.addEventListener('click', loadMoreProperties);
+                console.log('Evento de loadMoreBtn registrado'); // Debug
+            } else {
+                console.error('Botão loadMoreBtn não encontrado no DOM');
             }
 
             // Evento para o formulário de newsletter
@@ -838,99 +849,43 @@
                         alert('Por favor, aceite os termos para se cadastrar.');
                     }
                 });
+                console.log('Evento de newsletter registrado'); // Debug
+            } else {
+                console.error('Formulário de newsletter não encontrado');
             }
-
-            // Restante do código do modal
-            const propertyModal = document.getElementById('propertyModal');
-            if (!propertyModal) return;
-
-            propertyModal.addEventListener('show.bs.modal', function(event) {
-                const button = event.relatedTarget;
-                const propertyId = button.getAttribute('data-property-id');
-                const property = properties[propertyId];
-
-                if (!property) return;
-
-                const modalTitle = propertyModal.querySelector('.modal-title');
-                const modalBody = propertyModal.querySelector('#property-detail-content');
-
-                modalTitle.textContent = property.title;
-
-                modalBody.innerHTML = `
-                    <div class="detail-header">
-                        <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'}">${property.type}</span>
-                        <h3 class="mt-2">${property.title}</h3>
-                        <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location}</p>
-                        <h4 class="price-tag">${property.price}</h4>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-7">
-                            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="d-block w-100 property-detail-img" alt="${property.title}">
-                        </div>
-                        <div class="col-md-5">
-                            <div class="mb-3 p-3 bg-light rounded">
-                                <h5>Resumo do Imóvel</h5>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span><i class="bi bi-house-door"></i> Área útil:</span>
-                                    <span>${property.size}</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span><i class="bi bi-droplet"></i> Banheiros:</span>
-                                    <span>${property.bathrooms}</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span><i class="bi bi-door-closed"></i> Quartos:</span>
-                                    <span>${property.bedrooms}</span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span><i class="bi bi-car-front"></i> Vagas:</span>
-                                    <span>${property.parking}</span>
-                                </div>
-                            </div>
-                            <div class="contact-form">
-                                <h5>Entre em Contato</h5>
-                                <p>Interessado neste imóvel? Preencha o formulário abaixo que entraremos em contato.</p>
-                                <form id="contactForm-${propertyId}">
-                                    <div class="mb-3">
-                                        <input type="text" class="form-control" placeholder="Seu nome" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <input type="email" class="form-control" placeholder="Seu email" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <input type="tel" class="form-control" placeholder="Seu telefone" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <textarea class="form-control" rows="3" placeholder="Sua mensagem">Tenho interesse no imóvel ${property.title}</textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">Enviar Mensagem</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                const form = document.getElementById(`contactForm-${propertyId}`);
-                if (form) {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
-                        const modal = bootstrap.Modal.getInstance(propertyModal);
-                        modal.hide();
-                    });
-                }
-            });
 
             // Evento para botões "Nova Guia"
             document.addEventListener('click', function(e) {
                 if (e.target.closest('.new-tab-btn')) {
+                    e.preventDefault();
                     const button = e.target.closest('.new-tab-btn');
                     const propertyId = button.getAttribute('data-property-id');
+                    console.log('Botão Nova Guia clicado, ID:', propertyId); // Debug
                     if (propertyId) {
                         const property = properties[propertyId];
                         if (property) {
-                            window.open(`property-detail.html?id=${propertyId}`, '_blank');
+                            const baseUrl = window.location.origin + window.location.pathname.replace(/\/$/, '');
+                            const detailUrl = `${baseUrl}/property-detail.html?id=${propertyId}`;
+                            console.log('Tentando abrir URL:', detailUrl); // Debug
+                            fetch(detailUrl)
+                                .then(response => {
+                                    console.log('Fetch status:', response.status); // Debug
+                                    if (response.ok) {
+                                        window.open(detailUrl, '_blank');
+                                    } else {
+                                        alert(`Detalhes do imóvel "${property.title}" ainda em desenvolvimento. Em breve disponível!`);
+                                        console.warn(`Arquivo property-detail.html não encontrado: ${detailUrl}`);
+                                    }
+                                })
+                                .catch(err => {
+                                    alert(`Erro ao carregar detalhes do imóvel "${property.title}". Tente novamente.`);
+                                    console.error('Erro no fetch:', err);
+                                });
+                        } else {
+                            console.error('Imóvel não encontrado para ID:', propertyId); // Debug
                         }
+                    } else {
+                        console.error('ID do imóvel não encontrado no botão'); // Debug
                     }
                 }
             });
@@ -940,6 +895,7 @@
                 if (e.target.closest('.whatsapp-btn')) {
                     const button = e.target.closest('.whatsapp-btn');
                     const propertyId = button.getAttribute('data-property-id');
+                    console.log('Botão WhatsApp clicado, ID:', propertyId); // Debug
                     if (propertyId) {
                         const property = properties[propertyId];
                         if (property) {
@@ -950,6 +906,94 @@
                     }
                 }
             });
+
+            // Evento para o modal
+            const propertyModal = document.getElementById('propertyModal');
+            if (propertyModal) {
+                propertyModal.addEventListener('show.bs.modal', function(event) {
+                    console.log('Modal de detalhes aberto'); // Debug
+                    const button = event.relatedTarget;
+                    const propertyId = button.getAttribute('data-property-id');
+                    const property = properties[propertyId];
+
+                    if (!property) {
+                        console.error('Imóvel não encontrado para modal, ID:', propertyId); // Debug
+                        return;
+                    }
+
+                    const modalTitle = propertyModal.querySelector('.modal-title');
+                    const modalBody = propertyModal.querySelector('#property-detail-content');
+
+                    modalTitle.textContent = property.title;
+
+                    modalBody.innerHTML = `
+                        <div class="detail-header">
+                            <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'}">${property.type}</span>
+                            <h3 class="mt-2">${property.title}</h3>
+                            <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                            <h4 class="price-tag">${property.price}</h4>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-7">
+                                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="d-block w-100 property-detail-img" alt="${property.title}">
+                            </div>
+                            <div class="col-md-5">
+                                <div class="mb-3 p-3 bg-light rounded">
+                                    <h5>Resumo do Imóvel</h5>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><i class="bi bi-house-door"></i> Área útil:</span>
+                                        <span>${property.size}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><i class="bi bi-droplet"></i> Banheiros:</span>
+                                        <span>${property.bathrooms}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><i class="bi bi-door-closed"></i> Quartos:</span>
+                                        <span>${property.bedrooms}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span><i class="bi bi-car-front"></i> Vagas:</span>
+                                        <span>${property.parking}</span>
+                                    </div>
+                                </div>
+                                <div class="contact-form">
+                                    <h5>Entre em Contato</h5>
+                                    <p>Interessado neste imóvel? Preencha o formulário abaixo que entraremos em contato.</p>
+                                    <form id="contactForm-${propertyId}">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" placeholder="Seu nome" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="email" class="form-control" placeholder="Seu email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="tel" class="form-control" placeholder="Seu telefone" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <textarea class="form-control" rows="3" placeholder="Sua mensagem">Tenho interesse no imóvel ${property.title}</textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Enviar Mensagem</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    const form = document.getElementById(`contactForm-${propertyId}`);
+                    if (form) {
+                        form.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
+                            const modal = bootstrap.Modal.getInstance(propertyModal);
+                            modal.hide();
+                        });
+                        console.log('Evento de formulário de contato registrado para ID:', propertyId); // Debug
+                    }
+                });
+            } else {
+                console.error('Modal propertyModal não encontrado no DOM');
+            }
         });
     </script>
 </body>
