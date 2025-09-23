@@ -4,7 +4,7 @@ Este repositório contém um esqueleto funcional para a aplicação **Novatte**:
 - backend/ (Node.js + Express + MongoDB via Mongoose)
 - frontend/ (React + Vite)
 - admin/ (React + Vite) - painel simples para cadastrar imóveis
-
+https://coimbraitalo01.github.io/novatte-imoveis/
 ## Requisitos
 - Node.js 18+ instalado
 - npm
