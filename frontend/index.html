@@ -17,6 +17,7 @@
             --dark-color: #333;
             --text-color: #333;
             --background-color: #f8f9fa;
+            --top-color: #f0f8ff; /* Nova cor para o topo do site */
         }
         
         body {
@@ -26,13 +27,13 @@
         }
         
         .navbar {
-            background-color: var(--primary-color);
+            background-color: var(--top-color) !important; /* Alterado para nova cor */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
         .navbar-brand {
             font-weight: 700;
-            color: white !important;
+            color: var(--secondary-color) !important; /* Alterado para cor secundária */
             display: flex;
             align-items: center;
         }
@@ -41,13 +42,21 @@
             height: 40px;
             width: 40px;
             margin-right: 10px;
-            background-color: white;
+            background-color: transparent;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            color: var(--primary-color);
+            color: var(--secondary-color); /* Alterado para cor secundária */
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--primary-color) !important;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: var(--secondary-color) !important;
         }
         
         .btn-primary {
@@ -162,19 +171,26 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
-        .pagination {
-            justify-content: center;
-            margin-top: 30px;
+        .load-more-container {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
         }
         
-        .page-link {
-            color: var(--primary-color);
-        }
-        
-        .page-item.active .page-link {
+        .btn-load-more {
             background-color: var(--primary-color);
-            border-color: var(--primary-color);
             color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-load-more:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         footer {
@@ -237,6 +253,43 @@
             text-align: center;
         }
         
+        /* Estilos para o botão do WhatsApp */
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Estilos para a newsletter */
+        .newsletter-section {
+            background-color: var(--light-color);
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+        
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-checkbox {
+            margin-top: 15px;
+        }
+        
         @media (max-width: 768px) {
             .hero-section {
                 padding: 40px 0;
@@ -273,7 +326,7 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#" aria-label="Página inicial da Novatte Imóveis">
                 <img src="src/assets/logo.png" alt="Logo Novatte Imóveis" class="logo" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.logo-placeholder').style.display='flex'">
@@ -311,12 +364,6 @@
             <h1 class="display-4 fw-bold mb-3">Encontre seu imóvel no Noroeste Fluminense</h1>
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control form-control-lg" placeholder="Digite o bairro, cidade ou palavra-chave" aria-label="Pesquisar imóveis por bairro, cidade ou palavra-chave">
-                        <button class="btn btn-primary" type="button" aria-label="Buscar imóveis">
-                            <i class="bi bi-search"></i> Buscar
-                        </button>
-                    </div>
                     <div class="d-flex flex-wrap justify-content-center gap-2">
                         <span class="badge bg-light text-dark">Santo Antônio de Pádua</span>
                         <span class="badge bg-light text-dark">Itaperuna</span>
@@ -332,204 +379,7 @@
 
     <!-- Main Content -->
     <div class="container">
-        <!-- Carrossel de Destaques -->
-        <h2 class="mb-4">Imóveis em Destaque</h2>
-        <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row">
-                        <!-- Destaque 1 -->
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <span class="badge bg-primary property-badge">Venda</span>
-                                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa moderna em Itaperuna">
-                                <div class="card-body">
-                                    <h5 class="card-title">Casa Moderna com Piscina</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Itaperuna, RJ</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">R$ 550.000</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> 120m²</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
-                                            <span><i class="bi bi-car-front"></i> 2</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="1" aria-label="Visualizar detalhes da Casa Moderna com Piscina">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="1" aria-label="Abrir Casa Moderna com Piscina em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Destaque 2 -->
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <span class="badge bg-secondary property-badge">Aluguel</span>
-                                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Santo Antônio de Pádua">
-                                <div class="card-body">
-                                    <h5 class="card-title">Apartamento com Varanda</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Santo Antônio de Pádua, RJ</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">R$ 1.200/mês</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> 70m²</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
-                                            <span><i class="bi bi-car-front"></i> 1</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="2" aria-label="Visualizar detalhes do Apartamento com Varanda">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="2" aria-label="Abrir Apartamento com Varanda em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Destaque 3 -->
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <span class="badge bg-primary property-badge">Venda</span>
-                                <img src="https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa com jardim em Miracema">
-                                <div class="card-body">
-                                    <h5 class="card-title">Casa Familiar com Jardim</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Miracema, RJ</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">R$ 380.000</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> 150m²</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> 4</span>
-                                            <span><i class="bi bi-car-front"></i> 2</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="3" aria-label="Visualizar detalhes da Casa Familiar com Jardim">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="3" aria-label="Abrir Casa Familiar com Jardim em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="row">
-                        <!-- Destaque 4 -->
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <span class="badge bg-secondary property-badge">Aluguel</span>
-                                <img src="https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa próxima ao centro em Itaocara">
-                                <div class="card-body">
-                                    <h5 class="card-title">Casa Próxima ao Centro</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Itaocara, RJ</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">R$ 1.500/mês</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> 90m²</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
-                                            <span><i class="bi bi-car-front"></i> 1</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="4" aria-label="Visualizar detalhes da Casa Próxima ao Centro">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="4" aria-label="Abrir Casa Próxima ao Centro em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Destaque 5 -->
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <span class="badge bg-primary property-badge">Venda</span>
-                                <img src="https://images.unsplash.com/photo-1565182999561-18d7dc61c393?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Sítio em Aperibé">
-                                <div class="card-body">
-                                    <h5 class="card-title">Sítio com Área Verde</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Aperibé, RJ</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">R$ 620.000</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> 180m²</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
-                                            <span><i class="bi bi-car-front"></i> 4</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="5" aria-label="Visualizar detalhes do Sítio com Área Verde">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="5" aria-label="Abrir Sítio com Área Verde em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Destaque 6 -->
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <span class="badge bg-secondary property-badge">Aluguel</span>
-                                <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Cambuci">
-                                <div class="card-body">
-                                    <h5 class="card-title">Apartamento Reformado</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Cambuci, RJ</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">R$ 980/mês</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> 65m²</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> 1</span>
-                                            <span><i class="bi bi-car-front"></i> 1</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="6" aria-label="Visualizar detalhes do Apartamento Reformado">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="6" aria-label="Abrir Apartamento Reformado em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev" aria-label="Slide anterior">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterior</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next" aria-label="Próximo slide">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Próximo</span>
-            </button>
-        </div>
-
-        <!-- Filtros -->
+        <!-- Filtros - MOVIDA PARA O INÍCIO -->
         <div class="filter-section">
             <h3 class="mb-4">Filtre sua busca</h3>
             <div class="row">
@@ -567,13 +417,11 @@
                     </select>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="bedrooms" class="form-label">Quartos</label>
-                    <select id="bedrooms" class="form-select">
-                        <option selected>Qualquer</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4+</option>
+                    <label for="transaction-type" class="form-label">Compra ou Aluguel</label>
+                    <select id="transaction-type" class="form-select">
+                        <option selected>Todos</option>
+                        <option>Compra</option>
+                        <option>Aluguel</option>
                     </select>
                 </div>
             </div>
@@ -583,200 +431,161 @@
             </div>
         </div>
 
+        <!-- Carrossel de Destaques -->
+        <h2 class="mb-4">Imóveis em Destaque</h2>
+        <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <!-- Destaque 1 -->
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-primary property-badge">Venda</span>
+                                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa moderna em Itaperuna">
+                                <div class="card-body">
+                                    <h5 class="card-title">Casa Moderna com Piscina</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Itaperuna, RJ</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">R$ 550.000</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> 120m²</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
+                                            <span><i class="bi bi-car-front"></i> 2</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="1" aria-label="Visualizar detalhes da Casa Moderna com Piscina">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="1" aria-label="Abrir Casa Moderna com Piscina em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                        <!-- Botão do WhatsApp adicionado -->
+                                        <button class="btn whatsapp-btn" data-property-id="1" aria-label="Entrar em contato via WhatsApp sobre Casa Moderna com Piscina">
+                                            <i class="bi bi-whatsapp"></i> WhatsApp
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Destaque 2 -->
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-secondary property-badge">Aluguel</span>
+                                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Santo Antônio de Pádua">
+                                <div class="card-body">
+                                    <h5 class="card-title">Apartamento com Varanda</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Santo Antônio de Pádua, RJ</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">R$ 1.200/mês</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> 70m²</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
+                                            <span><i class="bi bi-car-front"></i> 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="2" aria-label="Visualizar detalhes do Apartamento com Varanda">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="2" aria-label="Abrir Apartamento com Varanda em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                        <!-- Botão do WhatsApp adicionado -->
+                                        <button class="btn whatsapp-btn" data-property-id="2" aria-label="Entrar em contato via WhatsApp sobre Apartamento com Varanda">
+                                            <i class="bi bi-whatsapp"></i> WhatsApp
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Destaque 3 -->
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-primary property-badge">Venda</span>
+                                <img src="https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa com jardim em Miracema">
+                                <div class="card-body">
+                                    <h5 class="card-title">Casa Familiar com Jardim</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Miracema, RJ</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">R$ 380.000</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> 150m²</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> 4</span>
+                                            <span><i class="bi bi-car-front"></i> 2</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="3" aria-label="Visualizar detalhes da Casa Familiar com Jardim">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="3" aria-label="Abrir Casa Familiar com Jardim em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                        <!-- Botão do WhatsApp adicionado -->
+                                        <button class="btn whatsapp-btn" data-property-id="3" aria-label="Entrar em contato via WhatsApp sobre Casa Familiar com Jardim">
+                                            <i class="bi bi-whatsapp"></i> WhatsApp
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev" aria-label="Slide anterior">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next" aria-label="Próximo slide">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+
         <!-- Lista de Imóveis -->
         <h2 class="mb-4">Todos os Imóveis</h2>
         <div class="row" id="property-list">
-            <!-- Imóvel 1 -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card property-card">
-                    <span class="badge bg-primary property-badge">Venda</span>
-                    <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa moderna em Itaperuna">
-                    <div class="card-body">
-                        <h5 class="card-title">Casa Moderna com Piscina</h5>
-                        <p class="card-text"><i class="bi bi-geo-alt"></i> Itaperuna, RJ</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="price-tag">R$ 550.000</span>
-                            </div>
-                            <div>
-                                <span class="me-2"><i class="bi bi-house-door"></i> 120m²</span>
-                                <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
-                                <span><i class="bi bi-car-front"></i> 2</span>
-                            </div>
+            <!-- Os imóveis serão carregados aqui -->
+        </div>
+
+        <!-- Botão Mostrar Mais -->
+        <div class="load-more-container">
+            <button class="btn btn-load-more" id="loadMoreBtn">
+                <i class="bi bi-arrow-down-circle me-2"></i>Ver Mais Imóveis
+            </button>
+        </div>
+    </div>
+
+    <!-- Seção Newsletter -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <h3>Receba Novidades por Email</h3>
+                    <p>Cadastre-se para receber os melhores imóveis em primeira mão</p>
+                    <form class="newsletter-form">
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Seu melhor email" required>
+                            <button class="btn btn-primary" type="submit">Cadastrar</button>
                         </div>
-                        <div class="property-actions">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="1" aria-label="Visualizar detalhes da Casa Moderna com Piscina">
-                                <i class="bi bi-eye"></i> Visualizar
-                            </button>
-                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="1" aria-label="Abrir Casa Moderna com Piscina em nova guia">
-                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                            </button>
+                        <div class="form-check newsletter-checkbox">
+                            <input class="form-check-input" type="checkbox" id="newsletterAccept" required>
+                            <label class="form-check-label" for="newsletterAccept">
+                                Aceito receber emails com novidades e ofertas da Novatte Imóveis
+                            </label>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Imóvel 2 -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card property-card">
-                    <span class="badge bg-secondary property-badge">Aluguel</span>
-                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Santo Antônio de Pádua">
-                    <div class="card-body">
-                        <h5 class="card-title">Apartamento com Varanda</h5>
-                        <p class="card-text"><i class="bi bi-geo-alt"></i> Santo Antônio de Pádua, RJ</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="price-tag">R$ 1.200/mês</span>
-                            </div>
-                            <div>
-                                <span class="me-2"><i class="bi bi-house-door"></i> 70m²</span>
-                                <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
-                                <span><i class="bi bi-car-front"></i> 1</span>
-                            </div>
-                        </div>
-                        <div class="property-actions">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="2" aria-label="Visualizar detalhes do Apartamento com Varanda">
-                                <i class="bi bi-eye"></i> Visualizar
-                            </button>
-                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="2" aria-label="Abrir Apartamento com Varanda em nova guia">
-                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Imóvel 3 -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card property-card">
-                    <span class="badge bg-primary property-badge">Venda</span>
-                    <img src="https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa com jardim em Miracema">
-                    <div class="card-body">
-                        <h5 class="card-title">Casa Familiar com Jardim</h5>
-                        <p class="card-text"><i class="bi bi-geo-alt"></i> Miracema, RJ</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="price-tag">R$ 380.000</span>
-                            </div>
-                            <div>
-                                <span class="me-2"><i class="bi bi-house-door"></i> 150m²</span>
-                                <span class="me-2"><i class="bi bi-droplet"></i> 4</span>
-                                <span><i class="bi bi-car-front"></i> 2</span>
-                            </div>
-                        </div>
-                        <div class="property-actions">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="3" aria-label="Visualizar detalhes da Casa Familiar com Jardim">
-                                <i class="bi bi-eye"></i> Visualizar
-                            </button>
-                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="3" aria-label="Abrir Casa Familiar com Jardim em nova guia">
-                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Imóvel 4 -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card property-card">
-                    <span class="badge bg-secondary property-badge">Aluguel</span>
-                    <img src="https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa próxima ao centro em Itaocara">
-                    <div class="card-body">
-                        <h5 class="card-title">Casa Próxima ao Centro</h5>
-                        <p class="card-text"><i class="bi bi-geo-alt"></i> Itaocara, RJ</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="price-tag">R$ 1.500/mês</span>
-                            </div>
-                            <div>
-                                <span class="me-2"><i class="bi bi-house-door"></i> 90m²</span>
-                                <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
-                                <span><i class="bi bi-car-front"></i> 1</span>
-                            </div>
-                        </div>
-                        <div class="property-actions">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="4" aria-label="Visualizar detalhes da Casa Próxima ao Centro">
-                                <i class="bi bi-eye"></i> Visualizar
-                            </button>
-                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="4" aria-label="Abrir Casa Próxima ao Centro em nova guia">
-                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Imóvel 5 -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card property-card">
-                    <span class="badge bg-primary property-badge">Venda</span>
-                    <img src="https://images.unsplash.com/photo-1565182999561-18d7dc61c393?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Sítio em Aperibé">
-                    <div class="card-body">
-                        <h5 class="card-title">Sítio com Área Verde</h5>
-                        <p class="card-text"><i class="bi bi-geo-alt"></i> Aperibé, RJ</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="price-tag">R$ 620.000</span>
-                            </div>
-                            <div>
-                                <span class="me-2"><i class="bi bi-house-door"></i> 180m²</span>
-                                <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
-                                <span><i class="bi bi-car-front"></i> 4</span>
-                            </div>
-                        </div>
-                        <div class="property-actions">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="5" aria-label="Visualizar detalhes do Sítio com Área Verde">
-                                <i class="bi bi-eye"></i> Visualizar
-                            </button>
-                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="5" aria-label="Abrir Sítio com Área Verde em nova guia">
-                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Imóvel 6 -->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card property-card">
-                    <span class="badge bg-secondary property-badge">Aluguel</span>
-                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Cambuci">
-                    <div class="card-body">
-                        <h5 class="card-title">Apartamento Reformado</h5>
-                        <p class="card-text"><i class="bi bi-geo-alt"></i> Cambuci, RJ</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="price-tag">R$ 980/mês</span>
-                            </div>
-                            <div>
-                                <span class="me-2"><i class="bi bi-house-door"></i> 65m²</span>
-                                <span class="me-2"><i class="bi bi-droplet"></i> 1</span>
-                                <span><i class="bi bi-car-front"></i> 1</span>
-                            </div>
-                        </div>
-                        <div class="property-actions">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="6" aria-label="Visualizar detalhes do Apartamento Reformado">
-                                <i class="bi bi-eye"></i> Visualizar
-                            </button>
-                            <button class="btn btn-outline-secondary new-tab-btn" data-property-id="6" aria-label="Abrir Apartamento Reformado em nova guia">
-                                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                            </button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <!-- Paginação -->
-        <nav aria-label="Navegação de página">
-            <ul class="pagination">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
-                </li>
-                <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Próxima</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    </section>
 
     <!-- Modal para Detalhes do Imóvel -->
     <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalTitle" aria-hidden="true">
@@ -828,7 +637,6 @@
                         <a href="#" class="text-white" aria-label="Twitter da Novatte Imóveis"><i class="bi bi-twitter fs-4"></i></a>
                         <a href="#" class="text-white" aria-label="YouTube da Novatte Imóveis"><i class="bi bi-youtube fs-4"></i></a>
                     </div>
-                </div>
             </div>
             <hr class="bg-light">
             <div class="text-center py-3">
@@ -840,263 +648,207 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Dados de exemplo para os imóveis da região Noroeste Fluminense
+        // Dados dos imóveis (expandido para 80 imóveis)
         const properties = {
-            1: {
-                title: "Casa Moderna com Piscina",
-                type: "Venda",
-                price: "R$ 550.000",
-                location: "Itaperuna, RJ",
-                address: "Rua Major Porfírio Henriques, 123",
-                size: "120m²",
-                bedrooms: 3,
-                bathrooms: 3,
-                parking: 2,
-                description: "Excelente casa moderna localizada em Itaperuna. A propriedade conta com piscina, área gourmet, jardim amplo e acabamentos de primeira linha. Perfeita para quem busca conforto e sofisticação.",
-                amenities: ["Piscina", "Área Gourmet", "Jardim", "Varanda", "Churrasqueira", "Mobiliada"],
-                images: [
-                    "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1586448900407-7397af48d116?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                map: { lat: -21.205, lng: -41.887 } // Coordenadas de Itaperuna
-            },
-            2: {
-                title: "Apartamento com Varanda",
-                type: "Aluguel",
-                price: "R$ 1.200/mês",
-                location: "Santo Antônio de Pádua, RJ",
-                address: "Av. Presidente Kennedy, 456",
-                size: "70m²",
-                bedrooms: 2,
-                bathrooms: 2,
-                parking: 1,
-                description: "Apartamento bem localizado no centro de Santo Antônio de Pádua. O imóvel possui varanda ampla, acabamentos de qualidade e está próximo ao comércio e serviços da cidade.",
-                amenities: ["Varanda", "Portaria", "Próximo ao Centro", "Mobiliado"],
-                images: [
-                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1493663284031-b7e3aaa4c4b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                map: { lat: -21.539, lng: -42.180 } // Coordenadas de Santo Antônio de Pádua
-            },
-            3: {
-                title: "Casa Familiar com Jardim",
-                type: "Venda",
-                price: "R$ 380.000",
-                location: "Miracema, RJ",
-                address: "Rua Dr. Raul Veiga, 789",
-                size: "150m²",
-                bedrooms: 4,
-                bathrooms: 3,
-                parking: 2,
-                description: "Casa espaçosa perfeita para famílias, localizada em um bairro tranquilo e arborizado de Miracema. A propriedade possui amplo jardim, área de lazer, quartos espaçosos e ótima localização próximo a escolas e comércio.",
-                amenities: ["Jardim", "Área de Lazer", "Quintal", "Varanda", "Churrasqueira", "Sala Ampliada"],
-                images: [
-                    "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1565182999561-18d7dc61c393?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                map: { lat: -21.412, lng: -42.196 } // Coordenadas de Miracema
-            },
-            4: {
-                title: "Casa Próxima ao Centro",
-                type: "Aluguel",
-                price: "R$ 1.500/mês",
-                location: "Itaocara, RJ",
-                address: "Rua Barão de Itaocara, 321",
-                size: "90m²",
-                bedrooms: 2,
-                bathrooms: 2,
-                parking: 1,
-                description: "Confortável casa próxima ao centro de Itaocara, com fácil acesso a comércio, bancos e serviços. Imóvel bem conservado com área de serviço e quintal.",
-                amenities: ["Próximo ao Centro", "Quintal", "Área de Serviço", "Reformado"],
-                images: [
-                    "https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1586448900407-7397af48d116?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                map: { lat: -21.669, lng: -42.076 } // Coordenadas de Itaocara
-            },
-            5: {
-                title: "Sítio com Área Verde",
-                type: "Venda",
-                price: "R$ 620.000",
-                location: "Aperibé, RJ",
-                address: "Estrada Aperibé-Miracema, KM 5",
-                size: "180m²",
-                bedrooms: 3,
-                bathrooms: 3,
-                parking: 4,
-                description: "Sítio encantador localizado em Aperibé, com área verde, árvores frutíferas e espaço amplo. Ideal para quem busca tranquilidade e contato com a natureza sem estar distante da cidade.",
-                amenities: ["Área Verde", "Frutíferas", "Rio Particular", "Churrasqueira", "Galpão"],
-                images: [
-                    "https://images.unsplash.com/photo-1565182999561-18d7dc61c393?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1560448076-3f6f44b6b4a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                map: { lat: -21.625, lng: -42.102 } // Coordenadas de Aperibé
-            },
-            6: {
-                title: "Apartamento Reformado",
-                type: "Aluguel",
-                price: "R$ 980/mês",
-                location: "Cambuci, RJ",
-                address: "Rua São João, 654",
-                size: "65m²",
-                bedrooms: 1,
-                bathrooms: 1,
-                parking: 1,
-                description: "Apartamento totalmente reformado no centro de Cambuci, com acabamentos modernos e ótima localização. Próximo a mercados, farmácias e ponto de ônibus.",
-                amenities: ["Reformado", "Próximo ao Centro", "Acabamentos Modernos", "Varanda"],
-                images: [
-                    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1493663284031-b7e3aaa4c4b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                map: { lat: -21.575, lng: -41.911 } // Coordenadas de Cambuci
-            }
+            1: { title: "Casa Moderna com Piscina", type: "Venda", price: "R$ 550.000", location: "Itaperuna, RJ", size: "120m²", bedrooms: 3, bathrooms: 3, parking: 2 },
+            2: { title: "Apartamento com Varanda", type: "Aluguel", price: "R$ 1.200/mês", location: "Santo Antônio de Pádua, RJ", size: "70m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            3: { title: "Casa Familiar com Jardim", type: "Venda", price: "R$ 380.000", location: "Miracema, RJ", size: "150m²", bedrooms: 4, bathrooms: 3, parking: 2 },
+            4: { title: "Casa Próxima ao Centro", type: "Aluguel", price: "R$ 1.500/mês", location: "Itaocara, RJ", size: "90m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            5: { title: "Sítio com Área Verde", type: "Venda", price: "R$ 620.000", location: "Aperibé, RJ", size: "180m²", bedrooms: 3, bathrooms: 3, parking: 4 },
+            6: { title: "Apartamento Reformado", type: "Aluguel", price: "R$ 980/mês", location: "Cambuci, RJ", size: "65m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+            7: { title: "Casa com Vista Panorâmica", type: "Venda", price: "R$ 700.000", location: "Itaperuna, RJ", size: "200m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+            8: { title: "Apartamento Compacto", type: "Aluguel", price: "R$ 800/mês", location: "Miracema, RJ", size: "50m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+            9: { title: "Casa Térrea Espaçosa", type: "Venda", price: "R$ 450.000", location: "Santo Antônio de Pádua, RJ", size: "140m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            10: { title: "Casa com Quintal Grande", type: "Aluguel", price: "R$ 1.800/mês", location: "Itaocara, RJ", size: "110m²", bedrooms: 2, bathrooms: 2, parking: 2 },
+            11: { title: "Terreno para Construção", type: "Venda", price: "R$ 200.000", location: "Aperibé, RJ", size: "300m²", bedrooms: 0, bathrooms: 0, parking: 0 },
+            12: { title: "Loja Comercial Central", type: "Aluguel", price: "R$ 2.500/mês", location: "Cambuci, RJ", size: "80m²", bedrooms: 0, bathrooms: 1, parking: 0 },
+            13: { title: "Casa com Área Gourmet", type: "Venda", price: "R$ 600.000", location: "Itaperuna, RJ", size: "160m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            14: { title: "Apartamento Mobiliado", type: "Aluguel", price: "R$ 1.600/mês", location: "Santo Antônio de Pádua, RJ", size: "75m²", bedrooms: 2, bathrooms: 1, parking: 1 },
+            15: { title: "Casa com Piscina", type: "Venda", price: "R$ 650.000", location: "Miracema, RJ", size: "180m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+            16: { title: "Apartamento no Centro", type: "Aluguel", price: "R$ 1.300/mês", location: "Itaocara, RJ", size: "70m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            17: { title: "Sítio com Lago", type: "Venda", price: "R$ 800.000", location: "Aperibé, RJ", size: "200m²", bedrooms: 3, bathrooms: 3, parking: 4 },
+            18: { title: "Apartamento Econômico", type: "Aluguel", price: "R$ 900/mês", location: "Cambuci, RJ", size: "60m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+            19: { title: "Casa Duplex Moderna", type: "Venda", price: "R$ 750.000", location: "Itaperuna, RJ", size: "220m²", bedrooms: 4, bathrooms: 4, parking: 3 },
+            20: { title: "Apartamento com Sacada", type: "Aluguel", price: "R$ 1.400/mês", location: "Santo Antônio de Pádua, RJ", size: "80m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            21: { title: "Casa com Jardim Amplo", type: "Venda", price: "R$ 420.000", location: "Miracema, RJ", size: "130m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            22: { title: "Apartamento com Área de Lazer", type: "Aluguel", price: "R$ 1.700/mês", location: "Itaocara, RJ", size: "85m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            23: { title: "Casa com Garagem Ampla", type: "Venda", price: "R$ 480.000", location: "Aperibé, RJ", size: "150m²", bedrooms: 3, bathrooms: 2, parking: 3 },
+            24: { title: "Apartamento com Vista", type: "Aluguel", price: "R$ 1.100/mês", location: "Cambuci, RJ", size: "65m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+            25: { title: "Casa com Varanda Ampla", type: "Venda", price: "R$ 520.000", location: "Itaperuna, RJ", size: "110m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            26: { title: "Casa Colonial Charmosa", type: "Aluguel", price: "R$ 1.250/mês", location: "Santo Antônio de Pádua, RJ", size: "95m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            27: { title: "Sítio Rural Tranquilo", type: "Venda", price: "R$ 350.000", location: "Miracema, RJ", size: "160m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            28: { title: "Apartamento Novo", type: "Aluguel", price: "R$ 1.000/mês", location: "Itaocara, RJ", size: "55m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+            29: { title: "Casa de Campo", type: "Venda", price: "R$ 580.000", location: "Aperibé, RJ", size: "170m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            30: { title: "Casa Geminada", type: "Aluguel", price: "R$ 1.350/mês", location: "Cambuci, RJ", size: "100m²", bedrooms: 2, bathrooms: 2, parking: 2 },
+            31: { title: "Apartamento de Luxo", type: "Venda", price: "R$ 410.000", location: "Itaperuna, RJ", size: "80m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            32: { title: "Terreno Comercial", type: "Aluguel", price: "R$ 2.000/mês", location: "Santo Antônio de Pádua, RJ", size: "200m²", bedrooms: 0, bathrooms: 0, parking: 0 },
+            33: { title: "Casa com Suíte Master", type: "Venda", price: "R$ 690.000", location: "Miracema, RJ", size: "190m²", bedrooms: 4, bathrooms: 3, parking: 2 },
+            34: { title: "Apartamento com Academia", type: "Aluguel", price: "R$ 1.450/mês", location: "Itaocara, RJ", size: "72m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            35: { title: "Fazenda Pequena", type: "Venda", price: "R$ 950.000", location: "Aperibé, RJ", size: "250m²", bedrooms: 4, bathrooms: 4, parking: 4 },
+            36: { title: "Loft Moderno", type: "Aluguel", price: "R$ 1.900/mês", location: "Cambuci, RJ", size: "90m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+            37: { title: "Casa com Home Office", type: "Venda", price: "R$ 460.000", location: "Itaperuna, RJ", size: "140m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            38: { title: "Studio Compacto", type: "Aluguel", price: "R$ 750/mês", location: "Santo Antônio de Pádua, RJ", size: "40m²", bedrooms: 1, bathrooms: 1, parking: 0 },
+            39: { title: "Casa Sustentável", type: "Venda", price: "R$ 530.000", location: "Miracema, RJ", size: "120m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            40: { title: "Casa com Piscina Privada", type: "Aluguel", price: "R$ 2.200/mês", location: "Itaocara, RJ", size: "130m²", bedrooms: 3, bathrooms: 3, parking: 2 },
+            41: { title: "Cobertura Duplex", type: "Venda", price: "R$ 850.000", location: "Itaperuna, RJ", size: "180m²", bedrooms: 3, bathrooms: 3, parking: 2 },
+            42: { title: "Casa com Churrasqueira", type: "Aluguel", price: "R$ 1.800/mês", location: "Santo Antônio de Pádua, RJ", size: "110m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            43: { title: "Apartamento Conjugado", type: "Venda", price: "R$ 280.000", location: "Miracema, RJ", size: "45m²", bedrooms: 1, bathrooms: 1, parking: 1 },
+            44: { title: "Casa com Piscina e Sauna", type: "Aluguel", price: "R$ 3.500/mês", location: "Itaocara, RJ", size: "220m²", bedrooms: 4, bathrooms: 4, parking: 3 },
+            45: { title: "Terreno Residencial", type: "Venda", price: "R$ 180.000", location: "Aperibé, RJ", size: "400m²", bedrooms: 0, bathrooms: 0, parking: 0 },
+            46: { title: "Sala Comercial", type: "Aluguel", price: "R$ 1.200/mês", location: "Cambuci, RJ", size: "35m²", bedrooms: 0, bathrooms: 1, parking: 0 },
+            47: { title: "Casa com Lareira", type: "Venda", price: "R$ 670.000", location: "Itaperuna, RJ", size: "160m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            48: { title: "Kitnet Mobiliada", type: "Aluguel", price: "R$ 850/mês", location: "Santo Antônio de Pádua, RJ", size: "30m²", bedrooms: 1, bathrooms: 1, parking: 0 },
+            49: { title: "Casa com Piscina e Jardim", type: "Venda", price: "R$ 720.000", location: "Miracema, RJ", size: "190m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+            50: { title: "Apartamento Higienópolis", type: "Aluguel", price: "R$ 1.600/mês", location: "Itaocara, RJ", size: "75m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            51: { title: "Sítio com Casa Principal", type: "Venda", price: "R$ 1.200.000", location: "Aperibé, RJ", size: "300m²", bedrooms: 5, bathrooms: 4, parking: 5 },
+            52: { title: "Loft Industrial", type: "Aluguel", price: "R$ 2.800/mês", location: "Cambuci, RJ", size: "120m²", bedrooms: 1, bathrooms: 1, parking: 2 },
+            53: { title: "Casa com Piscina e Churrasqueira", type: "Venda", price: "R$ 890.000", location: "Itaperuna, RJ", size: "210m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+            54: { title: "Apartamento com Varanda Gourmet", type: "Aluguel", price: "R$ 2.100/mês", location: "Santo Antônio de Pádua, RJ", size: "85m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            55: { title: "Casa com Área de Serviço", type: "Venda", price: "R$ 390.000", location: "Miracema, RJ", size: "125m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            56: { title: "Studio Mobiliado", type: "Aluguel", price: "R$ 950/mês", location: "Itaocara, RJ", size: "38m²", bedrooms: 1, bathrooms: 1, parking: 0 },
+            57: { title: "Casa com Piscina e Espaço Gourmet", type: "Venda", price: "R$ 1.050.000", location: "Aperibé, RJ", size: "240m²", bedrooms: 4, bathrooms: 4, parking: 4 },
+            58: { title: "Apartamento com Vista para o Mar", type: "Aluguel", price: "R$ 2.400/mês", location: "Cambuci, RJ", size: "78m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            59: { title: "Casa com Jardim Frutífero", type: "Venda", price: "R$ 510.000", location: "Itaperuna, RJ", size: "140m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            60: { title: "Kitnet Confortável", type: "Aluguel", price: "R$ 700/mês", location: "Santo Antônio de Pádua, RJ", size: "32m²", bedrooms: 1, bathrooms: 1, parking: 0 },
+            61: { title: "Casa com Piscina e Espaço Kids", type: "Venda", price: "R$ 920.000", location: "Miracema, RJ", size: "200m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+            62: { title: "Apartamento com Sacada Ampliada", type: "Aluguel", price: "R$ 1.750/mês", location: "Itaocara, RJ", size: "82m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            63: { title: "Chácara com Piscina", type: "Venda", price: "R$ 680.000", location: "Aperibé, RJ", size: "180m²", bedrooms: 3, bathrooms: 2, parking: 3 },
+            64: { title: "Sala Comercial Centro", type: "Aluguel", price: "R$ 1.100/mês", location: "Cambuci, RJ", size: "40m²", bedrooms: 0, bathrooms: 1, parking: 0 },
+            65: { title: "Casa com Piscina e Jardim Vertical", type: "Venda", price: "R$ 780.000", location: "Itaperuna, RJ", size: "170m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            66: { title: "Apartamento com Varanda Panorâmica", type: "Aluguel", price: "R$ 1.900/mês", location: "Santo Antônio de Pádua, RJ", size: "88m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            67: { title: "Casa com Piscina e Espaço Zen", type: "Venda", price: "R$ 1.150.000", location: "Miracema, RJ", size: "230m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+            68: { title: "Studio Compacto", type: "Aluguel", price: "R$ 650/mês", location: "Itaocara, RJ", size: "28m²", bedrooms: 1, bathrooms: 1, parking: 0 },
+            69: { title: "Casa com Piscina e Deck", type: "Venda", price: "R$ 840.000", location: "Aperibé, RJ", size: "190m²", bedrooms: 3, bathrooms: 2, parking: 2 },
+            70: { title: "Apartamento com Closet", type: "Aluguel", price: "R$ 2.200/mês", location: "Cambuci, RJ", size: "92m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            71: { title: "Casa com Piscina e Espaço Fitness", type: "Venda", price: "R$ 1.300.000", location: "Itaperuna, RJ", size: "260m²", bedrooms: 4, bathrooms: 4, parking: 4 },
+            72: { title: "Kitnet Próxima ao Metrô", type: "Aluguel", price: "R$ 1.000/mês", location: "Santo Antônio de Pádua, RJ", size: "35m²", bedrooms: 1, bathrooms: 1, parking: 0 },
+            73: { title: "Casa com Piscina e Jardim de Inverno", type: "Venda", price: "R$ 950.000", location: "Miracema, RJ", size: "210m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+            74: { title: "Apartamento com Varanda Envidraçada", type: "Aluguel", price: "R$ 1.800/mês", location: "Itaocara, RJ", size: "80m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            75: { title: "Casa com Piscina e Espaço Gourmet", type: "Venda", price: "R$ 1.100.000", location: "Aperibé, RJ", size: "240m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+            76: { title: "Studio com Varanda", type: "Aluguel", price: "R$ 900/mês", location: "Cambuci, RJ", size: "42m²", bedrooms: 1, bathrooms: 1, parking: 0 },
+            77: { title: "Casa com Piscina e Sauna", type: "Venda", price: "R$ 1.450.000", location: "Itaperuna, RJ", size: "280m²", bedrooms: 5, bathrooms: 4, parking: 4 },
+            78: { title: "Apartamento com Vista para Parque", type: "Aluguel", price: "R$ 2.300/mês", location: "Santo Antônio de Pádua, RJ", size: "95m²", bedrooms: 2, bathrooms: 2, parking: 1 },
+            79: { title: "Casa com Piscina e Espaço Multiuso", type: "Venda", price: "R$ 1.200.000", location: "Miracema, RJ", size: "250m²", bedrooms: 4, bathrooms: 3, parking: 3 },
+            80: { title: "Kitnet Reformada", type: "Aluguel", price: "R$ 800/mês", location: "Itaocara, RJ", size: "33m²", bedrooms: 1, bathrooms: 1, parking: 0 }
         };
 
-        // Função para abrir anúncio em nova guia
-        function openPropertyInNewTab(propertyId) {
-            const property = properties[propertyId];
-            if (!property) return;
+        // Variáveis para controle de paginação
+        let currentPage = 1;
+        const propertiesPerPage = 6;
+        let totalProperties = Object.keys(properties).length;
 
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(`
-                <!DOCTYPE html>
-                <html lang="pt-BR">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>${property.title} - Novatte Imóveis</title>
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-                    <style>
-                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f8f9fa; }
-                        .property-detail-img { height: 400px; object-fit: cover; width: 100%; border-radius: 8px; }
-                        .price-tag { font-weight: 700; color: #FE4700; }
-                        .amenity-badge { background-color: #F7EEE9; color: #86450A; padding: 8px 15px; 
-                                        border-radius: 30px; margin-right: 10px; margin-bottom: 10px; 
-                                        display: inline-block; border: 1px solid #e9dcd2; }
-                        .map-container { height: 300px; border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
-                        .contact-form { background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-                        .map-error { color: #dc3545; text-align: center; }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="detail-header mb-4">
-                            <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'}">${property.type}</span>
-                            <h1 class="mt-2">${property.title}</h1>
-                            <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location} - ${property.address}</p>
-                            <h3 class="price-tag">${property.price}</h3>
-                        </div>
-                        
-                        <div class="row mb-4">
-                            <div class="col-md-7">
-                                <img src="${property.images[0]}" class="property-detail-img" alt="${property.title}">
-                                <div class="map-container mt-4" id="property-map"></div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="mb-3 p-3 bg-light rounded">
-                                    <h5>Resumo do Imóvel</h5>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span><i class="bi bi-house-door"></i> Área útil:</span>
-                                        <span>${property.size}</span>
+        // Função para carregar imóveis na lista
+        function loadProperties(page = 1) {
+            const propertyList = document.getElementById('property-list');
+            if (!propertyList) return;
+
+            const startIndex = (page - 1) * propertiesPerPage;
+            const endIndex = startIndex + propertiesPerPage;
+            
+            let html = '';
+            for (let i = startIndex + 1; i <= Math.min(endIndex, totalProperties); i++) {
+                const property = properties[i];
+                if (!property) continue;
+
+                html += `
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card property-card">
+                            <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
+                            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="${property.title}">
+                            <div class="card-body">
+                                <h5 class="card-title">${property.title}</h5>
+                                <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="price-tag">${property.price}</span>
                                     </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span><i class="bi bi-droplet"></i> Banheiros:</span>
-                                        <span>${property.bathrooms}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span><i class="bi bi-door-closed"></i> Quartos:</span>
-                                        <span>${property.bedrooms}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span><i class="bi bi-car-front"></i> Vagas:</span>
-                                        <span>${property.parking}</span>
+                                    <div>
+                                        <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
+                                        <span class="me-2"><i class="bi bi-droplet"></i> ${property.bedrooms}</span>
+                                        <span><i class="bi bi-car-front"></i> ${property.parking}</span>
                                     </div>
                                 </div>
-                                <div class="contact-form">
-                                    <h5>Entre em Contato</h5>
-                                    <p>Interessado neste imóvel? Preencha o formulário abaixo que um de nossos corretores entrará em contato.</p>
-                                    <form id="contactForm">
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Nome</label>
-                                            <input type="text" class="form-control" id="name" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="email" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="phone" class="form-label">Telefone</label>
-                                            <input type="tel" class="form-control" id="phone" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="message" class="form-label">Mensagem</label>
-                                            <textarea class="form-control" id="message" rows="3">Tenho interesse no imóvel ${property.title} e gostaria de mais informações.</textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100">Enviar Mensagem</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Descrição</h5>
-                                <p>${property.description}</p>
-                                <h5 class="mt-4">Comodidades</h5>
-                                <div class="amenities-list">
-                                    ${property.amenities.map(amenity => `<span class="amenity-badge">${amenity}</span>`).join('')}
+                                <div class="property-actions">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${i}" aria-label="Visualizar detalhes de ${property.title}">
+                                        <i class="bi bi-eye"></i> Visualizar
+                                    </button>
+                                    <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${i}" aria-label="Abrir ${property.title} em nova guia">
+                                        <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                    </button>
+                                    <!-- Botão do WhatsApp adicionado -->
+                                    <button class="btn whatsapp-btn" data-property-id="${i}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
+                                        <i class="bi bi-whatsapp"></i> WhatsApp
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"><\/script>
-                    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"><\/script>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', () => {
-                            const mapElement = document.getElementById('property-map');
-                            if (mapElement && ${JSON.stringify(property.map)}) {
-                                try {
-                                    const map = L.map(mapElement).setView([${property.map.lat}, ${property.map.lng}], 14);
-                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                    }).addTo(map);
-                                    L.marker([${property.map.lat}, ${property.map.lng}])
-                                        .addTo(map)
-                                        .bindPopup('${property.title}')
-                                        .openPopup();
-                                } catch (e) {
-                                    mapElement.innerHTML = '<p class="map-error">Não foi possível carregar o mapa. Verifique sua conexão com a internet.</p>';
-                                }
-                            }
-                            const form = document.getElementById('contactForm');
-                            if (form) {
-                                form.addEventListener('submit', (e) => {
-                                    e.preventDefault();
-                                    alert('Mensagem enviada com sucesso! Em breve um corretor entrará em contato.');
-                                    window.close();
-                                });
-                            }
-                        });
-                    <\/script>
-                </body>
-                </html>
-            `);
-            newWindow.document.close();
+                `;
+            }
+            
+            if (page === 1) {
+                propertyList.innerHTML = html;
+            } else {
+                propertyList.innerHTML += html;
+            }
+
+            // Atualizar visibilidade do botão "Ver Mais"
+            updateLoadMoreButton();
+        }
+
+        // Função para atualizar o botão "Ver Mais"
+        function updateLoadMoreButton() {
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (!loadMoreBtn) return;
+
+            const totalPages = Math.ceil(totalProperties / propertiesPerPage);
+            
+            if (currentPage >= totalPages) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+                loadMoreBtn.innerHTML = `<i class="bi bi-arrow-down-circle me-2"></i>Ver Mais Imóveis (${currentPage}/${totalPages})`;
+            }
+        }
+
+        // Função para carregar mais imóveis
+        function loadMoreProperties() {
+            currentPage++;
+            loadProperties(currentPage);
         }
 
         // Inicialização do modal e eventos
         document.addEventListener('DOMContentLoaded', function() {
+            // Carregar primeira página de imóveis
+            loadProperties(currentPage);
+
+            // Evento para o botão "Ver Mais"
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', loadMoreProperties);
+            }
+
+            // Evento para o formulário de newsletter
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    const accept = this.querySelector('#newsletterAccept').checked;
+                    
+                    if (accept) {
+                        alert('Obrigado por se cadastrar em nossa newsletter!');
+                        this.reset();
+                    } else {
+                        alert('Por favor, aceite os termos para se cadastrar.');
+                    }
+                });
+            }
+
+            // Restante do código do modal
             const propertyModal = document.getElementById('propertyModal');
             if (!propertyModal) return;
 
-            // Evento para abrir o modal com detalhes do imóvel
             propertyModal.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
                 const propertyId = button.getAttribute('data-property-id');
@@ -1113,29 +865,12 @@
                     <div class="detail-header">
                         <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'}">${property.type}</span>
                         <h3 class="mt-2">${property.title}</h3>
-                        <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location} - ${property.address}</p>
+                        <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location}</p>
                         <h4 class="price-tag">${property.price}</h4>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-7">
-                            <div id="propertyCarousel-${propertyId}" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    ${property.images.map((img, index) => `
-                                        <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                                            <img src="${img}" class="d-block w-100 property-detail-img" alt="${property.title}">
-                                        </div>
-                                    `).join('')}
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel-${propertyId}" data-bs-slide="prev" aria-label="Imagem anterior">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Anterior</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel-${propertyId}" data-bs-slide="next" aria-label="Próxima imagem">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Próximo</span>
-                                </button>
-                            </div>
-                            <div class="map-container mt-4" id="property-map-${propertyId}"></div>
+                            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="d-block w-100 property-detail-img" alt="${property.title}">
                         </div>
                         <div class="col-md-5">
                             <div class="mb-3 p-3 bg-light rounded">
@@ -1159,64 +894,32 @@
                             </div>
                             <div class="contact-form">
                                 <h5>Entre em Contato</h5>
-                                <p>Interessado neste imóvel? Preencha o formulário abaixo que um de nossos corretores entrará em contato.</p>
+                                <p>Interessado neste imóvel? Preencha o formulário abaixo que entraremos em contato.</p> <!-- Removido "nossos corretores" -->
                                 <form id="contactForm-${propertyId}">
                                     <div class="mb-3">
-                                        <label for="name-${propertyId}" class="form-label">Nome</label>
-                                        <input type="text" class="form-control" id="name-${propertyId}" required>
+                                        <input type="text" class="form-control" placeholder="Seu nome" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="email-${propertyId}" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email-${propertyId}" required>
+                                        <input type="email" class="form-control" placeholder="Seu email" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="phone-${propertyId}" class="form-label">Telefone</label>
-                                        <input type="tel" class="form-control" id="phone-${propertyId}" required>
+                                        <input type="tel" class="form-control" placeholder="Seu telefone" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="message-${propertyId}" class="form-label">Mensagem</label>
-                                        <textarea class="form-control" id="message-${propertyId}" rows="3">Tenho interesse no imóvel ${property.title} e gostaria de mais informações.</textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Sua mensagem">Tenho interesse no imóvel ${property.title}</textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary w-100">Enviar Mensagem</button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h5>Descrição</h5>
-                            <p>${property.description}</p>
-                            <h5 class="mt-4">Comodidades</h5>
-                            <div class="amenities-list">
-                                ${property.amenities.map(amenity => `<span class="amenity-badge">${amenity}</span>`).join('')}
-                            </div>
-                        </div>
-                    </div>
                 `;
 
-                // Inicializar o mapa
-                const mapElement = document.getElementById(`property-map-${propertyId}`);
-                if (mapElement && property.map) {
-                    try {
-                        const map = L.map(mapElement).setView([property.map.lat, property.map.lng], 14);
-                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        }).addTo(map);
-                        L.marker([property.map.lat, property.map.lng])
-                            .addTo(map)
-                            .bindPopup(property.title)
-                            .openPopup();
-                    } catch (e) {
-                        mapElement.innerHTML = '<p class="map-error">Não foi possível carregar o mapa. Verifique sua conexão com a internet.</p>';
-                    }
-                }
-
-                // Adicionar evento ao formulário
                 const form = document.getElementById(`contactForm-${propertyId}`);
                 if (form) {
                     form.addEventListener('submit', function(e) {
                         e.preventDefault();
-                        alert('Mensagem enviada com sucesso! Em breve um corretor entrará em contato.');
+                        alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
                         const modal = bootstrap.Modal.getInstance(propertyModal);
                         modal.hide();
                     });
@@ -1224,13 +927,33 @@
             });
 
             // Evento para botões "Nova Guia"
-            document.querySelectorAll('.new-tab-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const propertyId = this.getAttribute('data-property-id');
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.new-tab-btn')) {
+                    const button = e.target.closest('.new-tab-btn');
+                    const propertyId = button.getAttribute('data-property-id');
                     if (propertyId) {
-                        openPropertyInNewTab(propertyId);
+                        const property = properties[propertyId];
+                        if (property) {
+                            window.open(`property-detail.html?id=${propertyId}`, '_blank');
+                        }
                     }
-                });
+                }
+            });
+
+            // Evento para botões do WhatsApp
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.whatsapp-btn')) {
+                    const button = e.target.closest('.whatsapp-btn');
+                    const propertyId = button.getAttribute('data-property-id');
+                    if (propertyId) {
+                        const property = properties[propertyId];
+                        if (property) {
+                            const message = `Olá, tenho interesse no imóvel: ${property.title} - ${property.price}`;
+                            const whatsappUrl = `https://wa.me/5522987654321?text=${encodeURIComponent(message)}`;
+                            window.open(whatsappUrl, '_blank');
+                        }
+                    }
+                }
             });
         });
     </script>
