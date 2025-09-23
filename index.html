@@ -620,7 +620,7 @@
                     <h5>Contato</h5>
                     <ul class="list-unstyled">
                         <li><i class="bi bi-telephone"></i> (22) 3456-7890</li>
-                        <li><i class="bi bi-whatsapp"></i> (22) 98765-4321</li>
+                        <li><i class="bi bi-whatsapp"></i> (22) 981668036</li>
                         <li><i class="bi bi-envelope"></i> contato@novatte.com</li>
                     </ul>
                 </div>
@@ -644,7 +644,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Dados dos imóveis (expandido para 80 imóveis)
+        // Dados dos imóveis
         const properties = {
             1: { title: "Casa Moderna com Piscina", type: "Venda", price: "R$ 550.000", location: "Itaperuna, RJ", size: "120m²", bedrooms: 3, bathrooms: 3, parking: 2 },
             2: { title: "Apartamento com Varanda", type: "Aluguel", price: "R$ 1.200/mês", location: "Santo Antônio de Pádua, RJ", size: "70m²", bedrooms: 2, bathrooms: 2, parking: 1 },
@@ -665,67 +665,8 @@
             17: { title: "Sítio com Lago", type: "Venda", price: "R$ 800.000", location: "Aperibé, RJ", size: "200m²", bedrooms: 3, bathrooms: 3, parking: 4 },
             18: { title: "Apartamento Econômico", type: "Aluguel", price: "R$ 900/mês", location: "Cambuci, RJ", size: "60m²", bedrooms: 1, bathrooms: 1, parking: 1 },
             19: { title: "Casa Duplex Moderna", type: "Venda", price: "R$ 750.000", location: "Itaperuna, RJ", size: "220m²", bedrooms: 4, bathrooms: 4, parking: 3 },
-            20: { title: "Apartamento com Sacada", type: "Aluguel", price: "R$ 1.400/mês", location: "Santo Antônio de Pádua, RJ", size: "80m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            21: { title: "Casa com Jardim Amplo", type: "Venda", price: "R$ 420.000", location: "Miracema, RJ", size: "130m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            22: { title: "Apartamento com Área de Lazer", type: "Aluguel", price: "R$ 1.700/mês", location: "Itaocara, RJ", size: "85m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            23: { title: "Casa com Garagem Ampla", type: "Venda", price: "R$ 480.000", location: "Aperibé, RJ", size: "150m²", bedrooms: 3, bathrooms: 2, parking: 3 },
-            24: { title: "Apartamento com Vista", type: "Aluguel", price: "R$ 1.100/mês", location: "Cambuci, RJ", size: "65m²", bedrooms: 1, bathrooms: 1, parking: 1 },
-            25: { title: "Casa com Varanda Ampla", type: "Venda", price: "R$ 520.000", location: "Itaperuna, RJ", size: "110m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            26: { title: "Casa Colonial Charmosa", type: "Aluguel", price: "R$ 1.250/mês", location: "Santo Antônio de Pádua, RJ", size: "95m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            27: { title: "Sítio Rural Tranquilo", type: "Venda", price: "R$ 350.000", location: "Miracema, RJ", size: "160m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            28: { title: "Apartamento Novo", type: "Aluguel", price: "R$ 1.000/mês", location: "Itaocara, RJ", size: "55m²", bedrooms: 1, bathrooms: 1, parking: 1 },
-            29: { title: "Casa de Campo", type: "Venda", price: "R$ 580.000", location: "Aperibé, RJ", size: "170m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            30: { title: "Casa Geminada", type: "Aluguel", price: "R$ 1.350/mês", location: "Cambuci, RJ", size: "100m²", bedrooms: 2, bathrooms: 2, parking: 2 },
-            31: { title: "Apartamento de Luxo", type: "Venda", price: "R$ 410.000", location: "Itaperuna, RJ", size: "80m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            32: { title: "Terreno Comercial", type: "Aluguel", price: "R$ 2.000/mês", location: "Santo Antônio de Pádua, RJ", size: "200m²", bedrooms: 0, bathrooms: 0, parking: 0 },
-            33: { title: "Casa com Suíte Master", type: "Venda", price: "R$ 690.000", location: "Miracema, RJ", size: "190m²", bedrooms: 4, bathrooms: 3, parking: 2 },
-            34: { title: "Apartamento com Academia", type: "Aluguel", price: "R$ 1.450/mês", location: "Itaocara, RJ", size: "72m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            35: { title: "Fazenda Pequena", type: "Venda", price: "R$ 950.000", location: "Aperibé, RJ", size: "250m²", bedrooms: 4, bathrooms: 4, parking: 4 },
-            36: { title: "Loft Moderno", type: "Aluguel", price: "R$ 1.900/mês", location: "Cambuci, RJ", size: "90m²", bedrooms: 1, bathrooms: 1, parking: 1 },
-            37: { title: "Casa com Home Office", type: "Venda", price: "R$ 460.000", location: "Itaperuna, RJ", size: "140m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            38: { title: "Studio Compacto", type: "Aluguel", price: "R$ 750/mês", location: "Santo Antônio de Pádua, RJ", size: "40m²", bedrooms: 1, bathrooms: 1, parking: 0 },
-            39: { title: "Casa Sustentável", type: "Venda", price: "R$ 530.000", location: "Miracema, RJ", size: "120m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            40: { title: "Casa com Piscina Privada", type: "Aluguel", price: "R$ 2.200/mês", location: "Itaocara, RJ", size: "130m²", bedrooms: 3, bathrooms: 3, parking: 2 },
-            41: { title: "Cobertura Duplex", type: "Venda", price: "R$ 850.000", location: "Itaperuna, RJ", size: "180m²", bedrooms: 3, bathrooms: 3, parking: 2 },
-            42: { title: "Casa com Churrasqueira", type: "Aluguel", price: "R$ 1.800/mês", location: "Santo Antônio de Pádua, RJ", size: "110m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            43: { title: "Apartamento Conjugado", type: "Venda", price: "R$ 280.000", location: "Miracema, RJ", size: "45m²", bedrooms: 1, bathrooms: 1, parking: 1 },
-            44: { title: "Casa com Piscina e Sauna", type: "Aluguel", price: "R$ 3.500/mês", location: "Itaocara, RJ", size: "220m²", bedrooms: 4, bathrooms: 4, parking: 3 },
-            45: { title: "Terreno Residencial", type: "Venda", price: "R$ 180.000", location: "Aperibé, RJ", size: "400m²", bedrooms: 0, bathrooms: 0, parking: 0 },
-            46: { title: "Sala Comercial", type: "Aluguel", price: "R$ 1.200/mês", location: "Cambuci, RJ", size: "35m²", bedrooms: 0, bathrooms: 1, parking: 0 },
-            47: { title: "Casa com Lareira", type: "Venda", price: "R$ 670.000", location: "Itaperuna, RJ", size: "160m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            48: { title: "Kitnet Mobiliada", type: "Aluguel", price: "R$ 850/mês", location: "Santo Antônio de Pádua, RJ", size: "30m²", bedrooms: 1, bathrooms: 1, parking: 0 },
-            49: { title: "Casa com Piscina e Jardim", type: "Venda", price: "R$ 720.000", location: "Miracema, RJ", size: "190m²", bedrooms: 4, bathrooms: 3, parking: 3 },
-            50: { title: "Apartamento Higienópolis", type: "Aluguel", price: "R$ 1.600/mês", location: "Itaocara, RJ", size: "75m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            51: { title: "Sítio com Casa Principal", type: "Venda", price: "R$ 1.200.000", location: "Aperibé, RJ", size: "300m²", bedrooms: 5, bathrooms: 4, parking: 5 },
-            52: { title: "Loft Industrial", type: "Aluguel", price: "R$ 2.800/mês", location: "Cambuci, RJ", size: "120m²", bedrooms: 1, bathrooms: 1, parking: 2 },
-            53: { title: "Casa com Piscina e Churrasqueira", type: "Venda", price: "R$ 890.000", location: "Itaperuna, RJ", size: "210m²", bedrooms: 4, bathrooms: 3, parking: 3 },
-            54: { title: "Apartamento com Varanda Gourmet", type: "Aluguel", price: "R$ 2.100/mês", location: "Santo Antônio de Pádua, RJ", size: "85m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            55: { title: "Casa com Área de Serviço", type: "Venda", price: "R$ 390.000", location: "Miracema, RJ", size: "125m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            56: { title: "Studio Mobiliado", type: "Aluguel", price: "R$ 950/mês", location: "Itaocara, RJ", size: "38m²", bedrooms: 1, bathrooms: 1, parking: 0 },
-            57: { title: "Casa com Piscina e Espaço Gourmet", type: "Venda", price: "R$ 1.050.000", location: "Aperibé, RJ", size: "240m²", bedrooms: 4, bathrooms: 4, parking: 4 },
-            58: { title: "Apartamento com Vista para o Mar", type: "Aluguel", price: "R$ 2.400/mês", location: "Cambuci, RJ", size: "78m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            59: { title: "Casa com Jardim Frutífero", type: "Venda", price: "R$ 510.000", location: "Itaperuna, RJ", size: "140m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            60: { title: "Kitnet Confortável", type: "Aluguel", price: "R$ 700/mês", location: "Santo Antônio de Pádua, RJ", size: "32m²", bedrooms: 1, bathrooms: 1, parking: 0 },
-            61: { title: "Casa com Piscina e Espaço Kids", type: "Venda", price: "R$ 920.000", location: "Miracema, RJ", size: "200m²", bedrooms: 4, bathrooms: 3, parking: 3 },
-            62: { title: "Apartamento com Sacada Ampliada", type: "Aluguel", price: "R$ 1.750/mês", location: "Itaocara, RJ", size: "82m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            63: { title: "Chácara com Piscina", type: "Venda", price: "R$ 680.000", location: "Aperibé, RJ", size: "180m²", bedrooms: 3, bathrooms: 2, parking: 3 },
-            64: { title: "Sala Comercial Centro", type: "Aluguel", price: "R$ 1.100/mês", location: "Cambuci, RJ", size: "40m²", bedrooms: 0, bathrooms: 1, parking: 0 },
-            65: { title: "Casa com Piscina e Jardim Vertical", type: "Venda", price: "R$ 780.000", location: "Itaperuna, RJ", size: "170m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            66: { title: "Apartamento com Varanda Panorâmica", type: "Aluguel", price: "R$ 1.900/mês", location: "Santo Antônio de Pádua, RJ", size: "88m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            67: { title: "Casa com Piscina e Espaço Zen", type: "Venda", price: "R$ 1.150.000", location: "Miracema, RJ", size: "230m²", bedrooms: 4, bathrooms: 3, parking: 3 },
-            68: { title: "Studio Compacto", type: "Aluguel", price: "R$ 650/mês", location: "Itaocara, RJ", size: "28m²", bedrooms: 1, bathrooms: 1, parking: 0 },
-            69: { title: "Casa com Piscina e Deck", type: "Venda", price: "R$ 840.000", location: "Aperibé, RJ", size: "190m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            70: { title: "Apartamento com Closet", type: "Aluguel", price: "R$ 2.200/mês", location: "Cambuci, RJ", size: "92m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            71: { title: "Casa com Piscina e Espaço Fitness", type: "Venda", price: "R$ 1.300.000", location: "Itaperuna, RJ", size: "260m²", bedrooms: 4, bathrooms: 4, parking: 4 },
-            72: { title: "Kitnet Próxima ao Metrô", type: "Aluguel", price: "R$ 1.000/mês", location: "Santo Antônio de Pádua, RJ", size: "35m²", bedrooms: 1, bathrooms: 1, parking: 0 },
-            73: { title: "Casa com Piscina e Jardim de Inverno", type: "Venda", price: "R$ 950.000", location: "Miracema, RJ", size: "210m²", bedrooms: 4, bathrooms: 3, parking: 3 },
-            74: { title: "Apartamento com Varanda Envidraçada", type: "Aluguel", price: "R$ 1.800/mês", location: "Itaocara, RJ", size: "80m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            75: { title: "Casa com Piscina e Espaço Gourmet", type: "Venda", price: "R$ 1.100.000", location: "Aperibé, RJ", size: "240m²", bedrooms: 4, bathrooms: 3, parking: 3 },
-            76: { title: "Studio com Varanda", type: "Aluguel", price: "R$ 900/mês", location: "Cambuci, RJ", size: "42m²", bedrooms: 1, bathrooms: 1, parking: 0 },
-            77: { title: "Casa com Piscina e Sauna", type: "Venda", price: "R$ 1.450.000", location: "Itaperuna, RJ", size: "280m²", bedrooms: 5, bathrooms: 4, parking: 4 },
-            78: { title: "Apartamento com Vista para Parque", type: "Aluguel", price: "R$ 2.300/mês", location: "Santo Antônio de Pádua, RJ", size: "95m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            79: { title: "Casa com Piscina e Espaço Multiuso", type: "Venda", price: "R$ 1.200.000", location: "Miracema, RJ", size: "250m²", bedrooms: 4, bathrooms: 3, parking: 3 },
-            80: { title: "Kitnet Reformada", type: "Aluguel", price: "R$ 800/mês", location: "Itaocara, RJ", size: "33m²", bedrooms: 1, bathrooms: 1, parking: 0 }
+            20: { title: "Apartamento com Sacada", type: "Aluguel", price: "R$ 1.400/mês", location: "Santo Antônio de Pádua, RJ", size: "80m²", bedrooms: 2, bathrooms: 2, parking: 1 }
+            // Adicione mais imóveis conforme necessário
         };
 
         // Variáveis para controle de paginação
@@ -900,7 +841,7 @@
                         const property = properties[propertyId];
                         if (property) {
                             const message = `Olá, tenho interesse no imóvel: ${property.title} - ${property.price}`;
-                            const whatsappUrl = `https://wa.me/5522987654321?text=${encodeURIComponent(message)}`;
+                            const whatsappUrl = `https://wa.me/+5522981668036?text=${encodeURIComponent(message)}`;
                             window.open(whatsappUrl, '_blank');
                         }
                     }
