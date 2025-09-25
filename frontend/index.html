@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -418,6 +417,13 @@
             object-fit: cover;
             margin-right: 15px;
             border: 2px solid var(--secondary-color);
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 24px;
         }
         
         .corretor-details {
@@ -888,22 +894,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Dados dos corretores - CORRIGIDOS
+        // Dados dos corretores - COM AVATARES NEUTROS
         const corretores = {
             "italo": {
                 nome: "Ítalo Coimbra",
                 tipo: "Particular",
                 telefone: "22 98166-8036",
                 whatsapp: "5522981668036",
-                foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                avatar: "IC" // Iniciais para avatar
             },
             "bruna": {
                 nome: "Bruna Magazzi", 
                 tipo: "Corretora",
                 creci: "CRECI: 12345-6",
-                telefone: "04132991480246", // TELEFONE E WHATSAPP IGUAIS
-                whatsapp: "5504132991480246", // NÚMERO ATUALIZADO
-                foto: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                telefone: "04132991480246",
+                whatsapp: "5504132991480246",
+                avatar: "BM" // Iniciais para avatar
             }
         };
 
@@ -1228,7 +1234,7 @@
                                         .unified-logo { height: 40px; width: 40px; margin-right: 10px; }
                                         .corretor-info { background-color: #f7eee9; border-radius: 8px; padding: 20px; margin-top: 20px; border-left: 4px solid #FE4700; }
                                         .corretor-header { display: flex; align-items: center; margin-bottom: 15px; }
-                                        .corretor-photo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #FE4700; }
+                                        .corretor-photo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #FE4700; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #003602; font-size: 24px; }
                                         .corretor-name { font-weight: 600; color: #003602; margin-bottom: 5px; font-size: 1.1rem; }
                                         .corretor-type { color: #FE4700; font-size: 0.9rem; margin-bottom: 5px; }
                                         .corretor-creci { color: #333; font-size: 0.85rem; margin-bottom: 5px; }
@@ -1266,7 +1272,7 @@
                                         <!-- Informações do Corretor -->
                                         <div class="corretor-info">
                                             <div class="corretor-header">
-                                                <img src="${corretor.foto}" alt="${corretor.nome}" class="corretor-photo">
+                                                <div class="corretor-photo">${corretor.avatar}</div>
                                                 <div class="corretor-details">
                                                     <div class="corretor-name">${corretor.nome}</div>
                                                     <div class="corretor-type">${corretor.tipo}</div>
@@ -1396,7 +1402,7 @@
                         <!-- Informações do Corretor -->
                         <div class="corretor-info">
                             <div class="corretor-header">
-                                <img src="${corretor.foto}" alt="${corretor.nome}" class="corretor-photo">
+                                <div class="corretor-photo">${corretor.avatar}</div>
                                 <div class="corretor-details">
                                     <div class="corretor-name">${corretor.nome}</div>
                                     <div class="corretor-type">${corretor.tipo}</div>
