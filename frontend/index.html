@@ -33,9 +33,38 @@
         
         .navbar-brand {
             font-weight: 700;
-            color: var(--secondary-color) !important;
             display: flex;
             align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .brand-main {
+            display: flex;
+            align-items: center;
+        }
+        
+        .brand-name {
+            font-size: 1.5rem;
+        }
+        
+        .brand-nova {
+            color: var(--primary-color);
+        }
+        
+        .brand-tte {
+            color: var(--secondary-color);
+        }
+        
+        .brand-imoveis {
+            color: var(--primary-color);
+        }
+        
+        .portal-imobiliario {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: -5px;
         }
         
         .logo {
@@ -200,6 +229,18 @@
             margin-top: 60px;
         }
         
+        footer h5, 
+        footer p, 
+        footer a, 
+        footer li {
+            color: white !important;
+        }
+        
+        footer .brand-nova,
+        footer .brand-tte {
+            color: white !important;
+        }
+        
         .map-container {
             height: 300px;
             border-radius: 8px;
@@ -288,6 +329,72 @@
             margin-top: 15px;
         }
         
+        .property-map {
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .map-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .map-address {
+            background-color: var(--light-color);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .map-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .property-map-mini {
+            height: 250px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        
+        /* Estilos específicos para a visualização unificada */
+        .unified-view {
+            padding: 20px;
+        }
+        
+        .unified-header {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .unified-logo {
+            height: 40px;
+            width: 40px;
+            margin-right: 10px;
+        }
+        
+        .unified-property-image {
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .unified-map {
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
         @media (max-width: 768px) {
             .hero-section {
                 padding: 40px 0;
@@ -313,11 +420,62 @@
             .amenities-table {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .property-map {
+                height: 300px;
+            }
+            
+            .property-map-mini {
+                height: 200px;
+            }
+            
+            .map-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .portal-imobiliario {
+                font-size: 0.8rem;
+            }
+            
+            .unified-property-image {
+                height: 200px;
+            }
+            
+            .unified-map {
+                height: 250px;
+            }
         }
         
         @media (max-width: 480px) {
             .amenities-table {
                 grid-template-columns: 1fr;
+            }
+            
+            .property-map {
+                height: 250px;
+            }
+            
+            .property-map-mini {
+                height: 180px;
+            }
+            
+            .brand-main {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+            
+            .unified-property-image {
+                height: 150px;
+            }
+            
+            .unified-map {
+                height: 200px;
             }
         }
     </style>
@@ -327,9 +485,15 @@
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#" aria-label="Página inicial da Novatte Imóveis">
-                <img src="/logo.png" alt="Logo Novatte Imóveis" class="logo" onerror="this.onerror=null; this.src='src/assets/logo.png'; this.onerror=null; this.style.display='none'; document.querySelector('.logo-placeholder').style.display='flex'">
-                <div class="logo-placeholder logo" style="display: none;">N</div>
-                Novatte Imóveis
+                <div class="brand-main">
+                    <!-- CORREÇÃO DO CAMINHO DA LOGO -->
+                    <img src="src/assets/logo.png" alt="Logo Novatte Imóveis" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div class="logo-placeholder logo" style="display: none;">N</div>
+                    <span class="brand-name">
+                        <span class="brand-nova">Nova</span><span class="brand-tte">tte</span> <span class="brand-imoveis">Imóveis</span>
+                    </span>
+                </div>
+                <span class="portal-imobiliario">Portal Imobiliário</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -582,7 +746,7 @@
         </div>
     </section>
 
-    <!-- Modal para Detalhes do Imóvel -->
+    <!-- Modal para Detalhes do Imóvel (AGORA IDÊNTICO À NOVA GUIA) -->
     <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -591,7 +755,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="property-detail-content">
+                    <div id="property-detail-content" class="unified-view">
                         <!-- Conteúdo será carregado via JavaScript -->
                     </div>
                 </div>
@@ -604,7 +768,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <h5>Novatte Imóveis</h5>
+                    <h5><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis - Portal Imobiliário</h5>
                     <p>Encontre o imóvel perfeito para você na região Noroeste Fluminense. Temos as melhores opções para compra, venda e locação.</p>
                 </div>
                 <div class="col-md-2 mb-4">
@@ -636,7 +800,7 @@
             </div>
             <hr class="bg-light">
             <div class="text-center py-3">
-                <p class="mb-0">&copy; 2025 Novatte Imóveis. Todos os direitos reservados.</p>
+                <p class="mb-0">&copy; 2025 <span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis - Portal Imobiliário. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
@@ -644,29 +808,233 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Dados dos imóveis
+        // Dados dos imóveis com coordenadas geográficas - AGORA COM 15 IMÓVEIS
         const properties = {
-            1: { title: "Casa Moderna com Piscina", type: "Venda", price: "R$ 550.000", location: "Itaperuna, RJ", size: "120m²", bedrooms: 3, bathrooms: 3, parking: 2 },
-            2: { title: "Apartamento com Varanda", type: "Aluguel", price: "R$ 1.200/mês", location: "Santo Antônio de Pádua, RJ", size: "70m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            3: { title: "Casa Familiar com Jardim", type: "Venda", price: "R$ 380.000", location: "Miracema, RJ", size: "150m²", bedrooms: 4, bathrooms: 3, parking: 2 },
-            4: { title: "Casa Próxima ao Centro", type: "Aluguel", price: "R$ 1.500/mês", location: "Itaocara, RJ", size: "90m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            5: { title: "Sítio com Área Verde", type: "Venda", price: "R$ 620.000", location: "Aperibé, RJ", size: "180m²", bedrooms: 3, bathrooms: 3, parking: 4 },
-            6: { title: "Apartamento Reformado", type: "Aluguel", price: "R$ 980/mês", location: "Cambuci, RJ", size: "65m²", bedrooms: 1, bathrooms: 1, parking: 1 },
-            7: { title: "Casa com Vista Panorâmica", type: "Venda", price: "R$ 700.000", location: "Itaperuna, RJ", size: "200m²", bedrooms: 4, bathrooms: 3, parking: 3 },
-            8: { title: "Apartamento Compacto", type: "Aluguel", price: "R$ 800/mês", location: "Miracema, RJ", size: "50m²", bedrooms: 1, bathrooms: 1, parking: 1 },
-            9: { title: "Casa Térrea Espaçosa", type: "Venda", price: "R$ 450.000", location: "Santo Antônio de Pádua, RJ", size: "140m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            10: { title: "Casa com Quintal Grande", type: "Aluguel", price: "R$ 1.800/mês", location: "Itaocara, RJ", size: "110m²", bedrooms: 2, bathrooms: 2, parking: 2 },
-            11: { title: "Terreno para Construção", type: "Venda", price: "R$ 200.000", location: "Aperibé, RJ", size: "300m²", bedrooms: 0, bathrooms: 0, parking: 0 },
-            12: { title: "Loja Comercial Central", type: "Aluguel", price: "R$ 2.500/mês", location: "Cambuci, RJ", size: "80m²", bedrooms: 0, bathrooms: 1, parking: 0 },
-            13: { title: "Casa com Área Gourmet", type: "Venda", price: "R$ 600.000", location: "Itaperuna, RJ", size: "160m²", bedrooms: 3, bathrooms: 2, parking: 2 },
-            14: { title: "Apartamento Mobiliado", type: "Aluguel", price: "R$ 1.600/mês", location: "Santo Antônio de Pádua, RJ", size: "75m²", bedrooms: 2, bathrooms: 1, parking: 1 },
-            15: { title: "Casa com Piscina", type: "Venda", price: "R$ 650.000", location: "Miracema, RJ", size: "180m²", bedrooms: 4, bathrooms: 3, parking: 3 },
-            16: { title: "Apartamento no Centro", type: "Aluguel", price: "R$ 1.300/mês", location: "Itaocara, RJ", size: "70m²", bedrooms: 2, bathrooms: 2, parking: 1 },
-            17: { title: "Sítio com Lago", type: "Venda", price: "R$ 800.000", location: "Aperibé, RJ", size: "200m²", bedrooms: 3, bathrooms: 3, parking: 4 },
-            18: { title: "Apartamento Econômico", type: "Aluguel", price: "R$ 900/mês", location: "Cambuci, RJ", size: "60m²", bedrooms: 1, bathrooms: 1, parking: 1 },
-            19: { title: "Casa Duplex Moderna", type: "Venda", price: "R$ 750.000", location: "Itaperuna, RJ", size: "220m²", bedrooms: 4, bathrooms: 4, parking: 3 },
-            20: { title: "Apartamento com Sacada", type: "Aluguel", price: "R$ 1.400/mês", location: "Santo Antônio de Pádua, RJ", size: "80m²", bedrooms: 2, bathrooms: 2, parking: 1 }
-            // Adicione mais imóveis conforme necessário
+            1: { 
+                title: "Casa Moderna com Piscina", 
+                type: "Venda", 
+                price: "R$ 550.000", 
+                location: "Itaperuna, RJ", 
+                size: "120m²", 
+                bedrooms: 3, 
+                bathrooms: 3, 
+                parking: 2,
+                address: "Rua das Flores, 123, Centro, Itaperuna - RJ",
+                lat: -21.2059, 
+                lng: -41.8879,
+                image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Excelente casa moderna com piscina, área gourmet e acabamento de alto padrão. Localizada em região nobre de Itaperuna, próxima a comércios e escolas."
+            },
+            2: { 
+                title: "Apartamento com Varanda", 
+                type: "Aluguel", 
+                price: "R$ 1.200/mês", 
+                location: "Santo Antônio de Pádua, RJ", 
+                size: "70m²", 
+                bedrooms: 2, 
+                bathrooms: 2, 
+                parking: 1,
+                address: "Avenida Central, 456, Centro, Santo Antônio de Pádua - RJ",
+                lat: -21.5394, 
+                lng: -42.1803,
+                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Apartamento bem localizado no centro de Santo Antônio de Pádua, com varanda gourmet e acabamentos modernos. Próximo a bancos, mercados e farmácias."
+            },
+            3: { 
+                title: "Casa Familiar com Jardim", 
+                type: "Venda", 
+                price: "R$ 380.000", 
+                location: "Miracema, RJ", 
+                size: "150m²", 
+                bedrooms: 4, 
+                bathrooms: 3, 
+                parking: 2,
+                address: "Travessa da Paz, 789, Bairro Novo, Miracema - RJ",
+                lat: -21.4122, 
+                lng: -42.1968,
+                image: "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Casa espaçosa ideal para família, com jardim amplo, área de lazer e garagem para dois carros. Localizada em bairro tranquilo de Miracema."
+            },
+            4: { 
+                title: "Casa Próxima ao Centro", 
+                type: "Aluguel", 
+                price: "R$ 1.500/mês", 
+                location: "Itaocara, RJ", 
+                size: "90m²", 
+                bedrooms: 2, 
+                bathrooms: 2, 
+                parking: 1,
+                address: "Rua Principal, 321, Centro, Itaocara - RJ",
+                lat: -21.6692, 
+                lng: -42.0761,
+                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Casa bem conservada a poucos minutos do centro de Itaocara. Possui quintal espaçoso e área de serviço coberta."
+            },
+            5: { 
+                title: "Sítio com Área Verde", 
+                type: "Venda", 
+                price: "R$ 620.000", 
+                location: "Aperibé, RJ", 
+                size: "180m²", 
+                bedrooms: 3, 
+                bathrooms: 3, 
+                parking: 4,
+                address: "Estrada Rural, S/N, Zona Rural, Aperibé - RJ",
+                lat: -21.6253, 
+                lng: -42.1039,
+                image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Sítio com ampla área verde, ideal para quem busca tranquilidade e contato com a natureza. Possui casa principal, área de lazer e pomar."
+            },
+            6: { 
+                title: "Apartamento Reformado", 
+                type: "Aluguel", 
+                price: "R$ 980/mês", 
+                location: "Cambuci, RJ", 
+                size: "65m²", 
+                bedrooms: 1, 
+                bathrooms: 1, 
+                parking: 1,
+                address: "Rua das Palmeiras, 654, Centro, Cambuci - RJ",
+                lat: -21.5753, 
+                lng: -41.9111,
+                image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Apartamento totalmente reformado, com acabamentos modernos e boa localização no centro de Cambuci. Próximo a comércios e serviços."
+            },
+            7: { 
+                title: "Casa com Vista Panorâmica", 
+                type: "Venda", 
+                price: "R$ 700.000", 
+                location: "Itaperuna, RJ", 
+                size: "200m²", 
+                bedrooms: 4, 
+                bathrooms: 3, 
+                parking: 3,
+                address: "Alto da Colina, 1000, Bairro Alto, Itaperuna - RJ",
+                lat: -21.1959, 
+                lng: -41.8779,
+                image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Casa com vista panorâmica da cidade, em local privilegiado de Itaperuna. Acabamento de alto padrão e área de lazer completa."
+            },
+            8: { 
+                title: "Apartamento Compacto", 
+                type: "Aluguel", 
+                price: "R$ 800/mês", 
+                location: "Miracema, RJ", 
+                size: "50m²", 
+                bedrooms: 1, 
+                bathrooms: 1, 
+                parking: 1,
+                address: "Rua das Acácias, 222, Centro, Miracema - RJ",
+                lat: -21.4222, 
+                lng: -42.1868,
+                image: "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Apartamento compacto e aconchegante, ideal para solteiros ou casais. Bem localizado no centro de Miracema, próximo a tudo."
+            },
+            9: { 
+                title: "Casa Térrea Espaçosa", 
+                type: "Venda", 
+                price: "R$ 450.000", 
+                location: "Santo Antônio de Pádua, RJ", 
+                size: "140m²", 
+                bedrooms: 3, 
+                bathrooms: 2, 
+                parking: 2,
+                address: "Rua das Hortênsias, 555, Vila Nova, Santo Antônio de Pádua - RJ",
+                lat: -21.5494, 
+                lng: -42.1703,
+                image: "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Casa térrea espaçosa com quintal amplo, localizada em bairro residencial tranquilo de Santo Antônio de Pádua."
+            },
+            10: { 
+                title: "Casa com Quintal Grande", 
+                type: "Aluguel", 
+                price: "R$ 1.800/mês", 
+                location: "Itaocara, RJ", 
+                size: "110m²", 
+                bedrooms: 2, 
+                bathrooms: 2, 
+                parking: 2,
+                address: "Rua dos Ipês, 777, Bairro Jardim, Itaocara - RJ",
+                lat: -21.6592, 
+                lng: -42.0861,
+                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Casa com quintal grande, ideal para crianças e pets. Localizada em bairro tranquilo de Itaocara, com fácil acesso ao centro."
+            },
+            11: { 
+                title: "Sobrado com 3 Pavimentos", 
+                type: "Venda", 
+                price: "R$ 890.000", 
+                location: "Itaperuna, RJ", 
+                size: "220m²", 
+                bedrooms: 5, 
+                bathrooms: 4, 
+                parking: 3,
+                address: "Rua das Oliveiras, 888, Bairro Alto, Itaperuna - RJ",
+                lat: -21.1859, 
+                lng: -41.8679,
+                image: "https://images.unsplash.com/photo-1605146769289-440113cc3d00?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Sobrado imponente com 3 pavimentos, acabamento luxuoso e vista privilegiada. Ideal para famílias grandes."
+            },
+            12: { 
+                title: "Kitnet Mobiliada", 
+                type: "Aluguel", 
+                price: "R$ 650/mês", 
+                location: "Miracema, RJ", 
+                size: "35m²", 
+                bedrooms: 1, 
+                bathrooms: 1, 
+                parking: 0,
+                address: "Avenida Comercial, 111, Centro, Miracema - RJ",
+                lat: -21.4322, 
+                lng: -42.1768,
+                image: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Kitnet mobiliada, perfeita para estudantes ou solteiros. Próxima a universidades e comércios."
+            },
+            13: { 
+                title: "Casa de Campo", 
+                type: "Venda", 
+                price: "R$ 320.000", 
+                location: "Cambuci, RJ", 
+                size: "100m²", 
+                bedrooms: 2, 
+                bathrooms: 2, 
+                parking: 2,
+                address: "Estrada do Sertão, 555, Zona Rural, Cambuci - RJ",
+                lat: -21.5853, 
+                lng: -41.9011,
+                image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Casa de campo aconchegante, ideal para fins de semana ou moradia tranquila. Com área verde e pomar."
+            },
+            14: { 
+                title: "Apartamento Duplex", 
+                type: "Aluguel", 
+                price: "R$ 2.200/mês", 
+                location: "Santo Antônio de Pádua, RJ", 
+                size: "110m²", 
+                bedrooms: 3, 
+                bathrooms: 3, 
+                parking: 2,
+                address: "Rua das Magnólias, 333, Jardim Europa, Santo Antônio de Pádua - RJ",
+                lat: -21.5594, 
+                lng: -42.1603,
+                image: "https://images.unsplash.com/photo-1630699144867-37acec97f7c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Apartamento duplex com acabamento premium, varanda gourmet e ótima localização em bairro nobre."
+            },
+            15: { 
+                title: "Terreno Comercial", 
+                type: "Venda", 
+                price: "R$ 250.000", 
+                location: "Itaocara, RJ", 
+                size: "300m²", 
+                bedrooms: 0, 
+                bathrooms: 0, 
+                parking: 0,
+                address: "Avenida Principal, 999, Centro, Itaocara - RJ",
+                lat: -21.6492, 
+                lng: -42.0961,
+                image: "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                description: "Terreno comercial bem localizado no centro de Itaocara, ideal para construção de estabelecimento comercial."
+            }
         };
 
         // Variáveis para controle de paginação
@@ -676,18 +1044,14 @@
 
         // Função para carregar imóveis na lista
         function loadProperties(page = 1) {
-            console.log('Carregando imóveis, página:', page); // Debug
             const propertyList = document.getElementById('property-list');
-            if (!propertyList) {
-                console.error('Elemento property-list não encontrado!');
-                return;
-            }
+            if (!propertyList) return;
 
-            const startIndex = (page - 1) * propertiesPerPage;
-            const endIndex = startIndex + propertiesPerPage;
+            const startIndex = (page - 1) * propertiesPerPage + 1;
+            const endIndex = Math.min(startIndex + propertiesPerPage - 1, totalProperties);
             
             let html = '';
-            for (let i = startIndex + 1; i <= Math.min(endIndex, totalProperties); i++) {
+            for (let i = startIndex; i <= endIndex; i++) {
                 const property = properties[i];
                 if (!property) continue;
 
@@ -695,7 +1059,7 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card property-card">
                             <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
-                            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="${property.title}">
+                            <img src="${property.image}" class="card-img-top property-img" alt="${property.title}">
                             <div class="card-body">
                                 <h5 class="card-title">${property.title}</h5>
                                 <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
@@ -732,17 +1096,13 @@
                 propertyList.innerHTML += html;
             }
 
-            console.log('Imóveis carregados, total:', document.querySelectorAll('.property-card').length); // Debug
             updateLoadMoreButton();
         }
 
         // Função para atualizar o botão "Ver Mais"
         function updateLoadMoreButton() {
             const loadMoreBtn = document.getElementById('loadMoreBtn');
-            if (!loadMoreBtn) {
-                console.error('Botão loadMoreBtn não encontrado!');
-                return;
-            }
+            if (!loadMoreBtn) return;
 
             const totalPages = Math.ceil(totalProperties / propertiesPerPage);
             
@@ -760,9 +1120,33 @@
             loadProperties(currentPage);
         }
 
+        // Função para inicializar o mapa
+        function initMap(propertyId, containerId, height = 400) {
+            const property = properties[propertyId];
+            if (!property) return null;
+            
+            const mapContainer = document.createElement('div');
+            mapContainer.className = height === 400 ? 'unified-map' : 'property-map-mini';
+            mapContainer.id = containerId;
+            
+            // Inicializar o mapa
+            const map = L.map(mapContainer).setView([property.lat, property.lng], 15);
+            
+            // Adicionar camada do mapa
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Adicionar marcador
+            const marker = L.marker([property.lat, property.lng]).addTo(map)
+                .bindPopup(`<b>${property.title}</b><br>${property.address}`)
+                .openPopup();
+            
+            return mapContainer;
+        }
+
         // Inicialização do modal e eventos
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM carregado, iniciando scripts'); // Debug
             // Carregar primeira página de imóveis
             loadProperties(currentPage);
 
@@ -770,29 +1154,6 @@
             const loadMoreBtn = document.getElementById('loadMoreBtn');
             if (loadMoreBtn) {
                 loadMoreBtn.addEventListener('click', loadMoreProperties);
-                console.log('Evento de loadMoreBtn registrado'); // Debug
-            } else {
-                console.error('Botão loadMoreBtn não encontrado no DOM');
-            }
-
-            // Evento para o formulário de newsletter
-            const newsletterForm = document.querySelector('.newsletter-form');
-            if (newsletterForm) {
-                newsletterForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const email = this.querySelector('input[type="email"]').value;
-                    const accept = this.querySelector('#newsletterAccept').checked;
-                    
-                    if (accept) {
-                        alert('Obrigado por se cadastrar em nossa newsletter!');
-                        this.reset();
-                    } else {
-                        alert('Por favor, aceite os termos para se cadastrar.');
-                    }
-                });
-                console.log('Evento de newsletter registrado'); // Debug
-            } else {
-                console.error('Formulário de newsletter não encontrado');
             }
 
             // Evento para botões "Nova Guia"
@@ -801,32 +1162,103 @@
                     e.preventDefault();
                     const button = e.target.closest('.new-tab-btn');
                     const propertyId = button.getAttribute('data-property-id');
-                    console.log('Botão Nova Guia clicado, ID:', propertyId); // Debug
                     if (propertyId) {
                         const property = properties[propertyId];
                         if (property) {
-                            const baseUrl = window.location.origin + window.location.pathname.replace(/\/$/, '');
-                            const detailUrl = `${baseUrl}/property-detail.html?id=${propertyId}`;
-                            console.log('Tentando abrir URL:', detailUrl); // Debug
-                            fetch(detailUrl)
-                                .then(response => {
-                                    console.log('Fetch status:', response.status); // Debug
-                                    if (response.ok) {
-                                        window.open(detailUrl, '_blank');
-                                    } else {
-                                        alert(`Detalhes do imóvel "${property.title}" ainda em desenvolvimento. Em breve disponível!`);
-                                        console.warn(`Arquivo property-detail.html não encontrado: ${detailUrl}`);
-                                    }
-                                })
-                                .catch(err => {
-                                    alert(`Erro ao carregar detalhes do imóvel "${property.title}". Tente novamente.`);
-                                    console.error('Erro no fetch:', err);
-                                });
-                        } else {
-                            console.error('Imóvel não encontrado para ID:', propertyId); // Debug
+                            // Criar página de detalhes em nova guia
+                            const newWindow = window.open('', '_blank');
+                            newWindow.document.write(`
+                                <!DOCTYPE html>
+                                <html>
+                                <head>
+                                    <title>${property.title} - Novatte Imóveis - Portal Imobiliário</title>
+                                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+                                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+                                    <style>
+                                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f8f9fa; }
+                                        .unified-map { height: 400px; border-radius: 8px; overflow: hidden; margin: 20px 0; }
+                                        .price-tag { font-weight: 700; color: #FE4700; }
+                                        .map-actions { margin-top: 15px; }
+                                        .unified-header { background-color: #f0f8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; }
+                                        .brand-nova { color: #003602; }
+                                        .brand-tte { color: #FE4700; }
+                                        .unified-property-image { height: 300px; object-fit: cover; border-radius: 8px; }
+                                        .unified-logo { height: 40px; width: 40px; margin-right: 10px; }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class="container">
+                                        <div class="unified-header">
+                                            <img src="src/assets/logo.png" alt="Logo Novatte Imóveis" class="unified-logo" onerror="this.style.display='none'">
+                                            <div>
+                                                <h1><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis</h1>
+                                                <p class="lead mb-0">Portal Imobiliário - Detalhes do Imóvel</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <h2>${property.title}</h2>
+                                        <p><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                                        <h3 class="price-tag">${property.price}</h3>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <img src="${property.image}" class="unified-property-image w-100" alt="${property.title}">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5>Detalhes do Imóvel</h5>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item"><i class="bi bi-house-door"></i> Área útil: ${property.size}</li>
+                                                    <li class="list-group-item"><i class="bi bi-door-closed"></i> Quartos: ${property.bedrooms}</li>
+                                                    <li class="list-group-item"><i class="bi bi-droplet"></i> Banheiros: ${property.bathrooms}</li>
+                                                    <li class="list-group-item"><i class="bi bi-car-front"></i> Vagas: ${property.parking}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4">
+                                            <h5>Localização</h5>
+                                            <p><i class="bi bi-geo-alt-fill"></i> ${property.address}</p>
+                                            <div id="property-map" class="unified-map"></div>
+                                            <div class="map-actions">
+                                                <button class="btn btn-primary" onclick="window.open('https://www.google.com/maps?q=${property.lat},${property.lng}', '_blank')">
+                                                    <i class="bi bi-arrow-up-right-square"></i> Abrir no Google Maps
+                                                </button>
+                                                <button class="btn btn-outline-secondary" onclick="window.open('https://www.google.com/maps/dir//${property.lat},${property.lng}', '_blank')">
+                                                    <i class="bi bi-signpost"></i> Traçar Rota
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4">
+                                            <h5>Descrição</h5>
+                                            <p>${property.description}</p>
+                                        </div>
+                                        
+                                        <div class="mt-4">
+                                            <a href="javascript:window.close()" class="btn btn-secondary">Fechar</a>
+                                            <button class="btn btn-success" onclick="window.open('https://wa.me/+5522981668036?text=Olá, tenho interesse no imóvel: ${encodeURIComponent(property.title)} - ${encodeURIComponent(property.price)}', '_blank')">
+                                                <i class="bi bi-whatsapp"></i> Entrar em Contato
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"><\/script>
+                                    <script>
+                                        // Inicializar mapa
+                                        const map = L.map('property-map').setView([${property.lat}, ${property.lng}], 15);
+                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                            attribution: '&copy; OpenStreetMap contributors'
+                                        }).addTo(map);
+                                        L.marker([${property.lat}, ${property.lng}]).addTo(map)
+                                            .bindPopup('<b>${property.title}</b><br>${property.address}')
+                                            .openPopup();
+                                    <\/script>
+                                </body>
+                                </html>
+                            `);
+                            newWindow.document.close();
                         }
-                    } else {
-                        console.error('ID do imóvel não encontrado no botão'); // Debug
                     }
                 }
             });
@@ -836,7 +1268,6 @@
                 if (e.target.closest('.whatsapp-btn')) {
                     const button = e.target.closest('.whatsapp-btn');
                     const propertyId = button.getAttribute('data-property-id');
-                    console.log('Botão WhatsApp clicado, ID:', propertyId); // Debug
                     if (propertyId) {
                         const property = properties[propertyId];
                         if (property) {
@@ -848,17 +1279,16 @@
                 }
             });
 
-            // Evento para o modal
+            // Evento para o modal (AGORA IDÊNTICO À NOVA GUIA)
             const propertyModal = document.getElementById('propertyModal');
             if (propertyModal) {
                 propertyModal.addEventListener('show.bs.modal', function(event) {
-                    console.log('Modal de detalhes aberto'); // Debug
                     const button = event.relatedTarget;
                     const propertyId = button.getAttribute('data-property-id');
                     const property = properties[propertyId];
 
                     if (!property) {
-                        console.error('Imóvel não encontrado para modal, ID:', propertyId); // Debug
+                        console.error('Imóvel não encontrado para modal, ID:', propertyId);
                         return;
                     }
 
@@ -867,75 +1297,100 @@
 
                     modalTitle.textContent = property.title;
 
+                    // CONTEÚDO IDÊNTICO AO DA NOVA GUIA
                     modalBody.innerHTML = `
-                        <div class="detail-header">
-                            <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'}">${property.type}</span>
-                            <h3 class="mt-2">${property.title}</h3>
-                            <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location}</p>
-                            <h4 class="price-tag">${property.price}</h4>
+                        <div class="unified-header">
+                            <img src="src/assets/logo.png" alt="Logo Novatte Imóveis" class="unified-logo" onerror="this.style.display='none'">
+                            <div>
+                                <h1><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis</h1>
+                                <p class="lead mb-0">Portal Imobiliário - Detalhes do Imóvel</p>
+                            </div>
                         </div>
-                        <div class="row mb-4">
-                            <div class="col-md-7">
-                                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="d-block w-100 property-detail-img" alt="${property.title}">
+                        
+                        <h2>${property.title}</h2>
+                        <p><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                        <h3 class="price-tag">${property.price}</h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="${property.image}" class="unified-property-image w-100" alt="${property.title}">
                             </div>
-                            <div class="col-md-5">
-                                <div class="mb-3 p-3 bg-light rounded">
-                                    <h5>Resumo do Imóvel</h5>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span><i class="bi bi-house-door"></i> Área útil:</span>
-                                        <span>${property.size}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span><i class="bi bi-droplet"></i> Banheiros:</span>
-                                        <span>${property.bathrooms}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span><i class="bi bi-door-closed"></i> Quartos:</span>
-                                        <span>${property.bedrooms}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span><i class="bi bi-car-front"></i> Vagas:</span>
-                                        <span>${property.parking}</span>
-                                    </div>
-                                </div>
-                                <div class="contact-form">
-                                    <h5>Entre em Contato</h5>
-                                    <p>Interessado neste imóvel? Preencha o formulário abaixo que entraremos em contato.</p>
-                                    <form id="contactForm-${propertyId}">
-                                        <div class="mb-3">
-                                            <input type="text" class="form-control" placeholder="Seu nome" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <input type="email" class="form-control" placeholder="Seu email" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <input type="tel" class="form-control" placeholder="Seu telefone" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <textarea class="form-control" rows="3" placeholder="Sua mensagem">Tenho interesse no imóvel ${property.title}</textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100">Enviar Mensagem</button>
-                                    </form>
-                                </div>
+                            <div class="col-md-6">
+                                <h5>Detalhes do Imóvel</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-house-door"></i> Área útil: ${property.size}</li>
+                                    <li class="list-group-item"><i class="bi bi-door-closed"></i> Quartos: ${property.bedrooms}</li>
+                                    <li class="list-group-item"><i class="bi bi-droplet"></i> Banheiros: ${property.bathrooms}</li>
+                                    <li class="list-group-item"><i class="bi bi-car-front"></i> Vagas: ${property.parking}</li>
+                                </ul>
                             </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5>Localização</h5>
+                            <p><i class="bi bi-geo-alt-fill"></i> ${property.address}</p>
+                            <div id="property-map-${propertyId}" class="unified-map"></div>
+                            <div class="map-actions">
+                                <button class="btn btn-primary" onclick="openInGoogleMaps(${property.lat}, ${property.lng})">
+                                    <i class="bi bi-arrow-up-right-square"></i> Abrir no Google Maps
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="getDirections(${property.lat}, ${property.lng})">
+                                    <i class="bi bi-signpost"></i> Traçar Rota
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5>Descrição</h5>
+                            <p>${property.description}</p>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button class="btn btn-success" onclick="window.open('https://wa.me/+5522981668036?text=Olá, tenho interesse no imóvel: ${encodeURIComponent(property.title)} - ${encodeURIComponent(property.price)}', '_blank')">
+                                <i class="bi bi-whatsapp"></i> Entrar em Contato
+                            </button>
                         </div>
                     `;
 
-                    const form = document.getElementById(`contactForm-${propertyId}`);
-                    if (form) {
-                        form.addEventListener('submit', function(e) {
-                            e.preventDefault();
-                            alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
-                            const modal = bootstrap.Modal.getInstance(propertyModal);
-                            modal.hide();
-                        });
-                        console.log('Evento de formulário de contato registrado para ID:', propertyId); // Debug
-                    }
+                    // Inicializar o mapa
+                    setTimeout(() => {
+                        const mapContainer = document.getElementById(`property-map-${propertyId}`);
+                        if (mapContainer) {
+                            const mapElement = initMap(propertyId, `map-${propertyId}`, 400);
+                            if (mapElement) {
+                                mapContainer.appendChild(mapElement);
+                            }
+                        }
+                    }, 300);
                 });
-            } else {
-                console.error('Modal propertyModal não encontrado no DOM');
             }
         });
+
+        // Funções para ações do mapa
+        function openInGoogleMaps(lat, lng) {
+            const url = `https://www.google.com/maps?q=${lat},${lng}`;
+            window.open(url, '_blank');
+        }
+
+        function getDirections(lat, lng) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    const url = `https://www.google.com/maps/dir/${userLat},${userLng}/${lat},${lng}`;
+                    window.open(url, '_blank');
+                }, function(error) {
+                    // Se o usuário negar a localização ou ocorrer erro
+                    const url = `https://www.google.com/maps/dir//${lat},${lng}`;
+                    window.open(url, '_blank');
+                });
+            } else {
+                // Navegador não suporta geolocalização
+                const url = `https://www.google.com/maps/dir//${lat},${lng}`;
+                window.open(url, '_blank');
+            }
+        }
     </script>
 </body>
 </html>
