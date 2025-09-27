@@ -466,6 +466,157 @@
             align-items: center;
             gap: 5px;
         }
+
+        /* NOVOS ESTILOS PARA GALERIA DE FOTOS */
+        .property-gallery {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .main-image {
+            height: 400px;
+            object-fit: cover;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .thumbnail:hover, .thumbnail.active {
+            opacity: 1;
+            border-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        .image-counter {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .gallery-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .gallery-btn {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .gallery-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .gallery-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Modal para visualização ampliada das imagens */
+        .gallery-modal .modal-dialog {
+            max-width: 90%;
+            max-height: 90vh;
+        }
+        
+        .gallery-modal .modal-content {
+            background: transparent;
+            border: none;
+        }
+        
+        .gallery-modal .modal-body {
+            padding: 0;
+            text-align: center;
+        }
+        
+        .gallery-modal-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .gallery-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+        
+        .gallery-modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+        
+        .gallery-modal-prev {
+            left: 15px;
+        }
+        
+        .gallery-modal-next {
+            right: 15px;
+        }
+        
+        .gallery-modal-counter {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+        }
         
         @media (max-width: 768px) {
             .hero-section {
@@ -531,6 +682,20 @@
                 margin-right: 0;
                 margin-bottom: 10px;
             }
+            
+            /* Ajustes para galeria em mobile */
+            .main-image {
+                height: 250px;
+            }
+            
+            .thumbnail {
+                width: 60px;
+                height: 45px;
+            }
+            
+            .gallery-modal .modal-dialog {
+                max-width: 95%;
+            }
         }
         
         @media (max-width: 480px) {
@@ -562,6 +727,22 @@
             
             .unified-map {
                 height: 200px;
+            }
+            
+            /* Ajustes para galeria em telas muito pequenas */
+            .main-image {
+                height: 200px;
+            }
+            
+            .thumbnail {
+                width: 50px;
+                height: 40px;
+            }
+            
+            .gallery-modal-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -832,7 +1013,7 @@
         </div>
     </section>
 
-    <!-- Modal para Detalhes do Imóvel (AGORA IDÊNTICO À NOVA GUIA) -->
+    <!-- Modal para Detalhes do Imóvel (AGORA COM GALERIA DE FOTOS) -->
     <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -844,6 +1025,21 @@
                     <div id="property-detail-content" class="unified-view">
                         <!-- Conteúdo será carregado via JavaScript -->
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Galeria de Fotos -->
+    <div class="modal fade gallery-modal" id="galleryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn gallery-modal-close" data-bs-dismiss="modal" aria-label="Fechar galeria">&times;</button>
+                <div class="modal-body">
+                    <img id="galleryModalImg" class="gallery-modal-img" src="" alt="">
+                    <div id="galleryModalCounter" class="gallery-modal-counter"></div>
+                    <button id="galleryModalPrev" class="gallery-modal-nav gallery-modal-prev">&lt;</button>
+                    <button id="galleryModalNext" class="gallery-modal-nav gallery-modal-next">&gt;</button>
                 </div>
             </div>
         </div>
@@ -913,7 +1109,7 @@
             }
         };
 
-        // Dados dos imóveis com coordenadas geográficas - AGORA COM 10 IMÓVEIS (como no GitHub)
+        // Dados dos imóveis com coordenadas geográficas - AGORA COM MÚLTIPLAS FOTOS
         const properties = {
             1: { 
                 title: "Casa Moderna com Piscina", 
@@ -927,7 +1123,12 @@
                 address: "Rua das Flores, 123, Centro, Itaperuna - RJ",
                 lat: -21.2059, 
                 lng: -41.8879,
-                image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Excelente casa moderna com piscina, área gourmet e acabamento de alto padrão. Localizada em região nobre de Itaperuna, próxima a comércios e escolas.",
                 corretor: "italo"
             },
@@ -943,7 +1144,11 @@
                 address: "Avenida Central, 456, Centro, Santo Antônio de Pádua - RJ",
                 lat: -21.5394, 
                 lng: -42.1803,
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Apartamento bem localizado no centro de Santo Antônio de Pádua, com varanda gourmet e acabamentos modernos. Próximo a bancos, mercados e farmácias.",
                 corretor: "bruna"
             },
@@ -959,7 +1164,11 @@
                 address: "Travessa da Paz, 789, Bairro Novo, Miracema - RJ",
                 lat: -21.4122, 
                 lng: -42.1968,
-                image: "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Casa espaçosa ideal para família, com jardim amplo, área de lazer e garagem para dois carros. Localizada em bairro tranquilo de Miracema.",
                 corretor: "italo"
             },
@@ -975,7 +1184,10 @@
                 address: "Rua Principal, 321, Centro, Itaocara - RJ",
                 lat: -21.6692, 
                 lng: -42.0761,
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Casa bem conservada a poucos minutos do centro de Itaocara. Possui quintal espaçoso e área de serviço coberta.",
                 corretor: "bruna"
             },
@@ -991,7 +1203,10 @@
                 address: "Estrada Rural, S/N, Zona Rural, Aperibé - RJ",
                 lat: -21.6253, 
                 lng: -42.1039,
-                image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Sítio com ampla área verde, ideal para quem busca tranquilidade e contato com a natureza. Possui casa principal, área de lazer e pomar.",
                 corretor: "italo"
             },
@@ -1007,7 +1222,10 @@
                 address: "Rua das Palmeiras, 654, Centro, Cambuci - RJ",
                 lat: -21.5753, 
                 lng: -41.9111,
-                image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Apartamento totalmente reformado, com acabamentos modernos e boa localização no centro de Cambuci. Próximo a comércios e serviços.",
                 corretor: "bruna"
             },
@@ -1023,7 +1241,10 @@
                 address: "Alto da Colina, 1000, Bairro Alto, Itaperuna - RJ",
                 lat: -21.1959, 
                 lng: -41.8779,
-                image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Casa com vista panorâmica da cidade, em local privilegiado de Itaperuna. Acabamento de alto padrão e área de lazer completa.",
                 corretor: "italo"
             },
@@ -1039,7 +1260,9 @@
                 address: "Rua das Acácias, 222, Centro, Miracema - RJ",
                 lat: -21.4222, 
                 lng: -42.1868,
-                image: "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Apartamento compacto e aconchegante, ideal para solteiros ou casais. Bem localizado no centro de Miracema, próximo a tudo.",
                 corretor: "bruna"
             },
@@ -1055,7 +1278,10 @@
                 address: "Rua das Hortênsias, 555, Vila Nova, Santo Antônio de Pádua - RJ",
                 lat: -21.5494, 
                 lng: -42.1703,
-                image: "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Casa térrea espaçosa com quintal amplo, localizada em bairro residencial tranquilo de Santo Antônio de Pádua.",
                 corretor: "italo"
             },
@@ -1071,11 +1297,17 @@
                 address: "Rua dos Ipês, 777, Bairro Jardim, Itaocara - RJ",
                 lat: -21.6592, 
                 lng: -42.0861,
-                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
                 description: "Casa com quintal grande, ideal para crianças e pets. Localizada em bairro tranquilo de Itaocara, com fácil acesso ao centro.",
                 corretor: "bruna"
             }
         };
+
+        // Variáveis para controle de galeria
+        let currentGalleryImages = [];
+        let currentGalleryIndex = 0;
 
         // Variáveis para controle de paginação
         let currentPage = 1;
@@ -1099,7 +1331,7 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card property-card">
                             <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
-                            <img src="${property.image}" class="card-img-top property-img" alt="${property.title}">
+                            <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
                             <div class="card-body">
                                 <h5 class="card-title">${property.title}</h5>
                                 <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
@@ -1190,6 +1422,158 @@
             return `Olá ${corretor.nome}, fiquei interessado no anúncio que vi no portal da Novatte: ${property.title} - ${property.price}. Poderia me retornar mais informações?`;
         }
 
+        // Função para criar galeria de fotos
+        function createGallery(propertyId) {
+            const property = properties[propertyId];
+            if (!property || !property.images || property.images.length === 0) return '';
+
+            const images = property.images;
+            let thumbnailsHtml = '';
+            
+            images.forEach((img, index) => {
+                thumbnailsHtml += `
+                    <img src="${img}" class="thumbnail ${index === 0 ? 'active' : ''}" 
+                         onclick="changeMainImage(${propertyId}, ${index})" 
+                         alt="${property.title} - Foto ${index + 1}">
+                `;
+            });
+
+            return `
+                <div class="property-gallery">
+                    <div class="image-counter">1/${images.length}</div>
+                    <img src="${images[0]}" class="main-image" 
+                         onclick="openGalleryModal(${propertyId}, 0)" 
+                         alt="${property.title}">
+                    <div class="thumbnail-container">
+                        ${thumbnailsHtml}
+                    </div>
+                    ${images.length > 1 ? `
+                    <div class="gallery-controls">
+                        <button class="gallery-btn" onclick="prevImage(${propertyId})" id="prevBtn-${propertyId}">
+                            <i class="bi bi-chevron-left"></i> Anterior
+                        </button>
+                        <button class="gallery-btn" onclick="nextImage(${propertyId})" id="nextBtn-${propertyId}">
+                            Próxima <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Função para mudar a imagem principal
+        function changeMainImage(propertyId, index) {
+            const property = properties[propertyId];
+            if (!property || !property.images) return;
+
+            // Atualizar imagem principal
+            const mainImage = document.querySelector(`#property-detail-content .main-image`);
+            if (mainImage) {
+                mainImage.src = property.images[index];
+                mainImage.setAttribute('onclick', `openGalleryModal(${propertyId}, ${index})`);
+            }
+
+            // Atualizar contador
+            const counter = document.querySelector(`#property-detail-content .image-counter`);
+            if (counter) {
+                counter.textContent = `${index + 1}/${property.images.length}`;
+            }
+
+            // Atualizar miniaturas ativas
+            document.querySelectorAll(`#property-detail-content .thumbnail`).forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+
+            // Atualizar controles de navegação
+            updateGalleryControls(propertyId, index);
+        }
+
+        // Função para navegar para a imagem anterior
+        function prevImage(propertyId) {
+            const property = properties[propertyId];
+            if (!property || !property.images) return;
+
+            const currentIndex = getCurrentImageIndex(propertyId);
+            const newIndex = currentIndex > 0 ? currentIndex - 1 : property.images.length - 1;
+            changeMainImage(propertyId, newIndex);
+        }
+
+        // Função para navegar para a próxima imagem
+        function nextImage(propertyId) {
+            const property = properties[propertyId];
+            if (!property || !property.images) return;
+
+            const currentIndex = getCurrentImageIndex(propertyId);
+            const newIndex = currentIndex < property.images.length - 1 ? currentIndex + 1 : 0;
+            changeMainImage(propertyId, newIndex);
+        }
+
+        // Função para obter o índice da imagem atual
+        function getCurrentImageIndex(propertyId) {
+            const property = properties[propertyId];
+            if (!property || !property.images) return 0;
+
+            const mainImage = document.querySelector(`#property-detail-content .main-image`);
+            if (!mainImage) return 0;
+
+            const currentSrc = mainImage.src;
+            return property.images.findIndex(img => img === currentSrc);
+        }
+
+        // Função para atualizar controles da galeria
+        function updateGalleryControls(propertyId, currentIndex) {
+            const property = properties[propertyId];
+            if (!property || !property.images) return;
+
+            const prevBtn = document.getElementById(`prevBtn-${propertyId}`);
+            const nextBtn = document.getElementById(`nextBtn-${propertyId}`);
+
+            if (prevBtn && nextBtn) {
+                // Sempre habilitados para galeria circular
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }
+        }
+
+        // Função para abrir modal da galeria
+        function openGalleryModal(propertyId, startIndex = 0) {
+            const property = properties[propertyId];
+            if (!property || !property.images) return;
+
+            currentGalleryImages = property.images;
+            currentGalleryIndex = startIndex;
+
+            const modalImg = document.getElementById('galleryModalImg');
+            const modalCounter = document.getElementById('galleryModalCounter');
+
+            if (modalImg && modalCounter) {
+                modalImg.src = currentGalleryImages[currentGalleryIndex];
+                modalCounter.textContent = `${currentGalleryIndex + 1}/${currentGalleryImages.length}`;
+            }
+
+            const galleryModal = new bootstrap.Modal(document.getElementById('galleryModal'));
+            galleryModal.show();
+        }
+
+        // Função para navegar no modal da galeria
+        function navigateGallery(direction) {
+            if (currentGalleryImages.length === 0) return;
+
+            if (direction === 'prev') {
+                currentGalleryIndex = currentGalleryIndex > 0 ? currentGalleryIndex - 1 : currentGalleryImages.length - 1;
+            } else {
+                currentGalleryIndex = currentGalleryIndex < currentGalleryImages.length - 1 ? currentGalleryIndex + 1 : 0;
+            }
+
+            const modalImg = document.getElementById('galleryModalImg');
+            const modalCounter = document.getElementById('galleryModalCounter');
+
+            if (modalImg && modalCounter) {
+                modalImg.src = currentGalleryImages[currentGalleryIndex];
+                modalCounter.textContent = `${currentGalleryIndex + 1}/${currentGalleryImages.length}`;
+            }
+        }
+
         // Inicialização do modal e eventos
         document.addEventListener('DOMContentLoaded', function() {
             // Carregar primeira página de imóveis
@@ -1238,6 +1622,15 @@
                                         .corretor-name { font-weight: 600; color: #003602; margin-bottom: 5px; font-size: 1.1rem; }
                                         .corretor-type { color: #FE4700; font-size: 0.9rem; margin-bottom: 5px; }
                                         .corretor-creci { color: #333; font-size: 0.85rem; margin-bottom: 5px; }
+                                        /* Estilos da galeria para nova guia */
+                                        .property-gallery { position: relative; margin-bottom: 20px; }
+                                        .main-image { height: 400px; object-fit: cover; width: 100%; border-radius: 8px; cursor: pointer; }
+                                        .thumbnail-container { display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; padding: 10px 0; }
+                                        .thumbnail { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer; opacity: 0.7; transition: all 0.3s ease; border: 2px solid transparent; }
+                                        .thumbnail:hover, .thumbnail.active { opacity: 1; border-color: #FE4700; }
+                                        .image-counter { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 20px; }
+                                        .gallery-controls { display: flex; justify-content: space-between; margin-top: 10px; }
+                                        .gallery-btn { background-color: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
                                     </style>
                                 </head>
                                 <body>
@@ -1254,10 +1647,10 @@
                                         <p><i class="bi bi-geo-alt"></i> ${property.location}</p>
                                         <h3 class="price-tag">${property.price}</h3>
                                         
+                                        <!-- Galeria de Fotos -->
+                                        ${createGallery(propertyId)}
+                                        
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <img src="${property.image}" class="unified-property-image w-100" alt="${property.title}">
-                                            </div>
                                             <div class="col-md-6">
                                                 <h5>Detalhes do Imóvel</h5>
                                                 <ul class="list-group">
@@ -1324,6 +1717,46 @@
                                         function createWhatsAppMessage(property, corretor) {
                                             return "Olá " + corretor.nome + ", fiquei interessado no anúncio que vi no portal da Novatte: " + property.title + " - " + property.price + ". Poderia me retornar mais informações?";
                                         }
+                                        
+                                        // Funções da galeria para nova guia
+                                        function changeMainImage(index) {
+                                            const images = ${JSON.stringify(property.images)};
+                                            const mainImage = document.querySelector('.main-image');
+                                            const counter = document.querySelector('.image-counter');
+                                            
+                                            if (mainImage && counter) {
+                                                mainImage.src = images[index];
+                                                counter.textContent = (index + 1) + '/' + images.length;
+                                                
+                                                // Atualizar miniaturas ativas
+                                                document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                                                    thumb.classList.toggle('active', i === index);
+                                                });
+                                            }
+                                        }
+                                        
+                                        function prevImage() {
+                                            const images = ${JSON.stringify(property.images)};
+                                            const currentIndex = getCurrentImageIndex();
+                                            const newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+                                            changeMainImage(newIndex);
+                                        }
+                                        
+                                        function nextImage() {
+                                            const images = ${JSON.stringify(property.images)};
+                                            const currentIndex = getCurrentImageIndex();
+                                            const newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+                                            changeMainImage(newIndex);
+                                        }
+                                        
+                                        function getCurrentImageIndex() {
+                                            const images = ${JSON.stringify(property.images)};
+                                            const mainImage = document.querySelector('.main-image');
+                                            if (!mainImage) return 0;
+                                            
+                                            const currentSrc = mainImage.src;
+                                            return images.findIndex(img => img === currentSrc);
+                                        }
                                     <\/script>
                                 </body>
                                 </html>
@@ -1351,7 +1784,7 @@
                 }
             });
 
-            // Evento para o modal (AGORA IDÊNTICO À NOVA GUIA)
+            // Evento para o modal (AGORA COM GALERIA DE FOTOS)
             const propertyModal = document.getElementById('propertyModal');
             if (propertyModal) {
                 propertyModal.addEventListener('show.bs.modal', function(event) {
@@ -1370,7 +1803,7 @@
 
                     modalTitle.textContent = property.title;
 
-                    // CONTEÚDO IDÊNTICO AO DA NOVA GUIA
+                    // CONTEÚDO COM GALERIA DE FOTOS
                     modalBody.innerHTML = `
                         <div class="unified-header">
                             <img src="assets/logo.png" alt="Logo Novatte Imóveis" class="unified-logo" onerror="this.style.display='none'">
@@ -1384,10 +1817,10 @@
                         <p><i class="bi bi-geo-alt"></i> ${property.location}</p>
                         <h3 class="price-tag">${property.price}</h3>
                         
+                        <!-- Galeria de Fotos -->
+                        ${createGallery(propertyId)}
+                        
                         <div class="row">
-                            <div class="col-md-6">
-                                <img src="${property.image}" class="unified-property-image w-100" alt="${property.title}">
-                            </div>
                             <div class="col-md-6">
                                 <h5>Detalhes do Imóvel</h5>
                                 <ul class="list-group">
@@ -1451,6 +1884,24 @@
                     }, 300);
                 });
             }
+
+            // Eventos para navegação do modal da galeria
+            document.getElementById('galleryModalPrev')?.addEventListener('click', () => navigateGallery('prev'));
+            document.getElementById('galleryModalNext')?.addEventListener('click', () => navigateGallery('next'));
+
+            // Evento para teclado no modal da galeria
+            document.addEventListener('keydown', function(e) {
+                const galleryModal = document.getElementById('galleryModal');
+                if (galleryModal && galleryModal.classList.contains('show')) {
+                    if (e.key === 'ArrowLeft') {
+                        navigateGallery('prev');
+                    } else if (e.key === 'ArrowRight') {
+                        navigateGallery('next');
+                    } else if (e.key === 'Escape') {
+                        bootstrap.Modal.getInstance(galleryModal).hide();
+                    }
+                }
+            });
         });
 
         // Funções para ações do mapa
