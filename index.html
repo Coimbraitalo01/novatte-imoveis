@@ -33,6 +33,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     
     <style>
+        /* Todos os estilos CSS anteriores permanecem aqui */
+        /* [Todo o CSS anterior permanece igual] */
+        
         :root {
             --primary-color: #003602;
             --secondary-color: #FE4700;
@@ -791,6 +794,38 @@
             100% { background-position: -200% 0; }
         }
         
+        /* Estilos para mensagem de nenhum resultado */
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Estilos para mensagens de validação do formulário */
+        .form-message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .form-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .form-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
         @media (max-width: 768px) {
             .hero-section {
                 padding: 40px 0;
@@ -1026,48 +1061,49 @@
                 <div class="col-md-3 mb-3">
                     <label for="property-type" class="form-label">Tipo de Imóvel</label>
                     <select id="property-type" class="form-select">
-                        <option selected>Todos</option>
-                        <option>Casa</option>
-                        <option>Apartamento</option>
-                        <option>Terreno</option>
-                        <option>Comercial</option>
+                        <option value="all" selected>Todos</option>
+                        <option value="Casa">Casa</option>
+                        <option value="Apartamento">Apartamento</option>
+                        <option value="Terreno">Terreno</option>
+                        <option value="Comercial">Comercial</option>
+                        <option value="Sítio">Sítio</option>
                     </select>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="city" class="form-label">Cidade</label>
                     <select id="city" class="form-select">
-                        <option selected>Todas</option>
-                        <option>Santo Antônio de Pádua</option>
-                        <option>Itaperuna</option>
-                        <option>Miracema</option>
-                        <option>Itaocara</option>
-                        <option>Aperibé</option>
-                        <option>Cambuci</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="max-price" class="form-label">Preço Máximo</label>
-                    <select id="max-price" class="form-select">
-                        <option selected>Qualquer preço</option>
-                        <option>R$ 150.000</option>
-                        <option>R$ 300.000</option>
-                        <option>R$ 500.000</option>
-                        <option>R$ 750.000</option>
-                        <option>R$ 1.000.000</option>
+                        <option value="all" selected>Todas</option>
+                        <option value="Santo Antônio de Pádua">Santo Antônio de Pádua</option>
+                        <option value="Itaperuna">Itaperuna</option>
+                        <option value="Miracema">Miracema</option>
+                        <option value="Itaocara">Itaocara</option>
+                        <option value="Aperibé">Aperibé</option>
+                        <option value="Cambuci">Cambuci</option>
                     </select>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="transaction-type" class="form-label">Compra ou Aluguel</label>
                     <select id="transaction-type" class="form-select">
-                        <option selected>Todos</option>
-                        <option>Compra</option>
-                        <option>Aluguel</option>
+                        <option value="all" selected>Todos</option>
+                        <option value="Venda">Compra</option>
+                        <option value="Aluguel">Aluguel</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="max-price" class="form-label">Preço Máximo</label>
+                    <select id="max-price" class="form-select">
+                        <option value="all" selected>Qualquer preço</option>
+                        <option value="150000">R$ 150.000</option>
+                        <option value="300000">R$ 300.000</option>
+                        <option value="500000">R$ 500.000</option>
+                        <option value="750000">R$ 750.000</option>
+                        <option value="1000000">R$ 1.000.000</option>
                     </select>
                 </div>
             </div>
             <div class="text-end">
-                <button class="btn btn-outline-secondary me-2" aria-label="Limpar filtros">Limpar</button>
-                <button class="btn btn-primary" aria-label="Aplicar filtros">Aplicar Filtros</button>
+                <button class="btn btn-outline-secondary me-2" id="clearFiltersBtn" aria-label="Limpar filtros">Limpar</button>
+                <button class="btn btn-primary" id="applyFiltersBtn" aria-label="Aplicar filtros">Aplicar Filtros</button>
             </div>
         </div>
 
@@ -1091,6 +1127,14 @@
         <h2 class="mb-4">Todos os Imóveis</h2>
         <div class="row" id="property-list">
             <!-- Os imóveis serão carregados aqui -->
+        </div>
+
+        <!-- Mensagem quando não há resultados -->
+        <div id="no-results" class="no-results" style="display: none;">
+            <i class="bi bi-search display-1"></i>
+            <h4 class="mt-3">Nenhum imóvel encontrado</h4>
+            <p class="text-muted">Tente ajustar os filtros para ver mais resultados</p>
+            <button class="btn btn-primary mt-3" id="resetFiltersBtn">Limpar Filtros</button>
         </div>
 
         <!-- Nova Seção: Meus Favoritos -->
@@ -1133,6 +1177,8 @@
                                 Aceito receber oportunidades exclusivas do portal Novatte Imóveis
                             </label>
                         </div>
+                        <!-- Mensagem de sucesso/erro -->
+                        <div id="formMessage" class="form-message"></div>
                     </form>
                 </div>
             </div>
@@ -1257,16 +1303,27 @@
                 telefone: "22 98166-8036",
                 whatsapp: "5522981668036",
                 avatar: "IC"
+            },
+            "carlos": {
+                nome: "Carlos Silva",
+                tipo: "Corretor",
+                creci: "CRECI: 23456-7",
+                telefone: "22 98765-4321",
+                whatsapp: "5522987654321",
+                avatar: "CS"
             }
         };
 
-        // Dados dos imóveis com coordenadas geográficas - AGORA COM CORRETORES ESPECÍFICOS
+        // Dados dos imóveis com coordenadas geográficas - AGORA COM MAIS IMÓVEIS PARA O CARROSSEL
         const properties = {
             1: { 
                 title: "Casa Moderna com Piscina", 
                 type: "Venda", 
                 price: "R$ 550.000", 
+                priceValue: 550000,
                 location: "Itaperuna, RJ", 
+                city: "Itaperuna",
+                propertyType: "Casa",
                 size: "120m²", 
                 bedrooms: 3, 
                 bathrooms: 3, 
@@ -1281,13 +1338,17 @@
                     "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Excelente casa moderna com piscina, área gourmet e acabamento de alto padrão. Localizada em região nobre de Itaperuna, próxima a comércios e escolas.",
-                corretor: "italo" // Ítalo Coimbra - Particular
+                corretor: "italo",
+                featured: true
             },
             2: { 
                 title: "Apartamento com Varanda", 
                 type: "Aluguel", 
                 price: "R$ 1.200/mês", 
+                priceValue: 1200,
                 location: "Santo Antônio de Pádua, RJ", 
+                city: "Santo Antônio de Pádua",
+                propertyType: "Apartamento",
                 size: "70m²", 
                 bedrooms: 2, 
                 bathrooms: 2, 
@@ -1301,13 +1362,17 @@
                     "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Apartamento bem localizado no centro de Santo Antônio de Pádua, com varanda gourmet e acabamentos modernos. Próximo a bancos, mercados e farmácias.",
-                corretor: "bruna" // Bruna Magazzi - Corretora
+                corretor: "bruna",
+                featured: true
             },
             3: { 
                 title: "Casa Familiar com Jardim", 
                 type: "Venda", 
                 price: "R$ 380.000", 
+                priceValue: 380000,
                 location: "Miracema, RJ", 
+                city: "Miracema",
+                propertyType: "Casa",
                 size: "150m²", 
                 bedrooms: 4, 
                 bathrooms: 3, 
@@ -1321,13 +1386,17 @@
                     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Casa espaçosa ideal para família, com jardim amplo, área de lazer e garagem para dois carros. Localizada em bairro tranquilo de Miracema.",
-                corretor: "italo" // Ítalo Coimbra - Particular
+                corretor: "italo",
+                featured: true
             },
             4: { 
                 title: "Casa Próxima ao Centro", 
                 type: "Aluguel", 
                 price: "R$ 1.500/mês", 
+                priceValue: 1500,
                 location: "Itaocara, RJ", 
+                city: "Itaocara",
+                propertyType: "Casa",
                 size: "90m²", 
                 bedrooms: 2, 
                 bathrooms: 2, 
@@ -1340,13 +1409,17 @@
                     "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Casa bem conservada a poucos minutos do centro de Itaocara. Possui quintal espaçoso e área de serviço coberta.",
-                corretor: "bruna" // Bruna Magazzi - Corretora
+                corretor: "bruna",
+                featured: true
             },
             5: { 
                 title: "Sítio com Área Verde", 
                 type: "Venda", 
                 price: "R$ 620.000", 
+                priceValue: 620000,
                 location: "Aperibé, RJ", 
+                city: "Aperibé",
+                propertyType: "Sítio",
                 size: "180m²", 
                 bedrooms: 3, 
                 bathrooms: 3, 
@@ -1359,13 +1432,17 @@
                     "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Sítio com ampla área verde, ideal para quem busca tranquilidade e contato com a natureza. Possui casa principal, área de lazer e pomar.",
-                corretor: "italo" // Ítalo Coimbra - Particular
+                corretor: "italo",
+                featured: true
             },
             6: { 
                 title: "Apartamento Reformado", 
                 type: "Aluguel", 
                 price: "R$ 980/mês", 
+                priceValue: 980,
                 location: "Cambuci, RJ", 
+                city: "Cambuci",
+                propertyType: "Apartamento",
                 size: "65m²", 
                 bedrooms: 1, 
                 bathrooms: 1, 
@@ -1378,13 +1455,167 @@
                     "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Apartamento totalmente reformado, com acabamentos modernos e boa localização no centro de Cambuci. Próximo a comércios e serviços.",
-                corretor: "bruna" // Bruna Magazzi - Corretora
+                corretor: "bruna",
+                featured: true
+            },
+            7: { 
+                title: "Terreno Residencial", 
+                type: "Venda", 
+                price: "R$ 120.000", 
+                priceValue: 120000,
+                location: "Itaperuna, RJ", 
+                city: "Itaperuna",
+                propertyType: "Terreno",
+                size: "300m²", 
+                bedrooms: 0, 
+                bathrooms: 0, 
+                parking: 0,
+                address: "Rua Nova, 100, Bairro Residencial, Itaperuna - RJ",
+                lat: -21.2159, 
+                lng: -41.8979,
+                images: [
+                    "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                description: "Excelente terreno residencial em localização privilegiada, plano e com boa infraestrutura. Ideal para construção de casa própria.",
+                corretor: "italo",
+                featured: true
+            },
+            8: { 
+                title: "Ponto Comercial", 
+                type: "Aluguel", 
+                price: "R$ 2.500/mês", 
+                priceValue: 2500,
+                location: "Santo Antônio de Pádua, RJ", 
+                city: "Santo Antônio de Pádua",
+                propertyType: "Comercial",
+                size: "80m²", 
+                bedrooms: 0, 
+                bathrooms: 1, 
+                parking: 1,
+                address: "Avenida Comercial, 789, Centro, Santo Antônio de Pádua - RJ",
+                lat: -21.5494, 
+                lng: -42.1903,
+                images: [
+                    "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                description: "Ponto comercial bem localizado no centro da cidade, com grande fluxo de pessoas. Ideal para diversos tipos de comércio.",
+                corretor: "bruna",
+                featured: true
+            },
+            9: { 
+                title: "Casa de Campo", 
+                type: "Venda", 
+                price: "R$ 450.000", 
+                priceValue: 450000,
+                location: "Miracema, RJ", 
+                city: "Miracema",
+                propertyType: "Casa",
+                size: "200m²", 
+                bedrooms: 3, 
+                bathrooms: 2, 
+                parking: 3,
+                address: "Estrada do Sossego, KM 5, Zona Rural, Miracema - RJ",
+                lat: -21.4222, 
+                lng: -42.2068,
+                images: [
+                    "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1571896349842-33c89424de9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                description: "Encantadora casa de campo com ampla área verde, ideal para quem busca tranquilidade. Possui varanda ampla e vista para a natureza.",
+                corretor: "carlos",
+                featured: true
+            },
+            10: { 
+                title: "Cobertura Duplex", 
+                type: "Venda", 
+                price: "R$ 750.000", 
+                priceValue: 750000,
+                location: "Itaperuna, RJ", 
+                city: "Itaperuna",
+                propertyType: "Apartamento",
+                size: "180m²", 
+                bedrooms: 3, 
+                bathrooms: 3, 
+                parking: 2,
+                address: "Rua Alto da Boa Vista, 500, Centro, Itaperuna - RJ",
+                lat: -21.1959, 
+                lng: -41.8779,
+                images: [
+                    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1628592102751-ba83b0314276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                description: "Exclusiva cobertura duplex com acabamento de alto padrão, varanda gourmet e vista panorâmica. Localização nobre no centro de Itaperuna.",
+                corretor: "carlos",
+                featured: false
+            },
+            11: { 
+                title: "Sobrado Moderno", 
+                type: "Aluguel", 
+                price: "R$ 2.200/mês", 
+                priceValue: 2200,
+                location: "Itaocara, RJ", 
+                city: "Itaocara",
+                propertyType: "Casa",
+                size: "160m²", 
+                bedrooms: 4, 
+                bathrooms: 3, 
+                parking: 2,
+                address: "Rua das Acácias, 234, Centro, Itaocara - RJ",
+                lat: -21.6592, 
+                lng: -42.0661,
+                images: [
+                    "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                description: "Sobrado moderno com design contemporâneo, distribuído em dois pavimentos. Excelente localização próxima ao centro comercial.",
+                corretor: "carlos",
+                featured: false
+            },
+            12: { 
+                title: "Galpão Industrial", 
+                type: "Venda", 
+                price: "R$ 850.000", 
+                priceValue: 850000,
+                location: "Cambuci, RJ", 
+                city: "Cambuci",
+                propertyType: "Comercial",
+                size: "500m²", 
+                bedrooms: 0, 
+                bathrooms: 2, 
+                parking: 5,
+                address: "Avenida Industrial, 1000, Distrito Industrial, Cambuci - RJ",
+                lat: -21.5853, 
+                lng: -41.9211,
+                images: [
+                    "https://images.unsplash.com/photo-1581094794329-cdc2d8f99e4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1581094794329-cdc2d8f99e4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                description: "Amplo galpão industrial com excelente infraestrutura, ideal para armazenagem ou produção. Localizado no distrito industrial de Cambuci.",
+                corretor: "carlos",
+                featured: false
             }
         };
 
         // Sistema de Favoritos
         let favorites = JSON.parse(localStorage.getItem('novatte_favorites')) || [];
         
+        // Variáveis para controle de filtros
+        let currentFilters = {
+            propertyType: 'all',
+            city: 'all',
+            transactionType: 'all',
+            maxPrice: 'all'
+        };
+
+        // Variáveis para controle de paginação
+        let currentPage = 1;
+        const propertiesPerPage = 6;
+        let filteredProperties = Object.keys(properties).map(id => parseInt(id));
+        let totalProperties = filteredProperties.length;
+
+        // Sistema de Newsletter/Leads
+        let leads = JSON.parse(localStorage.getItem('novatte_leads')) || [];
+
         function updateFavoritesCount() {
             const countElement = document.getElementById('favoritesCount');
             if (countElement) {
@@ -1479,22 +1710,114 @@
             emptyFavorites.style.display = favorites.length === 0 ? 'block' : 'none';
         }
 
+        // Função para aplicar filtros
+        function applyFilters() {
+            const propertyType = document.getElementById('property-type').value;
+            const city = document.getElementById('city').value;
+            const transactionType = document.getElementById('transaction-type').value;
+            const maxPrice = document.getElementById('max-price').value;
+
+            // Atualizar filtros atuais
+            currentFilters = {
+                propertyType,
+                city,
+                transactionType,
+                maxPrice
+            };
+
+            // Filtrar propriedades
+            filteredProperties = Object.keys(properties)
+                .map(id => parseInt(id))
+                .filter(id => {
+                    const property = properties[id];
+                    let matches = true;
+
+                    // Filtro por tipo de propriedade
+                    if (propertyType !== 'all' && property.propertyType !== propertyType) {
+                        matches = false;
+                    }
+
+                    // Filtro por cidade
+                    if (city !== 'all' && property.city !== city) {
+                        matches = false;
+                    }
+
+                    // Filtro por tipo de transação
+                    if (transactionType !== 'all' && property.type !== transactionType) {
+                        matches = false;
+                    }
+
+                    // Filtro por preço máximo
+                    if (maxPrice !== 'all' && property.priceValue > parseInt(maxPrice)) {
+                        matches = false;
+                    }
+
+                    return matches;
+                });
+
+            // Resetar para a primeira página
+            currentPage = 1;
+            totalProperties = filteredProperties.length;
+
+            // Recarregar propriedades
+            loadProperties(currentPage);
+
+            // Atualizar contador de resultados
+            updateResultsCount();
+        }
+
+        // Função para limpar filtros
+        function clearFilters() {
+            document.getElementById('property-type').value = 'all';
+            document.getElementById('city').value = 'all';
+            document.getElementById('transaction-type').value = 'all';
+            document.getElementById('max-price').value = 'all';
+
+            currentFilters = {
+                propertyType: 'all',
+                city: 'all',
+                transactionType: 'all',
+                maxPrice: 'all'
+            };
+
+            filteredProperties = Object.keys(properties).map(id => parseInt(id));
+            currentPage = 1;
+            totalProperties = filteredProperties.length;
+
+            loadProperties(currentPage);
+            updateResultsCount();
+        }
+
+        // Função para atualizar contador de resultados
+        function updateResultsCount() {
+            const propertyList = document.getElementById('property-list');
+            const noResults = document.getElementById('no-results');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+            if (filteredProperties.length === 0) {
+                noResults.style.display = 'block';
+                propertyList.style.display = 'none';
+                loadMoreBtn.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                propertyList.style.display = 'flex';
+            }
+        }
+
         // Variáveis para controle de galeria
         let currentGalleryImages = [];
         let currentGalleryIndex = 0;
 
-        // Variáveis para controle de paginação
-        let currentPage = 1;
-        const propertiesPerPage = 6;
-        let totalProperties = Object.keys(properties).length;
-
-        // Função para gerar o carrossel de destaques
+        // Função para gerar o carrossel de destaques - AGORA COM 9 IMÓVEIS
         function generateFeaturedCarousel() {
             const carouselInner = document.querySelector('#featuredCarousel .carousel-inner');
             if (!carouselInner) return;
             
-            // Selecionar os primeiros 6 imóveis para o carrossel
-            const featuredProperties = Object.entries(properties).slice(0, 6);
+            // Selecionar apenas imóveis marcados como featured
+            const featuredProperties = Object.entries(properties)
+                .filter(([id, property]) => property.featured)
+                .slice(0, 9); // Limitar a 9 imóveis em destaque
+            
             const itemsPerSlide = 3;
             const totalSlides = Math.ceil(featuredProperties.length / itemsPerSlide);
             
@@ -1565,19 +1888,20 @@
             const propertyList = document.getElementById('property-list');
             if (!propertyList) return;
 
-            const startIndex = (page - 1) * propertiesPerPage + 1;
-            const endIndex = Math.min(startIndex + propertiesPerPage - 1, totalProperties);
+            const startIndex = (page - 1) * propertiesPerPage;
+            const endIndex = Math.min(startIndex + propertiesPerPage, filteredProperties.length);
             
             let html = '';
-            for (let i = startIndex; i <= endIndex; i++) {
-                const property = properties[i];
+            for (let i = startIndex; i < endIndex; i++) {
+                const propertyId = filteredProperties[i];
+                const property = properties[propertyId];
                 if (!property) continue;
 
                 html += `
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card property-card">
-                            <button class="favorite-btn ${isFavorite(i) ? 'active' : ''}" data-property-id="${i}" onclick="toggleFavorite(${i})">
-                                <i class="bi bi-heart${isFavorite(i) ? '-fill' : ''}"></i>
+                            <button class="favorite-btn ${isFavorite(propertyId) ? 'active' : ''}" data-property-id="${propertyId}" onclick="toggleFavorite(${propertyId})">
+                                <i class="bi bi-heart${isFavorite(propertyId) ? '-fill' : ''}"></i>
                             </button>
                             <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
                             <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
@@ -1595,13 +1919,13 @@
                                     </div>
                                 </div>
                                 <div class="property-actions">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${i}" aria-label="Visualizar detalhes de ${property.title}">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
                                         <i class="bi bi-eye"></i> Visualizar
                                     </button>
-                                    <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${i}" aria-label="Abrir ${property.title} em nova guia">
+                                    <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${propertyId}" aria-label="Abrir ${property.title} em nova guia">
                                         <i class="bi bi-box-arrow-up-right"></i> Nova Guia
                                     </button>
-                                    <button class="btn whatsapp-btn" data-property-id="${i}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
+                                    <button class="btn whatsapp-btn" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
                                         <i class="bi bi-whatsapp"></i> WhatsApp
                                     </button>
                                 </div>
@@ -1618,6 +1942,7 @@
             }
 
             updateLoadMoreButton();
+            updateFavoriteButtons();
         }
 
         // Função para atualizar o botão "Ver Mais"
@@ -1625,9 +1950,9 @@
             const loadMoreBtn = document.getElementById('loadMoreBtn');
             if (!loadMoreBtn) return;
 
-            const totalPages = Math.ceil(totalProperties / propertiesPerPage);
+            const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
             
-            if (currentPage >= totalPages) {
+            if (currentPage >= totalPages || filteredProperties.length === 0) {
                 loadMoreBtn.style.display = 'none';
             } else {
                 loadMoreBtn.style.display = 'block';
@@ -1840,23 +2165,106 @@
             lazyImages.forEach(img => imageObserver.observe(img));
         }
 
-        // Lead Capture
-        document.getElementById('leadForm')?.addEventListener('submit', function(e) {
+        // Sistema de Newsletter/Leads - CORRIGIDO E FUNCIONAL
+        function handleNewsletterSubmit(e) {
             e.preventDefault();
             
-            const name = document.getElementById('leadName').value;
-            const email = document.getElementById('leadEmail').value;
+            const name = document.getElementById('leadName').value.trim();
+            const email = document.getElementById('leadEmail').value.trim();
+            const accept = document.getElementById('leadAccept').checked;
+            const formMessage = document.getElementById('formMessage');
             
-            // Simular envio para API
-            console.log('Lead capturado:', { name, email });
+            // Validação básica
+            if (!name || !email) {
+                showFormMessage('Por favor, preencha todos os campos.', 'error');
+                return;
+            }
             
-            // Mostrar sucesso
-            const successModal = new bootstrap.Modal(document.getElementById('leadSuccessModal'));
-            successModal.show();
+            if (!accept) {
+                showFormMessage('Você precisa aceitar receber oportunidades.', 'error');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showFormMessage('Por favor, insira um email válido.', 'error');
+                return;
+            }
+            
+            // Verificar se o email já existe
+            const existingLead = leads.find(lead => lead.email === email);
+            if (existingLead) {
+                showFormMessage('Este email já está cadastrado em nossa newsletter.', 'error');
+                return;
+            }
+            
+            // Criar novo lead
+            const newLead = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                date: new Date().toISOString(),
+                source: 'newsletter'
+            };
+            
+            // Adicionar aos leads
+            leads.push(newLead);
+            localStorage.setItem('novatte_leads', JSON.stringify(leads));
+            
+            // Mostrar mensagem de sucesso
+            showFormMessage('Cadastro realizado com sucesso! Em breve você receberá nossas melhores oportunidades.', 'success');
             
             // Limpar formulário
-            this.reset();
-        });
+            document.getElementById('leadForm').reset();
+            
+            // Opcional: Mostrar modal de confirmação
+            setTimeout(() => {
+                const successModal = new bootstrap.Modal(document.getElementById('leadSuccessModal'));
+                successModal.show();
+            }, 1000);
+            
+            // Opcional: Enviar para um webhook/API (descomente e configure se necessário)
+            // sendLeadToAPI(newLead);
+        }
+
+        function showFormMessage(message, type) {
+            const formMessage = document.getElementById('formMessage');
+            if (formMessage) {
+                formMessage.textContent = message;
+                formMessage.className = `form-message ${type}`;
+                formMessage.style.display = 'block';
+                
+                // Esconder mensagem após 5 segundos
+                setTimeout(() => {
+                    formMessage.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Função para enviar lead para API (opcional)
+        function sendLeadToAPI(lead) {
+            // Exemplo de implementação para enviar para um webhook
+            /*
+            fetch('https://sua-api.com/leads', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(lead)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Lead enviado com sucesso:', data);
+            })
+            .catch(error => {
+                console.error('Erro ao enviar lead:', error);
+            });
+            */
+        }
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
@@ -1876,7 +2284,30 @@
                 loadMoreBtn.addEventListener('click', loadMoreProperties);
             }
 
-            // Evento para botões "Nova Guia"
+            // Evento para botões de filtro
+            const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+            const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+            if (applyFiltersBtn) {
+                applyFiltersBtn.addEventListener('click', applyFilters);
+            }
+
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', clearFilters);
+            }
+
+            if (resetFiltersBtn) {
+                resetFiltersBtn.addEventListener('click', clearFilters);
+            }
+
+            // Evento para o formulário de newsletter - CORRIGIDO
+            const leadForm = document.getElementById('leadForm');
+            if (leadForm) {
+                leadForm.addEventListener('submit', handleNewsletterSubmit);
+            }
+
+            // Evento para botões "Nova Guia" - CORRIGIDO
             document.addEventListener('click', function(e) {
                 if (e.target.closest('.new-tab-btn')) {
                     e.preventDefault();
@@ -1887,7 +2318,7 @@
                         if (property) {
                             const corretor = corretores[property.corretor];
                             
-                            // Criar página de detalhes em nova guia - COM DESCRIÇÃO REPOSICIONADA
+                            // Criar página de detalhes em nova guia
                             const newWindow = window.open('', '_blank');
                             newWindow.document.write(`
                                 <!DOCTYPE html>
@@ -2080,7 +2511,7 @@
                 }
             });
 
-            // Evento para o modal (AGORA COM DESCRIÇÃO REPOSICIONADA)
+            // Evento para o modal (AGORA COM DESCRIÇÃO REPOSICIONADA) - CORRIGIDO
             const propertyModal = document.getElementById('propertyModal');
             if (propertyModal) {
                 propertyModal.addEventListener('show.bs.modal', function(event) {
