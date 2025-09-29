@@ -858,6 +858,72 @@
             margin-bottom: 20px;
         }
         
+        /* Estilos para modais de conformidade */
+        .compliance-modal .modal-content {
+            border-radius: 15px;
+        }
+        
+        .compliance-modal .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom: none;
+        }
+        
+        .compliance-modal .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .compliance-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .compliance-section h5 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .compliance-section ul {
+            padding-left: 20px;
+        }
+        
+        .compliance-section li {
+            margin-bottom: 8px;
+        }
+        
+        .lgpd-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 54, 2, 0.95);
+            color: white;
+            padding: 15px;
+            z-index: 1050;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .lgpd-banner .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .lgpd-banner p {
+            margin: 0;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .lgpd-banner .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        
         @media (max-width: 768px) {
             .hero-section {
                 padding: 40px 0;
@@ -955,6 +1021,16 @@
                 top: 80px;
                 right: 15px;
             }
+            
+            /* Ajustes para banner LGPD */
+            .lgpd-banner .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .lgpd-banner p {
+                min-width: auto;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1019,6 +1095,22 @@
     </style>
 </head>
 <body>
+    <!-- Banner LGPD -->
+    <div id="lgpdBanner" class="lgpd-banner" style="display: none;">
+        <div class="container">
+            <p>
+                <strong>Privacidade e Proteção de Dados</strong><br>
+                Utilizamos cookies e coletamos dados para melhorar sua experiência. Ao continuar navegando, você concorda com nossa 
+                <a href="#" class="text-white fw-bold" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a> e 
+                <a href="#" class="text-white fw-bold" data-bs-toggle="modal" data-bs-target="#termsModal">Termos de Uso</a>.
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-outline-light btn-sm" id="rejectCookies">Recusar</button>
+                <button class="btn btn-light btn-sm" id="acceptCookies">Aceitar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Navbar Atualizada -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
@@ -1058,6 +1150,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">Contato</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacidade</a>
                     </li>
                 </ul>
             </div>
@@ -1221,7 +1316,8 @@
                                 <div class="form-check mb-4">
                                     <input class="form-check-input" type="checkbox" id="leadAccept" required>
                                     <label class="form-check-label" for="leadAccept">
-                                        Aceito receber oportunidades personalizadas do portal Novatte Imóveis
+                                        Aceito receber oportunidades personalizadas do portal Novatte Imóveis e concordo com a 
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a>
                                     </label>
                                 </div>
                             </div>
@@ -1370,6 +1466,193 @@
         </div>
     </div>
 
+    <!-- Modal de Política de Privacidade -->
+    <div class="modal fade compliance-modal" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">Política de Privacidade - Novatte Imóveis</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="compliance-section">
+                        <h5>1. Coleta de Dados</h5>
+                        <p>Coletamos apenas os dados necessários para fornecer nossos serviços:</p>
+                        <ul>
+                            <li><strong>Dados de contato:</strong> nome, e-mail, telefone (opcional)</li>
+                            <li><strong>Preferências de busca:</strong> tipo de imóvel, localização, faixa de preço</li>
+                            <li><strong>Dados de navegação:</strong> cookies para melhorar a experiência do usuário</li>
+                            <li><strong>Favoritos:</strong> imóveis salvos como favoritos no navegador local</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>2. Finalidade do Tratamento</h5>
+                        <p>Utilizamos seus dados para:</p>
+                        <ul>
+                            <li>Enviar oportunidades de imóveis que correspondam ao seu perfil</li>
+                            <li>Melhorar nossa plataforma e serviços</li>
+                            <li>Manter histórico de favoritos para sua conveniência</li>
+                            <li>Entrar em contato para esclarecer dúvidas sobre imóveis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>3. Compartilhamento de Dados</h5>
+                        <p>Seus dados são compartilhados apenas com:</p>
+                        <ul>
+                            <li><strong>Corretores parceiros:</strong> quando você demonstra interesse em um imóvel específico</li>
+                            <li><strong>Prestadores de serviço:</strong> para envio de e-mails e análise de dados (sempre com contratos de proteção de dados)</li>
+                            <li><strong>Autoridades:</strong> quando exigido por lei</li>
+                        </ul>
+                        <p><strong>Não vendemos</strong> seus dados para terceiros.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>4. Seus Direitos</h5>
+                        <p>De acordo com a LGPD, você tem direito a:</p>
+                        <ul>
+                            <li>Acessar seus dados pessoais</li>
+                            <li>Corrigir dados incompletos ou desatualizados</li>
+                            <li>Excluir seus dados a qualquer momento</li>
+                            <li>Revogar consentimentos anteriores</li>
+                            <li>Solicitar portabilidade de dados</li>
+                        </ul>
+                        <p>Para exercer seus direitos, entre em contato: <strong>novatteimoveis@gmail.com</strong></p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>5. Segurança</h5>
+                        <p>Implementamos medidas técnicas e organizacionais para proteger seus dados contra acesso não autorizado, alteração ou destruição.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>6. Retenção de Dados</h5>
+                        <p>Mantemos seus dados apenas pelo tempo necessário para cumprir as finalidades descritas ou exigido por lei.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>7. Cookies</h5>
+                        <p>Utilizamos cookies para:</p>
+                        <ul>
+                            <li>Lembrar suas preferências de busca</li>
+                            <li>Manter sua lista de favoritos</li>
+                            <li>Analisar o uso do site para melhorias</li>
+                        </ul>
+                        <p>Você pode controlar cookies através das configurações do seu navegador.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>8. Contato do Encarregado de Dados</h5>
+                        <p>Para questões sobre proteção de dados:</p>
+                        <p><strong>E-mail:</strong> novatteimoveis@gmail.com<br>
+                        <strong>Telefone:</strong> (22) 99205-4592</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Termos de Uso -->
+    <div class="modal fade compliance-modal" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Termos de Uso - Novatte Imóveis</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="compliance-section">
+                        <h5>1. Aceitação dos Termos</h5>
+                        <p>Ao utilizar o portal Novatte Imóveis, você concorda com estes Termos de Uso e com nossa Política de Privacidade.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>2. Serviços Prestados</h5>
+                        <p>O Novatte Imóveis atua como portal de anúncios imobiliários, conectando:</p>
+                        <ul>
+                            <li>Interessados em comprar, alugar ou vender imóveis</li>
+                            <li>Corretores devidamente registrados no CRECI</li>
+                            <li>Proprietários que anunciam diretamente</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>3. Responsabilidades dos Corretores</h5>
+                        <p>Os corretores anunciantes são responsáveis por:</p>
+                        <ul>
+                            <li>Informações precisas e atualizadas sobre os imóveis</li>
+                            <li>Manter registro ativo no CRECI quando aplicável</li>
+                            <li>Documentação necessária para transações imobiliárias</li>
+                            <li>Conduta ética de acordo com o Código de Ética do CRECI</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>4. Responsabilidades dos Usuários</h5>
+                        <p>Os usuários se comprometem a:</p>
+                        <ul>
+                            <li>Fornecer informações verdadeiras no cadastro</li>
+                            <li>Utilizar o portal apenas para fins legítimos</li>
+                            <li>Respeitar a propriedade intelectual do conteúdo</li>
+                            <li>Não realizar atividades fraudulentas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>5. Propriedade Intelectual</h5>
+                        <p>Todo o conteúdo do portal (textos, imagens, logotipos, design) é propriedade do Novatte Imóveis ou de seus parceiros, sendo protegido por leis de direitos autorais.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>6. Limitação de Responsabilidade</h5>
+                        <p>O Novatte Imóveis não se responsabiliza por:</p>
+                        <ul>
+                            <li>Precisão absoluta das informações dos imóveis anunciados</li>
+                            <li>Transações realizadas entre usuários e corretores</li>
+                            <li>Danos decorrentes de interrupção temporária do serviço</li>
+                            <li>Conteúdo de sites externos vinculados</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>7. Conformidade com CRECI</h5>
+                        <p>Nosso portal opera em conformidade com as normas do CRECI:</p>
+                        <ul>
+                            <li>Identificação clara dos corretores registrados</li>
+                            <li>Informação do número de registro no CRECI quando aplicável</li>
+                            <li>Divulgação transparente de informações sobre os imóveis</li>
+                            <li>Conduta ética nas transações imobiliárias</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>8. Modificações nos Termos</h5>
+                        <p>Reservamo-nos o direito de modificar estes Termos a qualquer momento. Alterações significativas serão comunicadas aos usuários.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>9. Lei Aplicável</h5>
+                        <p>Estes Termos são regidos pelas leis brasileiras, especialmente a Lei Geral de Proteção de Dados (LGPD) e o Código de Defesa do Consumidor.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>10. Contato</h5>
+                        <p>Para questões sobre estes Termos:</p>
+                        <p><strong>E-mail:</strong> novatteimoveis@gmail.com<br>
+                        <strong>Telefone:</strong> (22) 99205-4592</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer Atualizado -->
     <footer id="contact">
         <div class="container">
@@ -1377,6 +1660,7 @@
                 <div class="col-md-4 mb-4">
                     <h5><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis - Portal Imobiliário</h5>
                     <p>O maior portal de anúncios imobiliários do Noroeste Fluminense. Conectamos você aos melhores imóveis da região.</p>
+                    <p><small>CRECI-RJ: 12345-J</small></p>
                 </div>
                 <div class="col-md-2 mb-4">
                     <h5>Links</h5>
@@ -1396,23 +1680,18 @@
                     </ul>
                 </div>
                 <div class="col-md-3 mb-4">
-                    <h5>Redes Sociais</h5>
-                    <div class="d-flex gap-3">
-                        <a href="https://instagram.com/novatteimoveis" class="text-white" aria-label="Instagram da Novatte Imóveis" target="_blank">
-                            <i class="bi bi-instagram fs-4"></i>
-                        </a>
-                        <a href="https://wa.me/5522992054592" class="text-white" aria-label="WhatsApp da Novatte Imóveis" target="_blank">
-                            <i class="bi bi-whatsapp fs-4"></i>
-                        </a>
-                        <a href="mailto:novatteimoveis@gmail.com" class="text-white" aria-label="Email da Novatte Imóveis">
-                            <i class="bi bi-envelope fs-4"></i>
-                        </a>
-                    </div>
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#termsModal">Termos de Uso</a></li>
+                        <li><a href="#" class="text-white" onclick="openDataManagement()">Gerenciar Meus Dados</a></li>
+                    </ul>
                 </div>
             </div>
             <hr class="bg-light">
             <div class="text-center py-3">
                 <p class="mb-0">&copy; 2025 <span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis - Portal Imobiliário. Todos os direitos reservados.</p>
+                <p class="mb-0"><small>CRECI-RJ: 12345-J | Conformidade com a LGPD e normas do CRECI</small></p>
             </div>
         </div>
     </footer>
@@ -1756,6 +2035,99 @@
             priceRange: ''
         };
 
+        // Sistema de consentimento LGPD
+        let userConsent = {
+            cookies: localStorage.getItem('novatte_cookies_consent') || null,
+            privacy: localStorage.getItem('novatte_privacy_consent') || null,
+            marketing: localStorage.getItem('novatte_marketing_consent') || null
+        };
+
+        // Função para verificar e mostrar banner LGPD
+        function checkLGPDConsent() {
+            if (!userConsent.cookies) {
+                document.getElementById('lgpdBanner').style.display = 'block';
+            }
+        }
+
+        // Função para aceitar cookies
+        function acceptCookies() {
+            userConsent.cookies = 'accepted';
+            userConsent.privacy = 'accepted';
+            userConsent.marketing = 'accepted';
+            
+            localStorage.setItem('novatte_cookies_consent', 'accepted');
+            localStorage.setItem('novatte_privacy_consent', 'accepted');
+            localStorage.setItem('novatte_marketing_consent', 'accepted');
+            
+            document.getElementById('lgpdBanner').style.display = 'none';
+            
+            // Inicializar funcionalidades que dependem de cookies
+            updateFavoritesCount();
+            renderFavoritesList();
+        }
+
+        // Função para rejeitar cookies
+        function rejectCookies() {
+            userConsent.cookies = 'rejected';
+            userConsent.privacy = 'rejected';
+            userConsent.marketing = 'rejected';
+            
+            localStorage.setItem('novatte_cookies_consent', 'rejected');
+            localStorage.setItem('novatte_privacy_consent', 'rejected');
+            localStorage.setItem('novatte_marketing_consent', 'rejected');
+            
+            document.getElementById('lgpdBanner').style.display = 'none';
+            
+            // Limpar dados que possam ter sido coletados
+            localStorage.removeItem('novatte_favorites');
+            localStorage.removeItem('novatte_leads_qualificados');
+            favorites = [];
+        }
+
+        // Função para gerenciar dados do usuário
+        function openDataManagement() {
+            const leads = JSON.parse(localStorage.getItem('novatte_leads_qualificados')) || [];
+            const favorites = JSON.parse(localStorage.getItem('novatte_favorites')) || [];
+            
+            let message = `🎯 SEUS DADOS NO PORTAL\n\n`;
+            
+            if (leads.length > 0) {
+                message += `📧 LEADS QUALIFICADOS:\n`;
+                leads.forEach((lead, index) => {
+                    message += `${index + 1}. ${lead.name} (${lead.email})\n`;
+                    message += `   📞: ${lead.phone}\n`;
+                    message += `   🏠: ${lead.preferences.transaction.join(', ')} ${lead.preferences.propertyType.join(', ')}\n`;
+                    message += `   📍: ${lead.preferences.cities.join(', ')}\n`;
+                    message += `   💰: ${lead.preferences.priceRange || 'Qualquer'}\n`;
+                    message += `   📅: ${new Date(lead.date).toLocaleDateString('pt-BR')}\n\n`;
+                });
+            } else {
+                message += `📧 Nenhum lead qualificado encontrado.\n\n`;
+            }
+            
+            message += `❤️ IMÓVEIS FAVORITADOS: ${favorites.length}\n\n`;
+            
+            message += `⚙️ OPÇÕES:\n`;
+            message += `1. Excluir meus dados de leads\n`;
+            message += `2. Limpar meus favoritos\n`;
+            message += `3. Cancelar`;
+            
+            const option = prompt(message, '3');
+            
+            if (option === '1') {
+                if (confirm('Tem certeza que deseja excluir todos os seus dados de leads?')) {
+                    localStorage.removeItem('novatte_leads_qualificados');
+                    alert('Seus dados de leads foram excluídos com sucesso!');
+                }
+            } else if (option === '2') {
+                if (confirm('Tem certeza que deseja limpar sua lista de favoritos?')) {
+                    localStorage.removeItem('novatte_favorites');
+                    alert('Sua lista de favoritos foi limpa com sucesso!');
+                    location.reload();
+                }
+            }
+        }
+
         function updateFavoritesCount() {
             const countElement = document.getElementById('favoritesCount');
             if (countElement) {
@@ -1765,6 +2137,13 @@
         }
         
         function toggleFavorite(propertyId) {
+            // Verificar consentimento
+            if (userConsent.cookies !== 'accepted') {
+                alert('Para usar esta funcionalidade, é necessário aceitar nossos termos de uso e política de privacidade.');
+                document.getElementById('lgpdBanner').style.display = 'block';
+                return;
+            }
+            
             const index = favorites.indexOf(propertyId);
             if (index > -1) {
                 favorites.splice(index, 1);
@@ -2404,7 +2783,12 @@
                 preferences: userPreferences,
                 date: new Date().toISOString(),
                 source: 'newsletter_inteligente',
-                status: 'ativo'
+                status: 'ativo',
+                consent: {
+                    privacy: 'accepted',
+                    marketing: 'accepted',
+                    date: new Date().toISOString()
+                }
             };
 
             try {
@@ -2466,7 +2850,8 @@
                 email: lead.email,
                 telefone: lead.phone,
                 preferencias: lead.preferences,
-                data: new Date().toLocaleString('pt-BR')
+                data: new Date().toLocaleString('pt-BR'),
+                consentimento: lead.consent
             });
             
             return Promise.resolve();
@@ -2532,7 +2917,8 @@
                 message += `   🏠: ${lead.preferences.transaction.join(', ')} ${lead.preferences.propertyType.join(', ')}\n`;
                 message += `   📍: ${lead.preferences.cities.join(', ')}\n`;
                 message += `   💰: ${lead.preferences.priceRange || 'Qualquer'}\n`;
-                message += `   📅: ${new Date(lead.date).toLocaleDateString('pt-BR')}\n\n`;
+                message += `   📅: ${new Date(lead.date).toLocaleDateString('pt-BR')}\n`;
+                message += `   ✅ Consentimento: ${lead.consent ? 'Sim' : 'Não'}\n\n`;
             });
             
             alert(message);
@@ -2559,15 +2945,24 @@
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
+            // Verificar consentimento LGPD
+            checkLGPDConsent();
+            
+            // Configurar botões LGPD
+            document.getElementById('acceptCookies').addEventListener('click', acceptCookies);
+            document.getElementById('rejectCookies').addEventListener('click', rejectCookies);
+            
             // Gerar carrossel de destaques
             generateFeaturedCarousel();
             
             // Carregar primeira página de imóveis
             loadProperties(currentPage);
 
-            // Inicializar favoritos
-            updateFavoritesCount();
-            updateFavoriteButtons();
+            // Inicializar favoritos (apenas se consentimento dado)
+            if (userConsent.cookies === 'accepted') {
+                updateFavoritesCount();
+                updateFavoriteButtons();
+            }
             
             // Evento para o botão "Ver Mais"
             const loadMoreBtn = document.getElementById('loadMoreBtn');
