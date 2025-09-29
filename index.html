@@ -33,9 +33,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     
     <style>
-        /* Todos os estilos CSS anteriores permanecem aqui */
-        /* [Todo o CSS anterior permanece igual] */
-        
         :root {
             --primary-color: #003602;
             --secondary-color: #FE4700;
@@ -343,19 +340,74 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
+        /* Newsletter Inteligente */
         .newsletter-section {
-            background-color: var(--light-color);
-            padding: 40px 0;
-            margin-top: 40px;
+            background: linear-gradient(135deg, #003602 0%, #005004 100%);
+            color: white;
+            padding: 60px 0;
+            margin-top: 60px;
         }
-        
-        .newsletter-form {
-            max-width: 500px;
-            margin: 0 auto;
+        .newsletter-card {
+            background: white;
+            color: #333;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        
-        .newsletter-checkbox {
+        .search-preferences .preference-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .search-preferences .preference-item:hover {
+            border-color: #003602;
+            background: #f0f8ff;
+        }
+        .preference-item.active {
+            border-color: #FE4700;
+            background: #fff5f0;
+        }
+        .form-message {
+            padding: 12px;
+            border-radius: 8px;
             margin-top: 15px;
+            display: none;
+        }
+        .form-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .form-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .btn-newsletter {
+            background: #FE4700;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-newsletter:hover {
+            background: #e03e00;
+            transform: translateY(-2px);
+        }
+        .preference-tag {
+            background: #003602;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
         }
         
         .property-map {
@@ -806,26 +858,6 @@
             margin-bottom: 20px;
         }
         
-        /* Estilos para mensagens de validação do formulário */
-        .form-message {
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .form-message.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .form-message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
         @media (max-width: 768px) {
             .hero-section {
                 padding: 40px 0;
@@ -1158,28 +1190,135 @@
         </div>
     </div>
 
-    <!-- Newsletter Atualizada para Lead Capture -->
+    <!-- Newsletter Inteligente - Atualizada -->
     <section class="newsletter-section">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-8 text-center">
-                    <h3>Receba Novidades Exclusivas</h3>
-                    <p>Cadastre-se e seja o primeiro a saber dos melhores imóveis da região</p>
-                    <form class="newsletter-form" id="leadForm">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Seu nome" id="leadName" required>
-                            <input type="email" class="form-control" placeholder="Seu melhor email" id="leadEmail" required>
-                            <button class="btn btn-primary" type="submit">Cadastrar</button>
+                <div class="col-lg-10">
+                    <div class="newsletter-card">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="fw-bold mb-3">🚀 Encontre o Imóvel Perfeito!</h3>
+                                <p class="text-muted mb-4">
+                                    Nos diga o que você procura e te avisaremos assim que surgirem oportunidades que combinam com seu perfil.
+                                </p>
+                                
+                                <div class="mb-4">
+                                    <h6 class="fw-bold mb-3">📧 Seus dados</h6>
+                                    <div class="row g-2">
+                                        <div class="col-12">
+                                            <input type="text" class="form-control" placeholder="Seu nome completo" id="leadName" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="tel" class="form-control" placeholder="Seu WhatsApp (opcional)" id="leadPhone">
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="email" class="form-control" placeholder="Seu melhor email" id="leadEmail" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="leadAccept" required>
+                                    <label class="form-check-label" for="leadAccept">
+                                        Aceito receber oportunidades personalizadas do portal Novatte Imóveis
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h6 class="fw-bold mb-3">🏠 O que você está procurando?</h6>
+                                
+                                <!-- Tipo de Negócio -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Quero:</label>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button type="button" class="btn btn-outline-primary preference-btn" data-type="transaction" data-value="Comprar">
+                                            Comprar
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary preference-btn" data-type="transaction" data-value="Alugar">
+                                            Alugar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Tipo de Imóvel -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Tipo de imóvel:</label>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button type="button" class="btn btn-outline-secondary preference-btn" data-type="propertyType" data-value="Casa">
+                                            Casa
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary preference-btn" data-type="propertyType" data-value="Apartamento">
+                                            Apartamento
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary preference-btn" data-type="propertyType" data-value="Terreno">
+                                            Terreno
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary preference-btn" data-type="propertyType" data-value="Comercial">
+                                            Comercial
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary preference-btn" data-type="propertyType" data-value="Sítio">
+                                            Sítio
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Cidades -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Cidades de interesse:</label>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button type="button" class="btn btn-outline-success preference-btn" data-type="cities" data-value="Itaperuna">
+                                            Itaperuna
+                                        </button>
+                                        <button type="button" class="btn btn-outline-success preference-btn" data-type="cities" data-value="Santo Antônio de Pádua">
+                                            S. A. Pádua
+                                        </button>
+                                        <button type="button" class="btn btn-outline-success preference-btn" data-type="cities" data-value="Miracema">
+                                            Miracema
+                                        </button>
+                                        <button type="button" class="btn btn-outline-success preference-btn" data-type="cities" data-value="Itaocara">
+                                            Itaocara
+                                        </button>
+                                        <button type="button" class="btn btn-outline-success preference-btn" data-type="cities" data-value="Aperibé">
+                                            Aperibé
+                                        </button>
+                                        <button type="button" class="btn btn-outline-success preference-btn" data-type="cities" data-value="Cambuci">
+                                            Cambuci
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Preço -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold">Faixa de preço:</label>
+                                    <select class="form-select" id="priceRange">
+                                        <option value="">Qualquer preço</option>
+                                        <option value="até R$ 150.000">até R$ 150.000</option>
+                                        <option value="R$ 150.000 - R$ 300.000">R$ 150.000 - R$ 300.000</option>
+                                        <option value="R$ 300.000 - R$ 500.000">R$ 300.000 - R$ 500.000</option>
+                                        <option value="R$ 500.000 - R$ 750.000">R$ 500.000 - R$ 750.000</option>
+                                        <option value="acima de R$ 750.000">acima de R$ 750.000</option>
+                                    </select>
+                                </div>
+
+                                <!-- Preferências selecionadas -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Sua busca:</label>
+                                    <div id="selectedPreferences" class="d-flex flex-wrap gap-2">
+                                        <span class="text-muted">Nenhuma preferência selecionada</span>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-newsletter w-100" type="button" onclick="submitLeadWithPreferences()">
+                                    <i class="bi bi-bell-fill me-2"></i>Me avise quando encontrar!
+                                </button>
+                            </div>
                         </div>
-                        <div class="form-check newsletter-checkbox">
-                            <input class="form-check-input" type="checkbox" id="leadAccept" required>
-                            <label class="form-check-label" for="leadAccept">
-                                Aceito receber oportunidades exclusivas do portal Novatte Imóveis
-                            </label>
-                        </div>
-                        <!-- Mensagem de sucesso/erro -->
-                        <div id="formMessage" class="form-message"></div>
-                    </form>
+
+                        <!-- Mensagem de feedback -->
+                        <div id="formMessage" class="form-message mt-3"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1217,19 +1356,15 @@
         </div>
     </div>
 
-    <!-- Modal de Confirmação de Lead -->
-    <div class="modal fade lead-capture-modal" id="leadSuccessModal" tabindex="-1">
+    <!-- Modal de Sucesso -->
+    <div class="modal fade" id="successModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body p-0">
-                    <div class="lead-form">
-                        <div class="lead-success">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <h4>Cadastro Realizado!</h4>
-                            <p class="mb-3">Agora você receberá as melhores oportunidades em primeira mão.</p>
-                            <button class="btn btn-primary" data-bs-dismiss="modal">Continuar Navegando</button>
-                        </div>
-                    </div>
+                <div class="modal-body text-center p-5">
+                    <i class="bi bi-check-circle-fill text-success display-1"></i>
+                    <h4 class="mt-3">Perfil salvo com sucesso! 🎉</h4>
+                    <p class="mb-3">Agora vamos te avisar quando encontrarmos imóveis que combinam com o que você procura.</p>
+                    <button class="btn btn-primary" data-bs-dismiss="modal">Continuar Navegando</button>
                 </div>
             </div>
         </div>
@@ -1613,8 +1748,13 @@
         let filteredProperties = Object.keys(properties).map(id => parseInt(id));
         let totalProperties = filteredProperties.length;
 
-        // Sistema de Newsletter/Leads
-        let leads = JSON.parse(localStorage.getItem('novatte_leads')) || [];
+        // Sistema de Newsletter/Leads Inteligente
+        let userPreferences = {
+            transaction: [],
+            propertyType: [],
+            cities: [],
+            priceRange: ''
+        };
 
         function updateFavoritesCount() {
             const countElement = document.getElementById('favoritesCount');
@@ -2146,6 +2286,258 @@
             }
         }
 
+        // Sistema de Newsletter/Leads Inteligente - FUNCIONAL
+        // Gerenciar seleção de preferências
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar botões de preferência
+            document.querySelectorAll('.preference-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    const value = this.dataset.value;
+                    
+                    togglePreference(type, value, this);
+                    updateSelectedPreferences();
+                });
+            });
+
+            // Configurar select de preço
+            document.getElementById('priceRange').addEventListener('change', function() {
+                userPreferences.priceRange = this.value;
+                updateSelectedPreferences();
+            });
+        });
+
+        function togglePreference(type, value, element) {
+            const index = userPreferences[type].indexOf(value);
+            
+            if (index === -1) {
+                // Adicionar
+                userPreferences[type].push(value);
+                element.classList.remove('btn-outline-primary', 'btn-outline-secondary', 'btn-outline-success');
+                element.classList.add('btn-primary');
+            } else {
+                // Remover
+                userPreferences[type].splice(index, 1);
+                element.classList.remove('btn-primary');
+                
+                // Restaurar cor original baseada no tipo
+                if (type === 'transaction') {
+                    element.classList.add('btn-outline-primary');
+                } else if (type === 'propertyType') {
+                    element.classList.add('btn-outline-secondary');
+                } else if (type === 'cities') {
+                    element.classList.add('btn-outline-success');
+                }
+            }
+        }
+
+        function updateSelectedPreferences() {
+            const container = document.getElementById('selectedPreferences');
+            const preferences = [];
+            
+            // Transação
+            if (userPreferences.transaction.length > 0) {
+                preferences.push(`<span class="preference-tag">${userPreferences.transaction.join(', ')}</span>`);
+            }
+            
+            // Tipo de imóvel
+            if (userPreferences.propertyType.length > 0) {
+                preferences.push(`<span class="preference-tag">${userPreferences.propertyType.join(', ')}</span>`);
+            }
+            
+            // Cidades
+            if (userPreferences.cities.length > 0) {
+                preferences.push(`<span class="preference-tag">${userPreferences.cities.join(', ')}</span>`);
+            }
+            
+            // Preço
+            if (userPreferences.priceRange) {
+                preferences.push(`<span class="preference-tag">${userPreferences.priceRange}</span>`);
+            }
+            
+            if (preferences.length > 0) {
+                container.innerHTML = preferences.join('');
+            } else {
+                container.innerHTML = '<span class="text-muted">Nenhuma preferência selecionada</span>';
+            }
+        }
+
+        // Enviar lead com preferências
+        async function submitLeadWithPreferences() {
+            const name = document.getElementById('leadName').value.trim();
+            const email = document.getElementById('leadEmail').value.trim();
+            const phone = document.getElementById('leadPhone').value.trim();
+            const accept = document.getElementById('leadAccept').checked;
+
+            // Validação
+            if (!name || !email) {
+                showFormMessage('Por favor, preencha seu nome e email.', 'error');
+                return;
+            }
+            
+            if (!accept) {
+                showFormMessage('Você precisa aceitar receber oportunidades.', 'error');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showFormMessage('Por favor, insira um email válido.', 'error');
+                return;
+            }
+
+            // Verificar se selecionou alguma preferência
+            const hasPreferences = userPreferences.transaction.length > 0 || 
+                                 userPreferences.propertyType.length > 0 || 
+                                 userPreferences.cities.length > 0;
+
+            if (!hasPreferences) {
+                showFormMessage('Por favor, selecione pelo menos uma preferência de busca.', 'error');
+                return;
+            }
+
+            // Criar objeto do lead
+            const lead = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                phone: phone || 'Não informado',
+                preferences: userPreferences,
+                date: new Date().toISOString(),
+                source: 'newsletter_inteligente',
+                status: 'ativo'
+            };
+
+            try {
+                // 1. Salvar localmente
+                saveLeadLocally(lead);
+                
+                // 2. Enviar para o proprietário (implementar integração)
+                await sendLeadToOwner(lead);
+                
+                // 3. Mostrar sucesso
+                showFormMessage('Perfil salvo com sucesso! Te avisaremos quando encontrarmos imóveis do seu interesse.', 'success');
+                
+                // Limpar formulário
+                document.getElementById('leadName').value = '';
+                document.getElementById('leadEmail').value = '';
+                document.getElementById('leadPhone').value = '';
+                document.getElementById('leadAccept').checked = false;
+                resetPreferences();
+                
+                // Mostrar modal
+                setTimeout(() => {
+                    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                    successModal.show();
+                }, 1000);
+
+            } catch (error) {
+                console.error('Erro:', error);
+                showFormMessage('Lead salvo! Houve um problema no envio, mas suas preferências foram registradas.', 'success');
+            }
+        }
+
+        function saveLeadLocally(lead) {
+            const leads = JSON.parse(localStorage.getItem('novatte_leads_qualificados')) || [];
+            
+            // Evitar duplicatas por email
+            const existingIndex = leads.findIndex(l => l.email === lead.email);
+            if (existingIndex !== -1) {
+                leads[existingIndex] = lead; // Atualizar
+            } else {
+                leads.push(lead);
+            }
+            
+            localStorage.setItem('novatte_leads_qualificados', JSON.stringify(leads));
+            console.log('📋 Lead qualificado salvo:', lead);
+        }
+
+        async function sendLeadToOwner(lead) {
+            // 🔧 CONFIGURAR AQUI SUA INTEGRAÇÃO
+            
+            // Opção 1: EmailJS (Recomendado)
+            // await sendWithEmailJS(lead);
+            
+            // Opção 2: Google Sheets
+            // await saveToGoogleSheets(lead);
+            
+            // Por enquanto, apenas log no console
+            console.log('🎯 LEAD QUALIFICADO CAPTURADO:', {
+                nome: lead.name,
+                email: lead.email,
+                telefone: lead.phone,
+                preferencias: lead.preferences,
+                data: new Date().toLocaleString('pt-BR')
+            });
+            
+            return Promise.resolve();
+        }
+
+        function resetPreferences() {
+            userPreferences = {
+                transaction: [],
+                propertyType: [],
+                cities: [],
+                priceRange: ''
+            };
+            
+            // Resetar botões
+            document.querySelectorAll('.preference-btn').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                if (btn.dataset.type === 'transaction') {
+                    btn.classList.add('btn-outline-primary');
+                } else if (btn.dataset.type === 'propertyType') {
+                    btn.classList.add('btn-outline-secondary');
+                } else if (btn.dataset.type === 'cities') {
+                    btn.classList.add('btn-outline-success');
+                }
+            });
+            
+            // Resetar select
+            document.getElementById('priceRange').value = '';
+            updateSelectedPreferences();
+        }
+
+        function showFormMessage(message, type) {
+            const formMessage = document.getElementById('formMessage');
+            if (formMessage) {
+                formMessage.textContent = message;
+                formMessage.className = `form-message ${type}`;
+                formMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    formMessage.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // 🔍 Função para ver leads qualificados (para você)
+        function viewQualifiedLeads() {
+            const leads = JSON.parse(localStorage.getItem('novatte_leads_qualificados')) || [];
+            console.log('🎯 LEADS QUALIFICADOS:', leads);
+            
+            if (leads.length === 0) {
+                alert('Nenhum lead qualificado encontrado.');
+                return;
+            }
+            
+            let message = `Total de leads qualificados: ${leads.length}\n\n`;
+            leads.forEach((lead, index) => {
+                message += `${index + 1}. ${lead.name} (${lead.email})\n`;
+                message += `   📞: ${lead.phone}\n`;
+                message += `   🏠: ${lead.preferences.transaction.join(', ')} ${lead.preferences.propertyType.join(', ')}\n`;
+                message += `   📍: ${lead.preferences.cities.join(', ')}\n`;
+                message += `   💰: ${lead.preferences.priceRange || 'Qualquer'}\n`;
+                message += `   📅: ${new Date(lead.date).toLocaleDateString('pt-BR')}\n\n`;
+            });
+            
+            alert(message);
+        }
+
         // Lazy Loading
         function initLazyLoading() {
             const lazyImages = document.querySelectorAll('img[data-src]');
@@ -2163,107 +2555,6 @@
             });
             
             lazyImages.forEach(img => imageObserver.observe(img));
-        }
-
-        // Sistema de Newsletter/Leads - CORRIGIDO E FUNCIONAL
-        function handleNewsletterSubmit(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('leadName').value.trim();
-            const email = document.getElementById('leadEmail').value.trim();
-            const accept = document.getElementById('leadAccept').checked;
-            const formMessage = document.getElementById('formMessage');
-            
-            // Validação básica
-            if (!name || !email) {
-                showFormMessage('Por favor, preencha todos os campos.', 'error');
-                return;
-            }
-            
-            if (!accept) {
-                showFormMessage('Você precisa aceitar receber oportunidades.', 'error');
-                return;
-            }
-            
-            if (!isValidEmail(email)) {
-                showFormMessage('Por favor, insira um email válido.', 'error');
-                return;
-            }
-            
-            // Verificar se o email já existe
-            const existingLead = leads.find(lead => lead.email === email);
-            if (existingLead) {
-                showFormMessage('Este email já está cadastrado em nossa newsletter.', 'error');
-                return;
-            }
-            
-            // Criar novo lead
-            const newLead = {
-                id: Date.now(),
-                name: name,
-                email: email,
-                date: new Date().toISOString(),
-                source: 'newsletter'
-            };
-            
-            // Adicionar aos leads
-            leads.push(newLead);
-            localStorage.setItem('novatte_leads', JSON.stringify(leads));
-            
-            // Mostrar mensagem de sucesso
-            showFormMessage('Cadastro realizado com sucesso! Em breve você receberá nossas melhores oportunidades.', 'success');
-            
-            // Limpar formulário
-            document.getElementById('leadForm').reset();
-            
-            // Opcional: Mostrar modal de confirmação
-            setTimeout(() => {
-                const successModal = new bootstrap.Modal(document.getElementById('leadSuccessModal'));
-                successModal.show();
-            }, 1000);
-            
-            // Opcional: Enviar para um webhook/API (descomente e configure se necessário)
-            // sendLeadToAPI(newLead);
-        }
-
-        function showFormMessage(message, type) {
-            const formMessage = document.getElementById('formMessage');
-            if (formMessage) {
-                formMessage.textContent = message;
-                formMessage.className = `form-message ${type}`;
-                formMessage.style.display = 'block';
-                
-                // Esconder mensagem após 5 segundos
-                setTimeout(() => {
-                    formMessage.style.display = 'none';
-                }, 5000);
-            }
-        }
-
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        // Função para enviar lead para API (opcional)
-        function sendLeadToAPI(lead) {
-            // Exemplo de implementação para enviar para um webhook
-            /*
-            fetch('https://sua-api.com/leads', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(lead)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Lead enviado com sucesso:', data);
-            })
-            .catch(error => {
-                console.error('Erro ao enviar lead:', error);
-            });
-            */
         }
 
         // Inicialização
@@ -2299,12 +2590,6 @@
 
             if (resetFiltersBtn) {
                 resetFiltersBtn.addEventListener('click', clearFilters);
-            }
-
-            // Evento para o formulário de newsletter - CORRIGIDO
-            const leadForm = document.getElementById('leadForm');
-            if (leadForm) {
-                leadForm.addEventListener('submit', handleNewsletterSubmit);
             }
 
             // Evento para botões "Nova Guia" - CORRIGIDO
@@ -2669,5 +2954,12 @@
             }
         }
     </script>
+
+    <!-- Botão secreto para ver leads qualificados -->
+    <div style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
+        <button class="btn btn-sm btn-success" onclick="viewQualifiedLeads()" title="Ver Leads Qualificados">
+            <i class="bi bi-graph-up"></i> Leads Qualificados
+        </button>
+    </div>
 </body>
 </html>
