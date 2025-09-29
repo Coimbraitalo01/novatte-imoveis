@@ -522,20 +522,34 @@
             font-size: 0.9rem;
         }
         
+        /* ALTERAÇÃO: Botões de navegação reposicionados sobre a imagem */
         .gallery-controls {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            transform: translateY(-50%);
+            padding: 0 15px;
+            pointer-events: none;
         }
         
         .gallery-btn {
             background-color: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
+            padding: 12px 15px;
+            border-radius: 50%;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
         }
         
         .gallery-btn:hover {
@@ -561,6 +575,7 @@
         .gallery-modal .modal-body {
             padding: 0;
             text-align: center;
+            position: relative;
         }
         
         .gallery-modal-img {
@@ -616,6 +631,52 @@
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 1rem;
+        }
+        
+        /* ALTERAÇÃO: Estilos para o carrossel de destaques */
+        .featured-carousel {
+            position: relative;
+        }
+        
+        .featured-carousel .carousel-inner {
+            overflow: visible;
+        }
+        
+        .featured-carousel .carousel-item {
+            transition: transform 0.6s ease-in-out;
+        }
+        
+        .featured-carousel .carousel-item.active .row {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+        
+        .featured-carousel .carousel-item:not(.active) {
+            display: none;
+        }
+        
+        .featured-carousel .carousel-control-prev,
+        .featured-carousel .carousel-control-next {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.8;
+        }
+        
+        .featured-carousel .carousel-control-prev {
+            left: -20px;
+        }
+        
+        .featured-carousel .carousel-control-next {
+            right: -20px;
+        }
+        
+        .featured-carousel .carousel-control-prev:hover,
+        .featured-carousel .carousel-control-next:hover {
+            opacity: 1;
         }
         
         @media (max-width: 768px) {
@@ -696,6 +757,19 @@
             .gallery-modal .modal-dialog {
                 max-width: 95%;
             }
+            
+            /* Ajustes para carrossel em mobile */
+            .featured-carousel .carousel-item.active .row {
+                flex-wrap: wrap;
+            }
+            
+            .featured-carousel .carousel-control-prev {
+                left: 10px;
+            }
+            
+            .featured-carousel .carousel-control-next {
+                right: 10px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -743,6 +817,13 @@
                 width: 40px;
                 height: 40px;
                 font-size: 1.2rem;
+            }
+            
+            .gallery-btn {
+                width: 40px;
+                height: 40px;
+                padding: 8px 10px;
+                font-size: 1rem;
             }
         }
     </style>
@@ -864,106 +945,7 @@
         <h2 class="mb-4">Imóveis em Destaque</h2>
         <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row">
-                        <!-- Destaque 1 -->
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <span class="badge bg-primary property-badge">Venda</span>
-                                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa moderna em Itaperuna">
-                                <div class="card-body">
-                                    <h5 class="card-title">Casa Moderna com Piscina</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Itaperuna, RJ</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">R$ 550.000</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> 120m²</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> 3</span>
-                                            <span><i class="bi bi-car-front"></i> 2</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="1" aria-label="Visualizar detalhes da Casa Moderna com Piscina">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="1" aria-label="Abrir Casa Moderna com Piscina em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                        <button class="btn whatsapp-btn" data-property-id="1" aria-label="Entrar em contato via WhatsApp sobre Casa Moderna com Piscina">
-                                            <i class="bi bi-whatsapp"></i> WhatsApp
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Destaque 2 -->
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <span class="badge bg-secondary property-badge">Aluguel</span>
-                                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Apartamento em Santo Antônio de Pádua">
-                                <div class="card-body">
-                                    <h5 class="card-title">Apartamento com Varanda</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Santo Antônio de Pádua, RJ</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">R$ 1.200/mês</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> 70m²</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> 2</span>
-                                            <span><i class="bi bi-car-front"></i> 1</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="2" aria-label="Visualizar detalhes do Apartamento com Varanda">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="2" aria-label="Abrir Apartamento com Varanda em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                        <button class="btn whatsapp-btn" data-property-id="2" aria-label="Entrar em contato via WhatsApp sobre Apartamento com Varanda">
-                                            <i class="bi bi-whatsapp"></i> WhatsApp
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Destaque 3 -->
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <span class="badge bg-primary property-badge">Venda</span>
-                                <img src="https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top property-img" alt="Casa com jardim em Miracema">
-                                <div class="card-body">
-                                    <h5 class="card-title">Casa Familiar com Jardim</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> Miracema, RJ</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">R$ 380.000</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> 150m²</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> 4</span>
-                                            <span><i class="bi bi-car-front"></i> 2</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="3" aria-label="Visualizar detalhes da Casa Familiar com Jardim">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="3" aria-label="Abrir Casa Familiar com Jardim em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                        <button class="btn whatsapp-btn" data-property-id="3" aria-label="Entrar em contato via WhatsApp sobre Casa Familiar com Jardim">
-                                            <i class="bi bi-whatsapp"></i> WhatsApp
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Slides serão gerados dinamicamente via JavaScript -->
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev" aria-label="Slide anterior">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -1314,6 +1296,75 @@
         const propertiesPerPage = 6;
         let totalProperties = Object.keys(properties).length;
 
+        // Função para gerar o carrossel de destaques
+        function generateFeaturedCarousel() {
+            const carouselInner = document.querySelector('#featuredCarousel .carousel-inner');
+            if (!carouselInner) return;
+            
+            // Selecionar os primeiros 6 imóveis para o carrossel
+            const featuredProperties = Object.entries(properties).slice(0, 6);
+            const itemsPerSlide = 3;
+            const totalSlides = Math.ceil(featuredProperties.length / itemsPerSlide);
+            
+            let carouselHTML = '';
+            
+            for (let i = 0; i < totalSlides; i++) {
+                const isActive = i === 0 ? 'active' : '';
+                carouselHTML += `
+                    <div class="carousel-item ${isActive}">
+                        <div class="row">
+                `;
+                
+                // Adicionar imóveis para este slide
+                const startIndex = i * itemsPerSlide;
+                const endIndex = Math.min(startIndex + itemsPerSlide, featuredProperties.length);
+                
+                for (let j = startIndex; j < endIndex; j++) {
+                    const [propertyId, property] = featuredProperties[j];
+                    carouselHTML += `
+                        <div class="col-md-4">
+                            <div class="card property-card">
+                                <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
+                                <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${property.title}</h5>
+                                    <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="price-tag">${property.price}</span>
+                                        </div>
+                                        <div>
+                                            <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
+                                            <span class="me-2"><i class="bi bi-droplet"></i> ${property.bedrooms}</span>
+                                            <span><i class="bi bi-car-front"></i> ${property.parking}</span>
+                                        </div>
+                                    </div>
+                                    <div class="property-actions">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
+                                            <i class="bi bi-eye"></i> Visualizar
+                                        </button>
+                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${propertyId}" aria-label="Abrir ${property.title} em nova guia">
+                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                        </button>
+                                        <button class="btn whatsapp-btn" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
+                                            <i class="bi bi-whatsapp"></i> WhatsApp
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                carouselHTML += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            carouselInner.innerHTML = carouselHTML;
+        }
+
         // Função para carregar imóveis na lista
         function loadProperties(page = 1) {
             const propertyList = document.getElementById('property-list');
@@ -1444,19 +1495,17 @@
                     <img src="${images[0]}" class="main-image" 
                          onclick="openGalleryModal(${propertyId}, 0)" 
                          alt="${property.title}">
+                    <div class="gallery-controls">
+                        <button class="gallery-btn" onclick="prevImage(${propertyId})" id="prevBtn-${propertyId}">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="gallery-btn" onclick="nextImage(${propertyId})" id="nextBtn-${propertyId}">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
                     <div class="thumbnail-container">
                         ${thumbnailsHtml}
                     </div>
-                    ${images.length > 1 ? `
-                    <div class="gallery-controls">
-                        <button class="gallery-btn" onclick="prevImage(${propertyId})" id="prevBtn-${propertyId}">
-                            <i class="bi bi-chevron-left"></i> Anterior
-                        </button>
-                        <button class="gallery-btn" onclick="nextImage(${propertyId})" id="nextBtn-${propertyId}">
-                            Próxima <i class="bi bi-chevron-right"></i>
-                        </button>
-                    </div>
-                    ` : ''}
                 </div>
             `;
         }
@@ -1576,6 +1625,9 @@
 
         // Inicialização do modal e eventos
         document.addEventListener('DOMContentLoaded', function() {
+            // Gerar carrossel de destaques
+            generateFeaturedCarousel();
+            
             // Carregar primeira página de imóveis
             loadProperties(currentPage);
 
@@ -1629,8 +1681,8 @@
                                         .thumbnail { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer; opacity: 0.7; transition: all 0.3s ease; border: 2px solid transparent; }
                                         .thumbnail:hover, .thumbnail.active { opacity: 1; border-color: #FE4700; }
                                         .image-counter { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 20px; }
-                                        .gallery-controls { display: flex; justify-content: space-between; margin-top: 10px; }
-                                        .gallery-btn { background-color: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+                                        .gallery-controls { position: absolute; top: 50%; left: 0; right: 0; display: flex; justify-content: space-between; transform: translateY(-50%); padding: 0 15px; pointer-events: none; }
+                                        .gallery-btn { background-color: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 15px; border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease; pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; font-size: 1.2rem; }
                                     </style>
                                 </head>
                                 <body>
