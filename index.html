@@ -48,6 +48,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
+            scroll-behavior: smooth;
         }
         
         .navbar {
@@ -106,6 +107,7 @@
         
         .navbar-nav .nav-link {
             color: var(--primary-color) !important;
+            transition: color 0.3s ease;
         }
         
         .navbar-nav .nav-link:hover {
@@ -924,6 +926,37 @@
             gap: 10px;
         }
         
+        /* Estilos para seções específicas */
+        .section-anchor {
+            scroll-margin-top: 100px;
+        }
+        
+        .contact-link {
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            color: var(--secondary-color) !important;
+        }
+        
+        /* Estilos para a seção Encontre o Imóvel Perfeito */
+        .find-perfect-section {
+            background: linear-gradient(135deg, #003602 0%, #005004 100%);
+            color: white;
+            padding: 60px 0;
+            margin-top: 60px;
+            border-radius: 15px;
+        }
+        
+        .find-perfect-card {
+            background: white;
+            color: #333;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
         @media (max-width: 768px) {
             .hero-section {
                 padding: 40px 0;
@@ -1031,6 +1064,10 @@
             .lgpd-banner p {
                 min-width: auto;
             }
+            
+            .section-anchor {
+                scroll-margin-top: 80px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1125,28 +1162,25 @@
                 <span class="portal-imobiliario">Portal Imobiliário</span>
             </a>
             
-            <!-- Contador de Favoritos -->
-            <div id="favoritesCount" class="favorites-count" style="display: none;">0</div>
-            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" aria-current="page">Início</a>
+                        <a class="nav-link active" href="#inicio" aria-current="page">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#favorites-section" id="favorites-link">Favoritos</a>
+                        <a class="nav-link" href="#encontre-perfeito">Encontre o Imóvel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Comprar</a>
+                        <a class="nav-link" href="#comprar">Comprar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Alugar</a>
+                        <a class="nav-link" href="#alugar">Alugar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Lançamentos</a>
+                        <a class="nav-link" href="#lancamentos">Lançamentos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">Contato</a>
@@ -1160,7 +1194,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero-section section-anchor" id="inicio">
         <div class="container text-center">
             <h1 class="display-4 fw-bold mb-3">Portal Imobiliário do Noroeste Fluminense</h1>
             <p class="lead mb-4">Encontre os melhores imóveis em Itaperuna, Santo Antônio de Pádua, Miracema e toda a região</p>
@@ -1234,6 +1268,22 @@
             </div>
         </div>
 
+        <!-- Seção Comprar -->
+        <div class="section-anchor" id="comprar">
+            <h2 class="mb-4">Imóveis para Comprar</h2>
+            <div class="row" id="property-list-buy">
+                <!-- Imóveis para compra serão carregados aqui -->
+            </div>
+        </div>
+
+        <!-- Seção Alugar -->
+        <div class="section-anchor" id="alugar">
+            <h2 class="mb-4">Imóveis para Alugar</h2>
+            <div class="row" id="property-list-rent">
+                <!-- Imóveis para alugar serão carregados aqui -->
+            </div>
+        </div>
+
         <!-- Carrossel de Destaques -->
         <h2 class="mb-4">Imóveis em Destaque</h2>
         <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel">
@@ -1250,6 +1300,14 @@
             </button>
         </div>
 
+        <!-- Seção Lançamentos -->
+        <div class="section-anchor" id="lancamentos">
+            <h2 class="mb-4">Lançamentos</h2>
+            <div class="row" id="property-list-new">
+                <!-- Lançamentos serão carregados aqui -->
+            </div>
+        </div>
+
         <!-- Lista de Imóveis -->
         <h2 class="mb-4">Todos os Imóveis</h2>
         <div class="row" id="property-list">
@@ -1264,19 +1322,6 @@
             <button class="btn btn-primary mt-3" id="resetFiltersBtn">Limpar Filtros</button>
         </div>
 
-        <!-- Nova Seção: Meus Favoritos -->
-        <div id="favorites-section" class="mt-5" style="display: none;">
-            <h2 class="mb-4">Meus Imóveis Favoritos</h2>
-            <div class="row" id="favorites-list">
-                <!-- Favoritos carregados via JavaScript -->
-            </div>
-            <div id="empty-favorites" class="text-center py-5" style="display: none;">
-                <i class="bi bi-heart display-1 text-muted"></i>
-                <h4 class="mt-3 text-muted">Nenhum imóvel favoritado</h4>
-                <p class="text-muted">Clique no coração para adicionar imóveis aos favoritos</p>
-            </div>
-        </div>
-
         <!-- Botão Mostrar Mais -->
         <div class="load-more-container">
             <button class="btn btn-load-more" id="loadMoreBtn">
@@ -1285,12 +1330,12 @@
         </div>
     </div>
 
-    <!-- Newsletter Inteligente - Atualizada -->
-    <section class="newsletter-section">
+    <!-- Seção Encontre o Imóvel Perfeito -->
+    <section class="find-perfect-section section-anchor" id="encontre-perfeito">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="newsletter-card">
+                    <div class="find-perfect-card">
                         <div class="row">
                             <div class="col-md-6">
                                 <h3 class="fw-bold mb-3">🚀 Encontre o Imóvel Perfeito!</h3>
@@ -1482,7 +1527,6 @@
                             <li><strong>Dados de contato:</strong> nome, e-mail, telefone (opcional)</li>
                             <li><strong>Preferências de busca:</strong> tipo de imóvel, localização, faixa de preço</li>
                             <li><strong>Dados de navegação:</strong> cookies para melhorar a experiência do usuário</li>
-                            <li><strong>Favoritos:</strong> imóveis salvos como favoritos no navegador local</li>
                         </ul>
                     </div>
                     
@@ -1492,7 +1536,6 @@
                         <ul>
                             <li>Enviar oportunidades de imóveis que correspondam ao seu perfil</li>
                             <li>Melhorar nossa plataforma e serviços</li>
-                            <li>Manter histórico de favoritos para sua conveniência</li>
                             <li>Entrar em contato para esclarecer dúvidas sobre imóveis</li>
                         </ul>
                     </div>
@@ -1536,7 +1579,6 @@
                         <p>Utilizamos cookies para:</p>
                         <ul>
                             <li>Lembrar suas preferências de busca</li>
-                            <li>Manter sua lista de favoritos</li>
                             <li>Analisar o uso do site para melhorias</li>
                         </ul>
                         <p>Você pode controlar cookies através das configurações do seu navegador.</p>
@@ -1556,142 +1598,58 @@
         </div>
     </div>
 
-    <!-- Modal de Termos de Uso -->
-    <div class="modal fade compliance-modal" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="termsModalLabel">Termos de Uso - Novatte Imóveis</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="compliance-section">
-                        <h5>1. Aceitação dos Termos</h5>
-                        <p>Ao utilizar o portal Novatte Imóveis, você concorda com estes Termos de Uso e com nossa Política de Privacidade.</p>
-                    </div>
-                    
-                    <div class="compliance-section">
-                        <h5>2. Serviços Prestados</h5>
-                        <p>O Novatte Imóveis atua como portal de anúncios imobiliários, conectando:</p>
-                        <ul>
-                            <li>Interessados em comprar, alugar ou vender imóveis</li>
-                            <li>Corretores devidamente registrados no CRECI</li>
-                            <li>Proprietários que anunciam diretamente</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="compliance-section">
-                        <h5>3. Responsabilidades dos Corretores</h5>
-                        <p>Os corretores anunciantes são responsáveis por:</p>
-                        <ul>
-                            <li>Informações precisas e atualizadas sobre os imóveis</li>
-                            <li>Manter registro ativo no CRECI quando aplicável</li>
-                            <li>Documentação necessária para transações imobiliárias</li>
-                            <li>Conduta ética de acordo com o Código de Ética do CRECI</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="compliance-section">
-                        <h5>4. Responsabilidades dos Usuários</h5>
-                        <p>Os usuários se comprometem a:</p>
-                        <ul>
-                            <li>Fornecer informações verdadeiras no cadastro</li>
-                            <li>Utilizar o portal apenas para fins legítimos</li>
-                            <li>Respeitar a propriedade intelectual do conteúdo</li>
-                            <li>Não realizar atividades fraudulentas</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="compliance-section">
-                        <h5>5. Propriedade Intelectual</h5>
-                        <p>Todo o conteúdo do portal (textos, imagens, logotipos, design) é propriedade do Novatte Imóveis ou de seus parceiros, sendo protegido por leis de direitos autorais.</p>
-                    </div>
-                    
-                    <div class="compliance-section">
-                        <h5>6. Limitação de Responsabilidade</h5>
-                        <p>O Novatte Imóveis não se responsabiliza por:</p>
-                        <ul>
-                            <li>Precisão absoluta das informações dos imóveis anunciados</li>
-                            <li>Transações realizadas entre usuários e corretores</li>
-                            <li>Danos decorrentes de interrupção temporária do serviço</li>
-                            <li>Conteúdo de sites externos vinculados</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="compliance-section">
-                        <h5>7. Conformidade com CRECI</h5>
-                        <p>Nosso portal opera em conformidade com as normas do CRECI:</p>
-                        <ul>
-                            <li>Identificação clara dos corretores registrados</li>
-                            <li>Informação do número de registro no CRECI quando aplicável</li>
-                            <li>Divulgação transparente de informações sobre os imóveis</li>
-                            <li>Conduta ética nas transações imobiliárias</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="compliance-section">
-                        <h5>8. Modificações nos Termos</h5>
-                        <p>Reservamo-nos o direito de modificar estes Termos a qualquer momento. Alterações significativas serão comunicadas aos usuários.</p>
-                    </div>
-                    
-                    <div class="compliance-section">
-                        <h5>9. Lei Aplicável</h5>
-                        <p>Estes Termos são regidos pelas leis brasileiras, especialmente a Lei Geral de Proteção de Dados (LGPD) e o Código de Defesa do Consumidor.</p>
-                    </div>
-                    
-                    <div class="compliance-section">
-                        <h5>10. Contato</h5>
-                        <p>Para questões sobre estes Termos:</p>
-                        <p><strong>E-mail:</strong> novatteimoveis@gmail.com<br>
-                        <strong>Telefone:</strong> (22) 99205-4592</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Footer Atualizado -->
-    <footer id="contact">
+    <footer id="contact" class="section-anchor">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <h5><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis - Portal Imobiliário</h5>
                     <p>O maior portal de anúncios imobiliários do Noroeste Fluminense. Conectamos você aos melhores imóveis da região.</p>
-                    <p><small>CRECI-RJ: 12345-J</small></p>
                 </div>
                 <div class="col-md-2 mb-4">
                     <h5>Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Início</a></li>
-                        <li><a href="#favorites-section" class="text-white">Favoritos</a></li>
-                        <li><a href="#" class="text-white">Imóveis</a></li>
-                        <li><a href="#contact" class="text-white">Contato</a></li>
+                        <li><a href="#inicio" class="text-white contact-link">Início</a></li>
+                        <li><a href="#encontre-perfeito" class="text-white contact-link">Encontre o Imóvel</a></li>
+                        <li><a href="#comprar" class="text-white contact-link">Comprar</a></li>
+                        <li><a href="#alugar" class="text-white contact-link">Alugar</a></li>
+                        <li><a href="#lancamentos" class="text-white contact-link">Lançamentos</a></li>
+                        <li><a href="#contact" class="text-white contact-link">Contato</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-4">
                     <h5>Contato do Portal</h5>
                     <ul class="list-unstyled">
-                        <li><i class="bi bi-whatsapp"></i> (22) 99205-4592</li>
-                        <li><i class="bi bi-envelope"></i> novatteimoveis@gmail.com</li>
-                        <li><i class="bi bi-instagram"></i> @novatteimoveis</li>
+                        <li>
+                            <a href="https://wa.me/5522992054592" class="text-white contact-link" target="_blank">
+                                <i class="bi bi-whatsapp"></i> (22) 99205-4592
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:novatteimoveis@gmail.com" class="text-white contact-link">
+                                <i class="bi bi-envelope"></i> novatteimoveis@gmail.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://instagram.com/novatteimoveis" class="text-white contact-link" target="_blank">
+                                <i class="bi bi-instagram"></i> @novatteimoveis
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-4">
                     <h5>Legal</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a></li>
-                        <li><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#termsModal">Termos de Uso</a></li>
-                        <li><a href="#" class="text-white" onclick="openDataManagement()">Gerenciar Meus Dados</a></li>
+                        <li><a href="#" class="text-white contact-link" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-white contact-link" data-bs-toggle="modal" data-bs-target="#termsModal">Termos de Uso</a></li>
+                        <li><a href="#" class="text-white contact-link" onclick="openDataManagement()">Gerenciar Meus Dados</a></li>
                     </ul>
                 </div>
             </div>
             <hr class="bg-light">
             <div class="text-center py-3">
                 <p class="mb-0">&copy; 2025 <span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis - Portal Imobiliário. Todos os direitos reservados.</p>
-                <p class="mb-0"><small>CRECI-RJ: 12345-J | Conformidade com a LGPD e normas do CRECI</small></p>
+                <p class="mb-0"><small>Conformidade com a LGPD - Lei 13.709/2018</small></p>
             </div>
         </div>
     </footer>
@@ -1728,7 +1686,7 @@
             }
         };
 
-        // Dados dos imóveis com coordenadas geográficas - AGORA COM MAIS IMÓVEIS PARA O CARROSSEL
+        // Dados dos imóveis com coordenadas geográficas
         const properties = {
             1: { 
                 title: "Casa Moderna com Piscina", 
@@ -1753,7 +1711,8 @@
                 ],
                 description: "Excelente casa moderna com piscina, área gourmet e acabamento de alto padrão. Localizada em região nobre de Itaperuna, próxima a comércios e escolas.",
                 corretor: "italo",
-                featured: true
+                featured: true,
+                isNew: false
             },
             2: { 
                 title: "Apartamento com Varanda", 
@@ -1777,7 +1736,8 @@
                 ],
                 description: "Apartamento bem localizado no centro de Santo Antônio de Pádua, com varanda gourmet e acabamentos modernos. Próximo a bancos, mercados e farmácias.",
                 corretor: "bruna",
-                featured: true
+                featured: true,
+                isNew: true
             },
             3: { 
                 title: "Casa Familiar com Jardim", 
@@ -1801,7 +1761,8 @@
                 ],
                 description: "Casa espaçosa ideal para família, com jardim amplo, área de lazer e garagem para dois carros. Localizada em bairro tranquilo de Miracema.",
                 corretor: "italo",
-                featured: true
+                featured: true,
+                isNew: false
             },
             4: { 
                 title: "Casa Próxima ao Centro", 
@@ -1824,7 +1785,8 @@
                 ],
                 description: "Casa bem conservada a poucos minutos do centro de Itaocara. Possui quintal espaçoso e área de serviço coberta.",
                 corretor: "bruna",
-                featured: true
+                featured: true,
+                isNew: true
             },
             5: { 
                 title: "Sítio com Área Verde", 
@@ -1847,7 +1809,8 @@
                 ],
                 description: "Sítio com ampla área verde, ideal para quem busca tranquilidade e contato com a natureza. Possui casa principal, área de lazer e pomar.",
                 corretor: "italo",
-                featured: true
+                featured: true,
+                isNew: false
             },
             6: { 
                 title: "Apartamento Reformado", 
@@ -1870,7 +1833,8 @@
                 ],
                 description: "Apartamento totalmente reformado, com acabamentos modernos e boa localização no centro de Cambuci. Próximo a comércios e serviços.",
                 corretor: "bruna",
-                featured: true
+                featured: true,
+                isNew: true
             },
             7: { 
                 title: "Terreno Residencial", 
@@ -1892,7 +1856,8 @@
                 ],
                 description: "Excelente terreno residencial em localização privilegiada, plano e com boa infraestrutura. Ideal para construção de casa própria.",
                 corretor: "italo",
-                featured: true
+                featured: true,
+                isNew: false
             },
             8: { 
                 title: "Ponto Comercial", 
@@ -1914,7 +1879,8 @@
                 ],
                 description: "Ponto comercial bem localizado no centro da cidade, com grande fluxo de pessoas. Ideal para diversos tipos de comércio.",
                 corretor: "bruna",
-                featured: true
+                featured: true,
+                isNew: false
             },
             9: { 
                 title: "Casa de Campo", 
@@ -1937,7 +1903,8 @@
                 ],
                 description: "Encantadora casa de campo com ampla área verde, ideal para quem busca tranquilidade. Possui varanda ampla e vista para a natureza.",
                 corretor: "carlos",
-                featured: true
+                featured: true,
+                isNew: true
             },
             10: { 
                 title: "Cobertura Duplex", 
@@ -1960,7 +1927,8 @@
                 ],
                 description: "Exclusiva cobertura duplex com acabamento de alto padrão, varanda gourmet e vista panorâmica. Localização nobre no centro de Itaperuna.",
                 corretor: "carlos",
-                featured: false
+                featured: false,
+                isNew: true
             },
             11: { 
                 title: "Sobrado Moderno", 
@@ -1983,7 +1951,8 @@
                 ],
                 description: "Sobrado moderno com design contemporâneo, distribuído em dois pavimentos. Excelente localização próxima ao centro comercial.",
                 corretor: "carlos",
-                featured: false
+                featured: false,
+                isNew: false
             },
             12: { 
                 title: "Galpão Industrial", 
@@ -2006,13 +1975,11 @@
                 ],
                 description: "Amplo galpão industrial com excelente infraestrutura, ideal para armazenagem ou produção. Localizado no distrito industrial de Cambuci.",
                 corretor: "carlos",
-                featured: false
+                featured: false,
+                isNew: true
             }
         };
 
-        // Sistema de Favoritos
-        let favorites = JSON.parse(localStorage.getItem('novatte_favorites')) || [];
-        
         // Variáveis para controle de filtros
         let currentFilters = {
             propertyType: 'all',
@@ -2060,10 +2027,6 @@
             localStorage.setItem('novatte_marketing_consent', 'accepted');
             
             document.getElementById('lgpdBanner').style.display = 'none';
-            
-            // Inicializar funcionalidades que dependem de cookies
-            updateFavoritesCount();
-            renderFavoritesList();
         }
 
         // Função para rejeitar cookies
@@ -2079,15 +2042,12 @@
             document.getElementById('lgpdBanner').style.display = 'none';
             
             // Limpar dados que possam ter sido coletados
-            localStorage.removeItem('novatte_favorites');
             localStorage.removeItem('novatte_leads_qualificados');
-            favorites = [];
         }
 
         // Função para gerenciar dados do usuário
         function openDataManagement() {
             const leads = JSON.parse(localStorage.getItem('novatte_leads_qualificados')) || [];
-            const favorites = JSON.parse(localStorage.getItem('novatte_favorites')) || [];
             
             let message = `🎯 SEUS DADOS NO PORTAL\n\n`;
             
@@ -2105,128 +2065,18 @@
                 message += `📧 Nenhum lead qualificado encontrado.\n\n`;
             }
             
-            message += `❤️ IMÓVEIS FAVORITADOS: ${favorites.length}\n\n`;
-            
             message += `⚙️ OPÇÕES:\n`;
             message += `1. Excluir meus dados de leads\n`;
-            message += `2. Limpar meus favoritos\n`;
-            message += `3. Cancelar`;
+            message += `2. Cancelar`;
             
-            const option = prompt(message, '3');
+            const option = prompt(message, '2');
             
             if (option === '1') {
                 if (confirm('Tem certeza que deseja excluir todos os seus dados de leads?')) {
                     localStorage.removeItem('novatte_leads_qualificados');
                     alert('Seus dados de leads foram excluídos com sucesso!');
                 }
-            } else if (option === '2') {
-                if (confirm('Tem certeza que deseja limpar sua lista de favoritos?')) {
-                    localStorage.removeItem('novatte_favorites');
-                    alert('Sua lista de favoritos foi limpa com sucesso!');
-                    location.reload();
-                }
             }
-        }
-
-        function updateFavoritesCount() {
-            const countElement = document.getElementById('favoritesCount');
-            if (countElement) {
-                countElement.textContent = favorites.length;
-                countElement.style.display = favorites.length > 0 ? 'flex' : 'none';
-            }
-        }
-        
-        function toggleFavorite(propertyId) {
-            // Verificar consentimento
-            if (userConsent.cookies !== 'accepted') {
-                alert('Para usar esta funcionalidade, é necessário aceitar nossos termos de uso e política de privacidade.');
-                document.getElementById('lgpdBanner').style.display = 'block';
-                return;
-            }
-            
-            const index = favorites.indexOf(propertyId);
-            if (index > -1) {
-                favorites.splice(index, 1);
-            } else {
-                favorites.push(propertyId);
-            }
-            localStorage.setItem('novatte_favorites', JSON.stringify(favorites));
-            updateFavoritesCount();
-            updateFavoriteButtons();
-            renderFavoritesList();
-        }
-        
-        function isFavorite(propertyId) {
-            return favorites.includes(propertyId);
-        }
-        
-        function updateFavoriteButtons() {
-            document.querySelectorAll('.favorite-btn').forEach(btn => {
-                const propertyId = btn.getAttribute('data-property-id');
-                if (isFavorite(propertyId)) {
-                    btn.classList.add('active');
-                    btn.innerHTML = '<i class="bi bi-heart-fill"></i>';
-                } else {
-                    btn.classList.remove('active');
-                    btn.innerHTML = '<i class="bi bi-heart"></i>';
-                }
-            });
-        }
-        
-        function renderFavoritesList() {
-            const favoritesList = document.getElementById('favorites-list');
-            const emptyFavorites = document.getElementById('empty-favorites');
-            const favoritesSection = document.getElementById('favorites-section');
-            
-            if (favorites.length === 0) {
-                favoritesSection.style.display = 'none';
-                return;
-            }
-            
-            favoritesSection.style.display = 'block';
-            
-            let html = '';
-            favorites.forEach(propertyId => {
-                const property = properties[propertyId];
-                if (!property) return;
-                
-                html += `
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card property-card">
-                            <button class="favorite-btn active" data-property-id="${propertyId}" onclick="toggleFavorite(${propertyId})">
-                                <i class="bi bi-heart-fill"></i>
-                            </button>
-                            <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
-                            <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
-                            <div class="card-body">
-                                <h5 class="card-title">${property.title}</h5>
-                                <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="price-tag">${property.price}</span>
-                                    </div>
-                                    <div>
-                                        <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
-                                        <span class="me-2"><i class="bi bi-droplet"></i> ${property.bedrooms}</span>
-                                        <span><i class="bi bi-car-front"></i> ${property.parking}</span>
-                                    </div>
-                                </div>
-                                <div class="property-actions">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}">
-                                        <i class="bi bi-eye"></i> Visualizar
-                                    </button>
-                                    <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${propertyId}">
-                                        <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            favoritesList.innerHTML = html;
-            emptyFavorites.style.display = favorites.length === 0 ? 'block' : 'none';
         }
 
         // Função para aplicar filtros
@@ -2323,11 +2173,85 @@
             }
         }
 
+        // Função para carregar propriedades por categoria
+        function loadPropertiesByCategory() {
+            // Imóveis para compra
+            const buyProperties = Object.entries(properties)
+                .filter(([id, property]) => property.type === 'Venda')
+                .slice(0, 3);
+            
+            let buyHtml = '';
+            buyProperties.forEach(([propertyId, property]) => {
+                buyHtml += createPropertyCard(propertyId, property);
+            });
+            document.getElementById('property-list-buy').innerHTML = buyHtml;
+
+            // Imóveis para alugar
+            const rentProperties = Object.entries(properties)
+                .filter(([id, property]) => property.type === 'Aluguel')
+                .slice(0, 3);
+            
+            let rentHtml = '';
+            rentProperties.forEach(([propertyId, property]) => {
+                rentHtml += createPropertyCard(propertyId, property);
+            });
+            document.getElementById('property-list-rent').innerHTML = rentHtml;
+
+            // Lançamentos
+            const newProperties = Object.entries(properties)
+                .filter(([id, property]) => property.isNew)
+                .slice(0, 3);
+            
+            let newHtml = '';
+            newProperties.forEach(([propertyId, property]) => {
+                newHtml += createPropertyCard(propertyId, property);
+            });
+            document.getElementById('property-list-new').innerHTML = newHtml;
+        }
+
+        // Função para criar card de propriedade
+        function createPropertyCard(propertyId, property) {
+            return `
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card property-card">
+                        <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
+                        ${property.isNew ? '<span class="badge bg-success property-badge" style="right: 100px;">Novo</span>' : ''}
+                        <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
+                        <div class="card-body">
+                            <h5 class="card-title">${property.title}</h5>
+                            <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="price-tag">${property.price}</span>
+                                </div>
+                                <div>
+                                    <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
+                                    <span class="me-2"><i class="bi bi-droplet"></i> ${property.bedrooms}</span>
+                                    <span><i class="bi bi-car-front"></i> ${property.parking}</span>
+                                </div>
+                            </div>
+                            <div class="property-actions">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
+                                    <i class="bi bi-eye"></i> Visualizar
+                                </button>
+                                <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${propertyId}" aria-label="Abrir ${property.title} em nova guia">
+                                    <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                </button>
+                                <button class="btn whatsapp-btn" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
+                                    <i class="bi bi-whatsapp"></i> WhatsApp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         // Variáveis para controle de galeria
         let currentGalleryImages = [];
         let currentGalleryIndex = 0;
 
-        // Função para gerar o carrossel de destaques - AGORA COM 9 IMÓVEIS
+        // Função para gerar o carrossel de destaques
         function generateFeaturedCarousel() {
             const carouselInner = document.querySelector('#featuredCarousel .carousel-inner');
             if (!carouselInner) return;
@@ -2355,42 +2279,7 @@
                 
                 for (let j = startIndex; j < endIndex; j++) {
                     const [propertyId, property] = featuredProperties[j];
-                    carouselHTML += `
-                        <div class="col-md-4">
-                            <div class="card property-card">
-                                <button class="favorite-btn ${isFavorite(propertyId) ? 'active' : ''}" data-property-id="${propertyId}" onclick="toggleFavorite(${propertyId})">
-                                    <i class="bi bi-heart${isFavorite(propertyId) ? '-fill' : ''}"></i>
-                                </button>
-                                <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
-                                <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
-                                <div class="card-body">
-                                    <h5 class="card-title">${property.title}</h5>
-                                    <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="price-tag">${property.price}</span>
-                                        </div>
-                                        <div>
-                                            <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
-                                            <span class="me-2"><i class="bi bi-droplet"></i> ${property.bedrooms}</span>
-                                            <span><i class="bi bi-car-front"></i> ${property.parking}</span>
-                                        </div>
-                                    </div>
-                                    <div class="property-actions">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
-                                            <i class="bi bi-eye"></i> Visualizar
-                                        </button>
-                                        <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${propertyId}" aria-label="Abrir ${property.title} em nova guia">
-                                            <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                        </button>
-                                        <button class="btn whatsapp-btn" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
-                                            <i class="bi bi-whatsapp"></i> WhatsApp
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    carouselHTML += createPropertyCard(propertyId, property);
                 }
                 
                 carouselHTML += `
@@ -2416,42 +2305,7 @@
                 const property = properties[propertyId];
                 if (!property) continue;
 
-                html += `
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card property-card">
-                            <button class="favorite-btn ${isFavorite(propertyId) ? 'active' : ''}" data-property-id="${propertyId}" onclick="toggleFavorite(${propertyId})">
-                                <i class="bi bi-heart${isFavorite(propertyId) ? '-fill' : ''}"></i>
-                            </button>
-                            <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
-                            <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
-                            <div class="card-body">
-                                <h5 class="card-title">${property.title}</h5>
-                                <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="price-tag">${property.price}</span>
-                                    </div>
-                                    <div>
-                                        <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
-                                        <span class="me-2"><i class="bi bi-droplet"></i> ${property.bedrooms}</span>
-                                        <span><i class="bi bi-car-front"></i> ${property.parking}</span>
-                                    </div>
-                                </div>
-                                <div class="property-actions">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
-                                        <i class="bi bi-eye"></i> Visualizar
-                                    </button>
-                                    <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${propertyId}" aria-label="Abrir ${property.title} em nova guia">
-                                        <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                    </button>
-                                    <button class="btn whatsapp-btn" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
-                                        <i class="bi bi-whatsapp"></i> WhatsApp
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                html += createPropertyCard(propertyId, property);
             }
             
             if (page === 1) {
@@ -2461,7 +2315,6 @@
             }
 
             updateLoadMoreButton();
-            updateFavoriteButtons();
         }
 
         // Função para atualizar o botão "Ver Mais"
@@ -2782,7 +2635,7 @@
                 phone: phone || 'Não informado',
                 preferences: userPreferences,
                 date: new Date().toISOString(),
-                source: 'newsletter_inteligente',
+                source: 'encontre_imovel_perfeito',
                 status: 'ativo',
                 consent: {
                     privacy: 'accepted',
@@ -2955,14 +2808,11 @@
             // Gerar carrossel de destaques
             generateFeaturedCarousel();
             
+            // Carregar propriedades por categoria
+            loadPropertiesByCategory();
+            
             // Carregar primeira página de imóveis
             loadProperties(currentPage);
-
-            // Inicializar favoritos (apenas se consentimento dado)
-            if (userConsent.cookies === 'accepted') {
-                updateFavoritesCount();
-                updateFavoriteButtons();
-            }
             
             // Evento para o botão "Ver Mais"
             const loadMoreBtn = document.getElementById('loadMoreBtn');
@@ -2987,7 +2837,7 @@
                 resetFiltersBtn.addEventListener('click', clearFilters);
             }
 
-            // Evento para botões "Nova Guia" - CORRIGIDO
+            // Evento para botões "Nova Guia"
             document.addEventListener('click', function(e) {
                 if (e.target.closest('.new-tab-btn')) {
                     e.preventDefault();
@@ -3191,7 +3041,7 @@
                 }
             });
 
-            // Evento para o modal (AGORA COM DESCRIÇÃO REPOSICIONADA) - CORRIGIDO
+            // Evento para o modal
             const propertyModal = document.getElementById('propertyModal');
             if (propertyModal) {
                 propertyModal.addEventListener('show.bs.modal', function(event) {
@@ -3315,12 +3165,22 @@
 
             // Lazy Loading
             initLazyLoading();
-            
-            // Link de favoritos
-            document.getElementById('favorites-link')?.addEventListener('click', function(e) {
-                e.preventDefault();
-                renderFavoritesList();
-                document.getElementById('favorites-section').scrollIntoView({ behavior: 'smooth' });
+
+            // Configurar navegação suave para todas as âncoras
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
             });
         });
 
