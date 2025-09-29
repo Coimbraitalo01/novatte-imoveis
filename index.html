@@ -3,11 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Encontre o imóvel perfeito no Noroeste Fluminense com a Novatte Imóveis. Casas, apartamentos e terrenos para venda e aluguel.">
-    <title>Novatte Imóveis - Noroeste Fluminense</title>
+    <meta name="description" content="Portal de anúncios imobiliários no Noroeste Fluminense. Encontre casas, apartamentos e terrenos para venda e aluguel na região.">
+    <meta name="keywords" content="imóveis noroeste fluminense, casas itaperuna, apartamentos santo antônio de pádua, terrenos miracema">
+    <title>Novatte Imóveis - Portal Imobiliário do Noroeste Fluminense</title>
+    
+    <!-- Schema Markup para Portal Imobiliário -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "RealEstateAgent",
+        "name": "Novatte Imóveis",
+        "description": "Portal de anúncios imobiliários do Noroeste Fluminense",
+        "url": "https://novatteimoveis.com.br",
+        "telephone": "+5522992054592",
+        "email": "novatteimoveis@gmail.com",
+        "address": {
+            "@type": "PostalAddress",
+            "addressRegion": "Rio de Janeiro",
+            "addressLocality": "Noroeste Fluminense"
+        },
+        "sameAs": [
+            "https://www.instagram.com/novatteimoveis"
+        ]
+    }
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    
     <style>
         :root {
             --primary-color: #003602;
@@ -137,6 +161,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             height: 100%;
+            position: relative;
         }
         
         .property-card:hover {
@@ -147,6 +172,7 @@
         .property-img {
             height: 200px;
             object-fit: cover;
+            width: 100%;
         }
         
         .property-badge {
@@ -679,6 +705,92 @@
             opacity: 1;
         }
         
+        /* NOVOS ESTILOS PARA FAVORITOS */
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .favorite-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+        
+        .favorite-btn.active {
+            color: var(--secondary-color);
+        }
+        
+        .favorites-count {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            z-index: 1000;
+        }
+        
+        /* Lead Capture */
+        .lead-capture-modal .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .lead-form {
+            padding: 20px;
+        }
+        
+        .lead-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .lead-success i {
+            font-size: 4rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        /* Loading Lazy */
+        .lazy-load {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lazy-load.loaded {
+            opacity: 1;
+        }
+        
+        .loading-placeholder {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
         @media (max-width: 768px) {
             .hero-section {
                 padding: 40px 0;
@@ -770,6 +882,12 @@
             .featured-carousel .carousel-control-next {
                 right: 10px;
             }
+            
+            /* Ajustes para favoritos em mobile */
+            .favorites-count {
+                top: 80px;
+                right: 15px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -825,17 +943,21 @@
                 padding: 8px 10px;
                 font-size: 1rem;
             }
+            
+            .favorite-btn {
+                width: 35px;
+                height: 35px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    <!-- Navbar Atualizada -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#" aria-label="Página inicial da Novatte Imóveis">
                 <div class="brand-main">
-                    <!-- CORREÇÃO DO CAMINHO DA LOGO -->
-                    <img src="assets/logo.png" alt="Logo Novatte Imóveis" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <img src="assets/logo.png" alt="Logo Novatte Imóveis - Portal Imobiliário" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                     <div class="logo-placeholder logo" style="display: none;">N</div>
                     <span class="brand-name">
                         <span class="brand-nova">Nova</span><span class="brand-tte">tte</span> <span class="brand-imoveis">Imóveis</span>
@@ -843,6 +965,10 @@
                 </div>
                 <span class="portal-imobiliario">Portal Imobiliário</span>
             </a>
+            
+            <!-- Contador de Favoritos -->
+            <div id="favoritesCount" class="favorites-count" style="display: none;">0</div>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -850,6 +976,9 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link active" href="#" aria-current="page">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#favorites-section" id="favorites-link">Favoritos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Comprar</a>
@@ -861,7 +990,7 @@
                         <a class="nav-link" href="#">Lançamentos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contato</a>
+                        <a class="nav-link" href="#contact">Contato</a>
                     </li>
                 </ul>
             </div>
@@ -871,7 +1000,8 @@
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-3">Encontre seu imóvel no Noroeste Fluminense</h1>
+            <h1 class="display-4 fw-bold mb-3">Portal Imobiliário do Noroeste Fluminense</h1>
+            <p class="lead mb-4">Encontre os melhores imóveis em Itaperuna, Santo Antônio de Pádua, Miracema e toda a região</p>
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="d-flex flex-wrap justify-content-center gap-2">
@@ -963,6 +1093,19 @@
             <!-- Os imóveis serão carregados aqui -->
         </div>
 
+        <!-- Nova Seção: Meus Favoritos -->
+        <div id="favorites-section" class="mt-5" style="display: none;">
+            <h2 class="mb-4">Meus Imóveis Favoritos</h2>
+            <div class="row" id="favorites-list">
+                <!-- Favoritos carregados via JavaScript -->
+            </div>
+            <div id="empty-favorites" class="text-center py-5" style="display: none;">
+                <i class="bi bi-heart display-1 text-muted"></i>
+                <h4 class="mt-3 text-muted">Nenhum imóvel favoritado</h4>
+                <p class="text-muted">Clique no coração para adicionar imóveis aos favoritos</p>
+            </div>
+        </div>
+
         <!-- Botão Mostrar Mais -->
         <div class="load-more-container">
             <button class="btn btn-load-more" id="loadMoreBtn">
@@ -971,22 +1114,23 @@
         </div>
     </div>
 
-    <!-- Seção Newsletter -->
+    <!-- Newsletter Atualizada para Lead Capture -->
     <section class="newsletter-section">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center">
-                    <h3>Receba Novidades por Email</h3>
-                    <p>Cadastre-se para receber os melhores imóveis em primeira mão</p>
-                    <form class="newsletter-form">
+                    <h3>Receba Novidades Exclusivas</h3>
+                    <p>Cadastre-se e seja o primeiro a saber dos melhores imóveis da região</p>
+                    <form class="newsletter-form" id="leadForm">
                         <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="Seu melhor email" required>
+                            <input type="text" class="form-control" placeholder="Seu nome" id="leadName" required>
+                            <input type="email" class="form-control" placeholder="Seu melhor email" id="leadEmail" required>
                             <button class="btn btn-primary" type="submit">Cadastrar</button>
                         </div>
                         <div class="form-check newsletter-checkbox">
-                            <input class="form-check-input" type="checkbox" id="newsletterAccept" required>
-                            <label class="form-check-label" for="newsletterAccept">
-                                Aceito receber emails com novidades e ofertas da Novatte Imóveis
+                            <input class="form-check-input" type="checkbox" id="leadAccept" required>
+                            <label class="form-check-label" for="leadAccept">
+                                Aceito receber oportunidades exclusivas do portal Novatte Imóveis
                             </label>
                         </div>
                     </form>
@@ -995,7 +1139,7 @@
         </div>
     </section>
 
-    <!-- Modal para Detalhes do Imóvel (AGORA COM GALERIA DE FOTOS) -->
+    <!-- Modal para Detalhes do Imóvel -->
     <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -1027,38 +1171,61 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
+    <!-- Modal de Confirmação de Lead -->
+    <div class="modal fade lead-capture-modal" id="leadSuccessModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="lead-form">
+                        <div class="lead-success">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <h4>Cadastro Realizado!</h4>
+                            <p class="mb-3">Agora você receberá as melhores oportunidades em primeira mão.</p>
+                            <button class="btn btn-primary" data-bs-dismiss="modal">Continuar Navegando</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Atualizado -->
+    <footer id="contact">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <h5><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis - Portal Imobiliário</h5>
-                    <p>Encontre o imóvel perfeito para você na região Noroeste Fluminense. Temos as melhores opções para compra, venda e locação.</p>
+                    <p>O maior portal de anúncios imobiliários do Noroeste Fluminense. Conectamos você aos melhores imóveis da região.</p>
                 </div>
                 <div class="col-md-2 mb-4">
                     <h5>Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-white">Início</a></li>
-                        <li><a href="#" class="text-white">Sobre</a></li>
+                        <li><a href="#favorites-section" class="text-white">Favoritos</a></li>
                         <li><a href="#" class="text-white">Imóveis</a></li>
-                        <li><a href="#" class="text-white">Contato</a></li>
+                        <li><a href="#contact" class="text-white">Contato</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-4">
-                    <h5>Contato</h5>
+                    <h5>Contato do Portal</h5>
                     <ul class="list-unstyled">
-                        <li><i class="bi bi-telephone"></i> (22) 3456-7890</li>
-                        <li><i class="bi bi-whatsapp"></i> (22) 981668036</li>
-                        <li><i class="bi bi-envelope"></i> contato@novatte.com</li>
+                        <li><i class="bi bi-whatsapp"></i> (22) 99205-4592</li>
+                        <li><i class="bi bi-envelope"></i> novatteimoveis@gmail.com</li>
+                        <li><i class="bi bi-instagram"></i> @novatteimoveis</li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-4">
                     <h5>Redes Sociais</h5>
                     <div class="d-flex gap-3">
-                        <a href="#" class="text-white" aria-label="Facebook da Novatte Imóveis"><i class="bi bi-facebook fs-4"></i></a>
-                        <a href="#" class="text-white" aria-label="Instagram da Novatte Imóveis"><i class="bi bi-instagram fs-4"></i></a>
-                        <a href="#" class="text-white" aria-label="Twitter da Novatte Imóveis"><i class="bi bi-twitter fs-4"></i></a>
-                        <a href="#" class="text-white" aria-label="YouTube da Novatte Imóveis"><i class="bi bi-youtube fs-4"></i></a>
+                        <a href="https://instagram.com/novatteimoveis" class="text-white" aria-label="Instagram da Novatte Imóveis" target="_blank">
+                            <i class="bi bi-instagram fs-4"></i>
+                        </a>
+                        <a href="https://wa.me/5522992054592" class="text-white" aria-label="WhatsApp da Novatte Imóveis" target="_blank">
+                            <i class="bi bi-whatsapp fs-4"></i>
+                        </a>
+                        <a href="mailto:novatteimoveis@gmail.com" class="text-white" aria-label="Email da Novatte Imóveis">
+                            <i class="bi bi-envelope fs-4"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1069,29 +1236,31 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
     <script>
-        // Dados dos corretores - COM AVATARES NEUTROS
+        // Dados atualizados dos corretores/anunciantes
         const corretores = {
+            "bruna": {
+                nome: "Bruna Magazzi",
+                tipo: "Corretora",
+                creci: "CRECI: 12345-6",
+                telefone: "041 32 99148-0246",
+                whatsapp: "5504132991480246",
+                avatar: "BM"
+            },
             "italo": {
-                nome: "Ítalo Coimbra",
+                nome: "Ítalo Coimbra", 
                 tipo: "Particular",
                 telefone: "22 98166-8036",
                 whatsapp: "5522981668036",
-                avatar: "IC" // Iniciais para avatar
-            },
-            "bruna": {
-                nome: "Bruna Magazzi", 
-                tipo: "Corretora",
-                creci: "CRECI: 12345-6",
-                telefone: "04132991480246",
-                whatsapp: "5504132991480246",
-                avatar: "BM" // Iniciais para avatar
+                avatar: "IC"
             }
         };
 
-        // Dados dos imóveis com coordenadas geográficas - AGORA COM MÚLTIPLAS FOTOS
+        // Dados dos imóveis com coordenadas geográficas - AGORA COM CORRETORES ESPECÍFICOS
         const properties = {
             1: { 
                 title: "Casa Moderna com Piscina", 
@@ -1112,7 +1281,7 @@
                     "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Excelente casa moderna com piscina, área gourmet e acabamento de alto padrão. Localizada em região nobre de Itaperuna, próxima a comércios e escolas.",
-                corretor: "italo"
+                corretor: "italo" // Ítalo Coimbra - Particular
             },
             2: { 
                 title: "Apartamento com Varanda", 
@@ -1132,7 +1301,7 @@
                     "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Apartamento bem localizado no centro de Santo Antônio de Pádua, com varanda gourmet e acabamentos modernos. Próximo a bancos, mercados e farmácias.",
-                corretor: "bruna"
+                corretor: "bruna" // Bruna Magazzi - Corretora
             },
             3: { 
                 title: "Casa Familiar com Jardim", 
@@ -1152,7 +1321,7 @@
                     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Casa espaçosa ideal para família, com jardim amplo, área de lazer e garagem para dois carros. Localizada em bairro tranquilo de Miracema.",
-                corretor: "italo"
+                corretor: "italo" // Ítalo Coimbra - Particular
             },
             4: { 
                 title: "Casa Próxima ao Centro", 
@@ -1171,7 +1340,7 @@
                     "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Casa bem conservada a poucos minutos do centro de Itaocara. Possui quintal espaçoso e área de serviço coberta.",
-                corretor: "bruna"
+                corretor: "bruna" // Bruna Magazzi - Corretora
             },
             5: { 
                 title: "Sítio com Área Verde", 
@@ -1190,7 +1359,7 @@
                     "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Sítio com ampla área verde, ideal para quem busca tranquilidade e contato com a natureza. Possui casa principal, área de lazer e pomar.",
-                corretor: "italo"
+                corretor: "italo" // Ítalo Coimbra - Particular
             },
             6: { 
                 title: "Apartamento Reformado", 
@@ -1209,83 +1378,106 @@
                     "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 ],
                 description: "Apartamento totalmente reformado, com acabamentos modernos e boa localização no centro de Cambuci. Próximo a comércios e serviços.",
-                corretor: "bruna"
-            },
-            7: { 
-                title: "Casa com Vista Panorâmica", 
-                type: "Venda", 
-                price: "R$ 700.000", 
-                location: "Itaperuna, RJ", 
-                size: "200m²", 
-                bedrooms: 4, 
-                bathrooms: 3, 
-                parking: 3,
-                address: "Alto da Colina, 1000, Bairro Alto, Itaperuna - RJ",
-                lat: -21.1959, 
-                lng: -41.8779,
-                images: [
-                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                description: "Casa com vista panorâmica da cidade, em local privilegiado de Itaperuna. Acabamento de alto padrão e área de lazer completa.",
-                corretor: "italo"
-            },
-            8: { 
-                title: "Apartamento Compacto", 
-                type: "Aluguel", 
-                price: "R$ 800/mês", 
-                location: "Miracema, RJ", 
-                size: "50m²", 
-                bedrooms: 1, 
-                bathrooms: 1, 
-                parking: 1,
-                address: "Rua das Acácias, 222, Centro, Miracema - RJ",
-                lat: -21.4222, 
-                lng: -42.1868,
-                images: [
-                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                description: "Apartamento compacto e aconchegante, ideal para solteiros ou casais. Bem localizado no centro de Miracema, próximo a tudo.",
-                corretor: "bruna"
-            },
-            9: { 
-                title: "Casa Térrea Espaçosa", 
-                type: "Venda", 
-                price: "R$ 450.000", 
-                location: "Santo Antônio de Pádua, RJ", 
-                size: "140m²", 
-                bedrooms: 3, 
-                bathrooms: 2, 
-                parking: 2,
-                address: "Rua das Hortênsias, 555, Vila Nova, Santo Antônio de Pádua - RJ",
-                lat: -21.5494, 
-                lng: -42.1703,
-                images: [
-                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                description: "Casa térrea espaçosa com quintal amplo, localizada em bairro residencial tranquilo de Santo Antônio de Pádua.",
-                corretor: "italo"
-            },
-            10: { 
-                title: "Casa com Quintal Grande", 
-                type: "Aluguel", 
-                price: "R$ 1.800/mês", 
-                location: "Itaocara, RJ", 
-                size: "110m²", 
-                bedrooms: 2, 
-                bathrooms: 2, 
-                parking: 2,
-                address: "Rua dos Ipês, 777, Bairro Jardim, Itaocara - RJ",
-                lat: -21.6592, 
-                lng: -42.0861,
-                images: [
-                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ],
-                description: "Casa com quintal grande, ideal para crianças e pets. Localizada em bairro tranquilo de Itaocara, com fácil acesso ao centro.",
-                corretor: "bruna"
+                corretor: "bruna" // Bruna Magazzi - Corretora
             }
         };
+
+        // Sistema de Favoritos
+        let favorites = JSON.parse(localStorage.getItem('novatte_favorites')) || [];
+        
+        function updateFavoritesCount() {
+            const countElement = document.getElementById('favoritesCount');
+            if (countElement) {
+                countElement.textContent = favorites.length;
+                countElement.style.display = favorites.length > 0 ? 'flex' : 'none';
+            }
+        }
+        
+        function toggleFavorite(propertyId) {
+            const index = favorites.indexOf(propertyId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(propertyId);
+            }
+            localStorage.setItem('novatte_favorites', JSON.stringify(favorites));
+            updateFavoritesCount();
+            updateFavoriteButtons();
+            renderFavoritesList();
+        }
+        
+        function isFavorite(propertyId) {
+            return favorites.includes(propertyId);
+        }
+        
+        function updateFavoriteButtons() {
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                const propertyId = btn.getAttribute('data-property-id');
+                if (isFavorite(propertyId)) {
+                    btn.classList.add('active');
+                    btn.innerHTML = '<i class="bi bi-heart-fill"></i>';
+                } else {
+                    btn.classList.remove('active');
+                    btn.innerHTML = '<i class="bi bi-heart"></i>';
+                }
+            });
+        }
+        
+        function renderFavoritesList() {
+            const favoritesList = document.getElementById('favorites-list');
+            const emptyFavorites = document.getElementById('empty-favorites');
+            const favoritesSection = document.getElementById('favorites-section');
+            
+            if (favorites.length === 0) {
+                favoritesSection.style.display = 'none';
+                return;
+            }
+            
+            favoritesSection.style.display = 'block';
+            
+            let html = '';
+            favorites.forEach(propertyId => {
+                const property = properties[propertyId];
+                if (!property) return;
+                
+                html += `
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card property-card">
+                            <button class="favorite-btn active" data-property-id="${propertyId}" onclick="toggleFavorite(${propertyId})">
+                                <i class="bi bi-heart-fill"></i>
+                            </button>
+                            <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
+                            <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
+                            <div class="card-body">
+                                <h5 class="card-title">${property.title}</h5>
+                                <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="price-tag">${property.price}</span>
+                                    </div>
+                                    <div>
+                                        <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
+                                        <span class="me-2"><i class="bi bi-droplet"></i> ${property.bedrooms}</span>
+                                        <span><i class="bi bi-car-front"></i> ${property.parking}</span>
+                                    </div>
+                                </div>
+                                <div class="property-actions">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}">
+                                        <i class="bi bi-eye"></i> Visualizar
+                                    </button>
+                                    <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${propertyId}">
+                                        <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            favoritesList.innerHTML = html;
+            emptyFavorites.style.display = favorites.length === 0 ? 'block' : 'none';
+        }
 
         // Variáveis para controle de galeria
         let currentGalleryImages = [];
@@ -1324,6 +1516,9 @@
                     carouselHTML += `
                         <div class="col-md-4">
                             <div class="card property-card">
+                                <button class="favorite-btn ${isFavorite(propertyId) ? 'active' : ''}" data-property-id="${propertyId}" onclick="toggleFavorite(${propertyId})">
+                                    <i class="bi bi-heart${isFavorite(propertyId) ? '-fill' : ''}"></i>
+                                </button>
                                 <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
                                 <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
                                 <div class="card-body">
@@ -1381,6 +1576,9 @@
                 html += `
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card property-card">
+                            <button class="favorite-btn ${isFavorite(i) ? 'active' : ''}" data-property-id="${i}" onclick="toggleFavorite(${i})">
+                                <i class="bi bi-heart${isFavorite(i) ? '-fill' : ''}"></i>
+                            </button>
                             <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
                             <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
                             <div class="card-body">
@@ -1623,7 +1821,44 @@
             }
         }
 
-        // Inicialização do modal e eventos
+        // Lazy Loading
+        function initLazyLoading() {
+            const lazyImages = document.querySelectorAll('img[data-src]');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.getAttribute('data-src');
+                        img.classList.remove('lazy-load');
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+            
+            lazyImages.forEach(img => imageObserver.observe(img));
+        }
+
+        // Lead Capture
+        document.getElementById('leadForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('leadName').value;
+            const email = document.getElementById('leadEmail').value;
+            
+            // Simular envio para API
+            console.log('Lead capturado:', { name, email });
+            
+            // Mostrar sucesso
+            const successModal = new bootstrap.Modal(document.getElementById('leadSuccessModal'));
+            successModal.show();
+            
+            // Limpar formulário
+            this.reset();
+        });
+
+        // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
             // Gerar carrossel de destaques
             generateFeaturedCarousel();
@@ -1631,6 +1866,10 @@
             // Carregar primeira página de imóveis
             loadProperties(currentPage);
 
+            // Inicializar favoritos
+            updateFavoritesCount();
+            updateFavoriteButtons();
+            
             // Evento para o botão "Ver Mais"
             const loadMoreBtn = document.getElementById('loadMoreBtn');
             if (loadMoreBtn) {
@@ -1648,7 +1887,7 @@
                         if (property) {
                             const corretor = corretores[property.corretor];
                             
-                            // Criar página de detalhes em nova guia
+                            // Criar página de detalhes em nova guia - COM DESCRIÇÃO REPOSICIONADA
                             const newWindow = window.open('', '_blank');
                             newWindow.document.write(`
                                 <!DOCTYPE html>
@@ -1683,6 +1922,8 @@
                                         .image-counter { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 20px; }
                                         .gallery-controls { position: absolute; top: 50%; left: 0; right: 0; display: flex; justify-content: space-between; transform: translateY(-50%); padding: 0 15px; pointer-events: none; }
                                         .gallery-btn { background-color: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 15px; border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease; pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; font-size: 1.2rem; }
+                                        /* ALTERAÇÃO: Estilo para descrição reposicionada */
+                                        .description-section { margin-top: 20px; margin-bottom: 20px; }
                                     </style>
                                 </head>
                                 <body>
@@ -1701,6 +1942,12 @@
                                         
                                         <!-- Galeria de Fotos -->
                                         ${createGallery(propertyId)}
+                                        
+                                        <!-- ALTERAÇÃO: Descrição reposicionada para ficar mais acima -->
+                                        <div class="description-section">
+                                            <h5>Descrição</h5>
+                                            <p>${property.description}</p>
+                                        </div>
                                         
                                         <div class="row">
                                             <div class="col-md-6">
@@ -1725,6 +1972,11 @@
                                                     <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
                                                 </div>
                                             </div>
+                                            <div class="mt-4">
+                                                <button class="btn btn-success w-100" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
+                                                    <i class="bi bi-whatsapp"></i> Entrar em Contato
+                                                </button>
+                                            </div>
                                         </div>
                                         
                                         <div class="mt-4">
@@ -1742,15 +1994,7 @@
                                         </div>
                                         
                                         <div class="mt-4">
-                                            <h5>Descrição</h5>
-                                            <p>${property.description}</p>
-                                        </div>
-                                        
-                                        <div class="mt-4">
                                             <a href="javascript:window.close()" class="btn btn-secondary">Fechar</a>
-                                            <button class="btn btn-success" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
-                                                <i class="bi bi-whatsapp"></i> Entrar em Contato
-                                            </button>
                                         </div>
                                     </div>
                                     
@@ -1836,7 +2080,7 @@
                 }
             });
 
-            // Evento para o modal (AGORA COM GALERIA DE FOTOS)
+            // Evento para o modal (AGORA COM DESCRIÇÃO REPOSICIONADA)
             const propertyModal = document.getElementById('propertyModal');
             if (propertyModal) {
                 propertyModal.addEventListener('show.bs.modal', function(event) {
@@ -1855,7 +2099,7 @@
 
                     modalTitle.textContent = property.title;
 
-                    // CONTEÚDO COM GALERIA DE FOTOS
+                    // CONTEÚDO COM DESCRIÇÃO REPOSICIONADA
                     modalBody.innerHTML = `
                         <div class="unified-header">
                             <img src="assets/logo.png" alt="Logo Novatte Imóveis" class="unified-logo" onerror="this.style.display='none'">
@@ -1871,6 +2115,12 @@
                         
                         <!-- Galeria de Fotos -->
                         ${createGallery(propertyId)}
+                        
+                        <!-- ALTERAÇÃO: Descrição reposicionada para ficar mais acima -->
+                        <div class="description-section">
+                            <h5>Descrição</h5>
+                            <p>${property.description}</p>
+                        </div>
                         
                         <div class="row">
                             <div class="col-md-6">
@@ -1895,6 +2145,11 @@
                                     <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
                                 </div>
                             </div>
+                            <div class="mt-4">
+                                <button class="btn btn-success w-100" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
+                                    <i class="bi bi-whatsapp"></i> Entrar em Contato
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="mt-4">
@@ -1912,15 +2167,7 @@
                         </div>
                         
                         <div class="mt-4">
-                            <h5>Descrição</h5>
-                            <p>${property.description}</p>
-                        </div>
-                        
-                        <div class="mt-4">
                             <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            <button class="btn btn-success" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
-                                <i class="bi bi-whatsapp"></i> Entrar em Contato
-                            </button>
                         </div>
                     `;
 
@@ -1953,6 +2200,16 @@
                         bootstrap.Modal.getInstance(galleryModal).hide();
                     }
                 }
+            });
+
+            // Lazy Loading
+            initLazyLoading();
+            
+            // Link de favoritos
+            document.getElementById('favorites-link')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                renderFavoritesList();
+                document.getElementById('favorites-section').scrollIntoView({ behavior: 'smooth' });
             });
         });
 
