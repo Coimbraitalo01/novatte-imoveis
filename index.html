@@ -169,6 +169,14 @@
             z-index: 2;
         }
         
+        /* ALTERAÇÃO: Logo no cabeçalho */
+        .hero-logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        
         /* ALTERAÇÃO: Filtros integrados ao cabeçalho */
         .filter-section {
             background-color: white;
@@ -1021,6 +1029,10 @@
                 padding: 40px 0 100px;
             }
             
+            .hero-logo {
+                max-width: 150px;
+            }
+            
             .property-img {
                 height: 180px;
             }
@@ -1270,9 +1282,14 @@
         </div>
     </nav>
 
-    <!-- ALTERAÇÃO: Hero Section com filtros integrados -->
+    <!-- ALTERAÇÃO: Hero Section com logo e filtros integrados -->
     <section class="hero-section section-anchor" id="inicio">
-        <div class="container hero-content">
+        <div class="container hero-content text-center">
+            <!-- LOGO ADICIONADA -->
+            <img src="https://raw.githubusercontent.com/Coimbraitalo01/novatte-imoveis/main/frontend/src/assets/logo.png" 
+                 alt="Novatte Imóveis - Portal Imobiliário" 
+                 class="hero-logo">
+            
             <!-- TEXTO SIMPLIFICADO -->
             <h1 class="display-4 fw-bold mb-3">Novatte Imóveis</h1>
             <p class="lead mb-4">Encontre seu imóvel dos sonhos</p>
@@ -2960,7 +2977,7 @@
                                 <body>
                                     <div class="container">
                                         <div class="unified-header">
-                                            <img src="assets/logo.png" alt="Logo Novatte Imóveis" class="unified-logo" onerror="this.style.display='none'">
+                                            <img src="https://raw.githubusercontent.com/Coimbraitalo01/novatte-imoveis/main/frontend/src/assets/logo.png" alt="Logo Novatte Imóveis" class="unified-logo">
                                             <div>
                                                 <h1><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis</h1>
                                                 <p class="lead mb-0">Portal Imobiliário - Detalhes do Imóvel</p>
@@ -3133,7 +3150,9 @@
                     // CONTEÚDO COM DESCRIÇÃO REPOSICIONADA
                     modalBody.innerHTML = `
                         <div class="unified-header">
-                            <img src="assets/logo.png" alt="Logo Novatte Imóveis" class="unified-logo" onerror="this.style.display='none'">
+                            <img src="https://raw.githubusercontent.com/Coimbraitalo01/novatte-imoveis/main/frontend/src/assets/logo.png" 
+                                 alt="Logo Novatte Imóveis" 
+                                 class="unified-logo">
                             <div>
                                 <h1><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis</h1>
                                 <p class="lead mb-0">Portal Imobiliário - Detalhes do Imóvel</p>
