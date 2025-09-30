@@ -185,38 +185,144 @@
             margin-bottom: 30px;
         }
         
-        .property-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-radius: 8px;
+        /* NOVO ESTILO: Cards no estilo Booking */
+        .property-card-booking {
+            background: white;
+            border-radius: 12px;
             overflow: hidden;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
             height: 100%;
-            position: relative;
         }
         
-        .property-card:hover {
+        .property-card-booking:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
         }
         
-        .property-img {
-            height: 200px;
+        .property-img-booking {
+            height: 220px;
             object-fit: cover;
             width: 100%;
+            position: relative;
         }
         
-        .property-badge {
+        .property-badge-booking {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             z-index: 1;
+            font-size: 0.85rem;
+            padding: 6px 12px;
         }
         
-        .price-tag {
+        .property-content-booking {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .property-title-booking {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+        
+        .property-location-booking {
+            color: #666;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        
+        .property-features-booking {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .feature-item-booking {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .property-description-booking {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .property-footer-booking {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        .property-price-booking {
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--secondary-color);
+        }
+        
+        .property-actions-booking {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-booking-primary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-booking-primary:hover {
+            background-color: #e03e00;
+            transform: translateY(-2px);
+        }
+        
+        .btn-booking-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-booking-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-booking-tertiary {
+            background-color: #f8f9fa;
+            color: var(--dark-color);
+            border: 1px solid #dee2e6;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-booking-tertiary:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
         }
         
         .property-detail-img {
@@ -302,7 +408,7 @@
             width: 5%;
         }
         
-        .featured-carousel .property-card {
+        .featured-carousel .property-card-booking {
             margin: 0 10px;
         }
         
@@ -1030,7 +1136,7 @@
                 max-width: 150px;
             }
             
-            .property-img {
+            .property-img-booking {
                 height: 180px;
             }
             
@@ -1042,7 +1148,7 @@
                 font-size: 1.1rem;
             }
             
-            .property-actions {
+            .property-actions-booking {
                 flex-direction: column;
                 gap: 8px;
             }
@@ -2267,7 +2373,7 @@
             
             let buyHtml = '';
             buyProperties.forEach(([propertyId, property]) => {
-                buyHtml += createPropertyCard(propertyId, property);
+                buyHtml += createPropertyCardBooking(propertyId, property);
             });
             document.getElementById('property-list-buy').innerHTML = buyHtml;
 
@@ -2278,7 +2384,7 @@
             
             let rentHtml = '';
             rentProperties.forEach(([propertyId, property]) => {
-                rentHtml += createPropertyCard(propertyId, property);
+                rentHtml += createPropertyCardBooking(propertyId, property);
             });
             document.getElementById('property-list-rent').innerHTML = rentHtml;
 
@@ -2289,42 +2395,54 @@
             
             let newHtml = '';
             newProperties.forEach(([propertyId, property]) => {
-                newHtml += createPropertyCard(propertyId, property);
+                newHtml += createPropertyCardBooking(propertyId, property);
             });
             document.getElementById('property-list-new').innerHTML = newHtml;
         }
 
-        // Função para criar card de propriedade
-        function createPropertyCard(propertyId, property) {
+        // Função para criar card de propriedade no estilo Booking
+        function createPropertyCardBooking(propertyId, property) {
             return `
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card property-card">
-                        <span class="badge bg-${property.type === 'Venda' ? 'primary' : 'secondary'} property-badge">${property.type}</span>
-                        ${property.isNew ? '<span class="badge bg-success property-badge" style="right: 100px;">Novo</span>' : ''}
-                        <img src="${property.images[0]}" class="card-img-top property-img" alt="${property.title}">
-                        <div class="card-body">
-                            <h5 class="card-title">${property.title}</h5>
-                            <p class="card-text"><i class="bi bi-geo-alt"></i> ${property.location}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="price-tag">${property.price}</span>
+                    <div class="property-card-booking">
+                        <div class="position-relative">
+                            <img src="${property.images[0]}" class="property-img-booking" alt="${property.title}">
+                            <span class="badge ${property.type === 'Venda' ? 'bg-primary' : 'bg-secondary'} property-badge-booking">${property.type}</span>
+                            ${property.isNew ? '<span class="badge bg-success property-badge-booking" style="right: 100px;">Novo</span>' : ''}
+                        </div>
+                        <div class="property-content-booking">
+                            <h3 class="property-title-booking">${property.title}</h3>
+                            <p class="property-location-booking"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                            
+                            <div class="property-features-booking">
+                                <div class="feature-item-booking">
+                                    <i class="bi bi-house-door"></i> ${property.size}
                                 </div>
-                                <div>
-                                    <span class="me-2"><i class="bi bi-house-door"></i> ${property.size}</span>
-                                    <span class="me-2"><i class="bi bi-droplet"></i> ${property.bedrooms}</span>
-                                    <span><i class="bi bi-car-front"></i> ${property.parking}</span>
+                                <div class="feature-item-booking">
+                                    <i class="bi bi-door-closed"></i> ${property.bedrooms} quarto${property.bedrooms !== 1 ? 's' : ''}
                                 </div>
+                                <div class="feature-item-booking">
+                                    <i class="bi bi-droplet"></i> ${property.bathrooms} banheiro${property.bathrooms !== 1 ? 's' : ''}
+                                </div>
+                                ${property.parking > 0 ? `
+                                <div class="feature-item-booking">
+                                    <i class="bi bi-car-front"></i> ${property.parking} vaga${property.parking !== 1 ? 's' : ''}
+                                </div>
+                                ` : ''}
                             </div>
-                            <div class="property-actions">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
-                                    <i class="bi bi-eye"></i> Visualizar
-                                </button>
-                                <button class="btn btn-outline-secondary new-tab-btn" data-property-id="${propertyId}" aria-label="Abrir ${property.title} em nova guia">
-                                    <i class="bi bi-box-arrow-up-right"></i> Nova Guia
-                                </button>
-                                <button class="btn whatsapp-btn" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
-                                    <i class="bi bi-whatsapp"></i> <span class="btn-text">WhatsApp</span>
-                                </button>
+                            
+                            <p class="property-description-booking">${property.description}</p>
+                            
+                            <div class="property-footer-booking">
+                                <div class="property-price-booking">${property.price}</div>
+                                <div class="property-actions-booking">
+                                    <button class="btn-booking-secondary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
+                                        <i class="bi bi-eye"></i> Visualizar
+                                    </button>
+                                    <button class="btn-booking-tertiary new-tab-btn" data-property-id="${propertyId}" aria-label="Abrir ${property.title} em nova guia">
+                                        <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2364,7 +2482,7 @@
                 
                 for (let j = startIndex; j < endIndex; j++) {
                     const [propertyId, property] = featuredProperties[j];
-                    carouselHTML += createPropertyCard(propertyId, property);
+                    carouselHTML += createPropertyCardBooking(propertyId, property);
                 }
                 
                 carouselHTML += `
@@ -2390,7 +2508,7 @@
                 const property = properties[propertyId];
                 if (!property) continue;
 
-                html += createPropertyCard(propertyId, property);
+                html += createPropertyCardBooking(propertyId, property);
             }
             
             if (page === 1) {
