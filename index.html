@@ -97,16 +97,12 @@
         
         .logo {
             height: 70px;
-            width: 70px;
+            width: auto;
             background-color: transparent;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: var(--secondary-color);
-            border: 3px solid var(--secondary-color);
-            font-size: 1.8rem;
         }
         
         .navbar-nav .nav-link {
@@ -500,7 +496,7 @@
         
         .unified-logo {
             height: 40px;
-            width: 40px;
+            width: auto;
             margin-right: 10px;
         }
         
@@ -589,24 +585,25 @@
             gap: 5px;
         }
 
-        /* NOVOS ESTILOS PARA GALERIA DE FOTOS */
+        /* NOVOS ESTILOS PARA GALERIA DE FOTOS - FORMATO MELHORADO */
         .property-gallery {
             position: relative;
             margin-bottom: 20px;
         }
         
-        /* ALTERAÇÃO: Aumentar o tamanho da foto principal */
+        /* ALTERAÇÃO: Novo formato para imagem principal - mais equilibrado */
         .main-image {
-            height: 500px;
+            height: 450px;
             object-fit: cover;
             width: 100%;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             transition: transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         .main-image:hover {
-            transform: scale(1.02);
+            transform: scale(1.01);
         }
         
         .thumbnail-container {
@@ -618,10 +615,10 @@
         }
         
         .thumbnail {
-            width: 80px;
-            height: 60px;
+            width: 100px;
+            height: 75px;
             object-fit: cover;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             opacity: 0.7;
             transition: all 0.3s ease;
@@ -1099,8 +1096,8 @@
             }
             
             .thumbnail {
-                width: 60px;
-                height: 45px;
+                width: 80px;
+                height: 60px;
             }
             
             .gallery-modal .modal-dialog {
@@ -1147,8 +1144,6 @@
             
             .logo {
                 height: 50px;
-                width: 50px;
-                font-size: 1.4rem;
             }
         }
         
@@ -1190,8 +1185,8 @@
             }
             
             .thumbnail {
-                width: 50px;
-                height: 40px;
+                width: 70px;
+                height: 50px;
             }
             
             .gallery-modal-nav {
@@ -1244,7 +1239,7 @@
         <div class="container">
             <a class="navbar-brand" href="#" aria-label="Página inicial da Novatte Imóveis">
                 <div class="brand-main">
-                    <!-- LOGO ADICIONADA NO LUGAR DO QUADRADO COM "N" -->
+                    <!-- LOGO ADICIONADA NO LUGAR DO QUADRADO COM "N" - SEM BORDA LARANJA -->
                     <img src="https://raw.githubusercontent.com/Coimbraitalo01/novatte-imoveis/main/frontend/src/assets/logo.png" 
                          alt="Novatte Imóveis - Portal Imobiliário" 
                          class="logo">
@@ -1293,9 +1288,9 @@
                  alt="Novatte Imóveis - Portal Imobiliário" 
                  class="hero-logo">
             
-            <!-- TEXTO SIMPLIFICADO -->
+            <!-- TEXTO ATUALIZADO -->
             <h1 class="display-4 fw-bold mb-3">Novatte Imóveis</h1>
-            <p class="lead mb-4">Encontre seu imóvel dos sonhos</p>
+            <p class="lead mb-4">Seu novo lar no Noroeste Fluminense</p>
         </div>
     </section>
 
@@ -2956,20 +2951,21 @@
                                         .unified-header { background-color: #f0f8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; }
                                         .brand-nova { color: #003602; }
                                         .brand-tte { color: #FE4700; }
-                                        .unified-property-image { height: 300px; object-fit: cover; border-radius: 8px; }
-                                        .unified-logo { height: 40px; width: 40px; margin-right: 10px; }
+                                        .unified-property-image { height: 450px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+                                        .unified-logo { height: 40px; width: auto; margin-right: 10px; }
                                         .corretor-info { background-color: #f7eee9; border-radius: 8px; padding: 20px; margin-top: 20px; border-left: 4px solid #FE4700; }
                                         .corretor-header { display: flex; align-items: center; margin-bottom: 15px; }
                                         .corretor-photo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #FE4700; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #003602; font-size: 24px; }
                                         .corretor-name { font-weight: 600; color: #003602; margin-bottom: 5px; font-size: 1.1rem; }
                                         .corretor-type { color: #FE4700; font-size: 0.9rem; margin-bottom: 5px; }
                                         .corretor-creci { color: #333; font-size: 0.85rem; margin-bottom: 5px; }
-                                        /* Estilos da galeria para nova guia */
+                                        /* Estilos da galeria para nova guia - FORMATO MELHORADO */
                                         .property-gallery { position: relative; margin-bottom: 20px; }
-                                        .main-image { height: 500px; object-fit: cover; width: 100%; border-radius: 8px; cursor: pointer; }
+                                        .main-image { height: 450px; object-fit: cover; width: 100%; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+                                        .main-image:hover { transform: scale(1.01); }
                                         .thumbnail-container { display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; padding: 10px 0; }
-                                        .thumbnail { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer; opacity: 0.7; transition: all 0.3s ease; border: 2px solid transparent; }
-                                        .thumbnail:hover, .thumbnail.active { opacity: 1; border-color: #FE4700; }
+                                        .thumbnail { width: 100px; height: 75px; object-fit: cover; border-radius: 8px; cursor: pointer; opacity: 0.7; transition: all 0.3s ease; border: 2px solid transparent; }
+                                        .thumbnail:hover, .thumbnail.active { opacity: 1; border-color: #FE4700; transform: scale(1.05); }
                                         .image-counter { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 20px; }
                                         .gallery-controls { position: absolute; top: 50%; left: 0; right: 0; display: flex; justify-content: space-between; transform: translateY(-50%); padding: 0 15px; pointer-events: none; }
                                         .gallery-btn { background-color: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 15px; border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease; pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; font-size: 1.2rem; }
