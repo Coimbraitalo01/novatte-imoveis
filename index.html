@@ -52,25 +52,27 @@
         }
         
         .navbar {
-            background-color: var(--top-color) !important;
+            background-color: white !important;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
         }
         
         .navbar-brand {
             font-weight: 700;
             display: flex;
             align-items: center;
-            flex-direction: column;
             text-align: center;
         }
         
         .brand-main {
             display: flex;
             align-items: center;
+            gap: 15px;
         }
         
         .brand-name {
-            font-size: 1.5rem;
+            font-size: 2.2rem;
+            line-height: 1.1;
         }
         
         .brand-nova {
@@ -88,14 +90,14 @@
         .portal-imobiliario {
             color: var(--primary-color);
             font-weight: 600;
-            font-size: 0.9rem;
-            margin-top: -5px;
+            font-size: 1.1rem;
+            margin-top: 2px;
+            display: block;
         }
         
         .logo {
-            height: 40px;
-            width: 40px;
-            margin-right: 10px;
+            height: 70px;
+            width: 70px;
             background-color: transparent;
             border-radius: 8px;
             display: flex;
@@ -103,11 +105,16 @@
             justify-content: center;
             font-weight: bold;
             color: var(--secondary-color);
+            border: 3px solid var(--secondary-color);
+            font-size: 1.8rem;
         }
         
         .navbar-nav .nav-link {
             color: var(--primary-color) !important;
             transition: color 0.3s ease;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 15px !important;
         }
         
         .navbar-nav .nav-link:hover {
@@ -146,13 +153,32 @@
             color: white;
         }
         
+        /* ALTERAÇÃO: Hero Section com filtros integrados */
         .hero-section {
             background: linear-gradient(rgba(0, 54, 2, 0.8), rgba(0, 54, 2, 0.8)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1973&q=80');
             background-size: cover;
             background-position: center;
             color: white;
-            padding: 80px 0;
-            margin-bottom: 40px;
+            padding: 80px 0 120px;
+            margin-bottom: 0;
+            position: relative;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* ALTERAÇÃO: Filtros integrados ao cabeçalho */
+        .filter-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 30px;
         }
         
         .property-card {
@@ -187,14 +213,6 @@
         .price-tag {
             font-weight: 700;
             color: var(--secondary-color);
-        }
-        
-        .filter-section {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
         }
         
         .property-detail-img {
@@ -322,6 +340,7 @@
             text-align: center;
         }
         
+        /* CORREÇÃO DO BOTÃO WHATSAPP */
         .whatsapp-btn {
             background-color: #25D366;
             color: white;
@@ -330,9 +349,13 @@
             border-radius: 50px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
+            width: 100%;
+            min-height: 44px;
+            text-align: center;
         }
         
         .whatsapp-btn:hover {
@@ -340,6 +363,14 @@
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .whatsapp-btn .btn-text {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         /* Newsletter Inteligente */
@@ -556,8 +587,9 @@
             margin-bottom: 20px;
         }
         
+        /* ALTERAÇÃO: Aumentar o tamanho da foto principal */
         .main-image {
-            height: 400px;
+            height: 500px;
             object-fit: cover;
             width: 100%;
             border-radius: 8px;
@@ -956,10 +988,37 @@
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        
+
+        /* Estilo inspirado no Net Imóveis */
+        .netimoveis-style {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .netimoveis-style h3 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .netimoveis-style .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .netimoveis-style .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(254, 71, 0, 0.25);
+        }
+
         @media (max-width: 768px) {
             .hero-section {
-                padding: 40px 0;
+                padding: 40px 0 100px;
             }
             
             .property-img {
@@ -997,7 +1056,7 @@
             }
             
             .portal-imobiliario {
-                font-size: 0.8rem;
+                font-size: 0.9rem;
             }
             
             .unified-property-image {
@@ -1024,7 +1083,7 @@
             
             /* Ajustes para galeria em mobile */
             .main-image {
-                height: 250px;
+                height: 300px;
             }
             
             .thumbnail {
@@ -1068,6 +1127,17 @@
             .section-anchor {
                 scroll-margin-top: 80px;
             }
+
+            /* Ajustes para navbar em mobile */
+            .brand-name {
+                font-size: 1.6rem;
+            }
+            
+            .logo {
+                height: 50px;
+                width: 50px;
+                font-size: 1.4rem;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1086,6 +1156,7 @@
             .brand-main {
                 flex-direction: column;
                 text-align: center;
+                gap: 8px;
             }
             
             .logo {
@@ -1103,7 +1174,7 @@
             
             /* Ajustes para galeria em telas muito pequenas */
             .main-image {
-                height: 200px;
+                height: 250px;
             }
             
             .thumbnail {
@@ -1127,6 +1198,14 @@
             .favorite-btn {
                 width: 35px;
                 height: 35px;
+            }
+
+            .brand-name {
+                font-size: 1.4rem;
+            }
+            
+            .portal-imobiliario {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -1153,13 +1232,14 @@
         <div class="container">
             <a class="navbar-brand" href="#" aria-label="Página inicial da Novatte Imóveis">
                 <div class="brand-main">
-                    <img src="assets/logo.png" alt="Logo Novatte Imóveis - Portal Imobiliário" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                    <div class="logo-placeholder logo" style="display: none;">N</div>
-                    <span class="brand-name">
-                        <span class="brand-nova">Nova</span><span class="brand-tte">tte</span> <span class="brand-imoveis">Imóveis</span>
-                    </span>
+                    <div class="logo">N</div>
+                    <div>
+                        <div class="brand-name">
+                            <span class="brand-nova">Nova</span><span class="brand-tte">tte</span> <span class="brand-imoveis">Imóveis</span>
+                        </div>
+                        <span class="portal-imobiliario">Portal Imobiliário</span>
+                    </div>
                 </div>
-                <span class="portal-imobiliario">Portal Imobiliário</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -1171,9 +1251,6 @@
                         <a class="nav-link active" href="#inicio" aria-current="page">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#encontre-perfeito">Encontre o Imóvel</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#comprar">Comprar</a>
                     </li>
                     <li class="nav-item">
@@ -1183,39 +1260,27 @@
                         <a class="nav-link" href="#lancamentos">Lançamentos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contato</a>
+                        <a class="nav-link" href="#nao-encontrou">Não Encontrou?</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacidade</a>
+                        <a class="nav-link" href="#contact">Contato</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- ALTERAÇÃO: Hero Section com filtros integrados -->
     <section class="hero-section section-anchor" id="inicio">
-        <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-3">Portal Imobiliário do Noroeste Fluminense</h1>
-            <p class="lead mb-4">Encontre os melhores imóveis em Itaperuna, Santo Antônio de Pádua, Miracema e toda a região</p>
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="d-flex flex-wrap justify-content-center gap-2">
-                        <span class="badge bg-light text-dark">Santo Antônio de Pádua</span>
-                        <span class="badge bg-light text-dark">Itaperuna</span>
-                        <span class="badge bg-light text-dark">Miracema</span>
-                        <span class="badge bg-light text-dark">Itaocara</span>
-                        <span class="badge bg-light text-dark">Aperibé</span>
-                        <span class="badge bg-light text-dark">Cambuci</span>
-                    </div>
-                </div>
-            </div>
+        <div class="container hero-content">
+            <!-- TEXTO SIMPLIFICADO -->
+            <h1 class="display-4 fw-bold mb-3">Novatte Imóveis</h1>
+            <p class="lead mb-4">Encontre seu imóvel dos sonhos</p>
         </div>
     </section>
 
-    <!-- Main Content -->
+    <!-- ALTERAÇÃO: Filtros movidos para dentro do cabeçalho -->
     <div class="container">
-        <!-- Filtros -->
         <div class="filter-section">
             <h3 class="mb-4">Filtre sua busca</h3>
             <div class="row">
@@ -1267,6 +1332,25 @@
                 <button class="btn btn-primary" id="applyFiltersBtn" aria-label="Aplicar filtros">Aplicar Filtros</button>
             </div>
         </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Carrossel de Destaques -->
+        <h2 class="mb-4">Imóveis em Destaque</h2>
+        <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <!-- Slides serão gerados dinamicamente via JavaScript -->
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev" aria-label="Slide anterior">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next" aria-label="Próximo slide">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
 
         <!-- Seção Comprar -->
         <div class="section-anchor" id="comprar">
@@ -1282,22 +1366,6 @@
             <div class="row" id="property-list-rent">
                 <!-- Imóveis para alugar serão carregados aqui -->
             </div>
-        </div>
-
-        <!-- Carrossel de Destaques -->
-        <h2 class="mb-4">Imóveis em Destaque</h2>
-        <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <!-- Slides serão gerados dinamicamente via JavaScript -->
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev" aria-label="Slide anterior">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterior</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next" aria-label="Próximo slide">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Próximo</span>
-            </button>
         </div>
 
         <!-- Seção Lançamentos -->
@@ -1330,21 +1398,22 @@
         </div>
     </div>
 
-    <!-- Seção Encontre o Imóvel Perfeito -->
-    <section class="find-perfect-section section-anchor" id="encontre-perfeito">
+    <!-- Seção Não Encontrou o que Buscava -->
+    <section class="find-perfect-section section-anchor" id="nao-encontrou">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="find-perfect-card">
-                        <div class="row">
+                    <div class="find-perfect-card netimoveis-style">
+                        <div class="row align-items-center">
                             <div class="col-md-6">
-                                <h3 class="fw-bold mb-3">🚀 Encontre o Imóvel Perfeito!</h3>
+                                <!-- NOVO TEXTO -->
+                                <h3 class="fw-bold mb-3">Não achou o que buscava?</h3>
                                 <p class="text-muted mb-4">
-                                    Nos diga o que você procura e te avisaremos assim que surgirem oportunidades que combinam com seu perfil.
+                                    Preencha os dados que entraremos em contato quando encontrarmos algo do tipo que você procura.
                                 </p>
                                 
                                 <div class="mb-4">
-                                    <h6 class="fw-bold mb-3">📧 Seus dados</h6>
+                                    <h6 class="fw-bold mb-3">Seus dados</h6>
                                     <div class="row g-2">
                                         <div class="col-12">
                                             <input type="text" class="form-control" placeholder="Seu nome completo" id="leadName" required>
@@ -1368,7 +1437,8 @@
                             </div>
 
                             <div class="col-md-6">
-                                <h6 class="fw-bold mb-3">🏠 O que você está procurando?</h6>
+                                <!-- ALTERAÇÃO: Texto atualizado -->
+                                <h6 class="fw-bold mb-3">O que você está procurando?</h6>
                                 
                                 <!-- Tipo de Negócio -->
                                 <div class="mb-3">
@@ -1503,7 +1573,7 @@
             <div class="modal-content">
                 <div class="modal-body text-center p-5">
                     <i class="bi bi-check-circle-fill text-success display-1"></i>
-                    <h4 class="mt-3">Perfil salvo com sucesso! 🎉</h4>
+                    <h4 class="mt-3">Perfil salvo com sucesso!</h4>
                     <p class="mb-3">Agora vamos te avisar quando encontrarmos imóveis que combinam com o que você procura.</p>
                     <button class="btn btn-primary" data-bs-dismiss="modal">Continuar Navegando</button>
                 </div>
@@ -1610,10 +1680,10 @@
                     <h5>Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="#inicio" class="text-white contact-link">Início</a></li>
-                        <li><a href="#encontre-perfeito" class="text-white contact-link">Encontre o Imóvel</a></li>
                         <li><a href="#comprar" class="text-white contact-link">Comprar</a></li>
                         <li><a href="#alugar" class="text-white contact-link">Alugar</a></li>
                         <li><a href="#lancamentos" class="text-white contact-link">Lançamentos</a></li>
+                        <li><a href="#nao-encontrou" class="text-white contact-link">Não Encontrou?</a></li>
                         <li><a href="#contact" class="text-white contact-link">Contato</a></li>
                     </ul>
                 </div>
@@ -2049,23 +2119,23 @@
         function openDataManagement() {
             const leads = JSON.parse(localStorage.getItem('novatte_leads_qualificados')) || [];
             
-            let message = `🎯 SEUS DADOS NO PORTAL\n\n`;
+            let message = `SEUS DADOS NO PORTAL\n\n`;
             
             if (leads.length > 0) {
-                message += `📧 LEADS QUALIFICADOS:\n`;
+                message += `LEADS QUALIFICADOS:\n`;
                 leads.forEach((lead, index) => {
                     message += `${index + 1}. ${lead.name} (${lead.email})\n`;
-                    message += `   📞: ${lead.phone}\n`;
-                    message += `   🏠: ${lead.preferences.transaction.join(', ')} ${lead.preferences.propertyType.join(', ')}\n`;
-                    message += `   📍: ${lead.preferences.cities.join(', ')}\n`;
-                    message += `   💰: ${lead.preferences.priceRange || 'Qualquer'}\n`;
-                    message += `   📅: ${new Date(lead.date).toLocaleDateString('pt-BR')}\n\n`;
+                    message += `   Telefone: ${lead.phone}\n`;
+                    message += `   Preferências: ${lead.preferences.transaction.join(', ')} ${lead.preferences.propertyType.join(', ')}\n`;
+                    message += `   Cidades: ${lead.preferences.cities.join(', ')}\n`;
+                    message += `   Preço: ${lead.preferences.priceRange || 'Qualquer'}\n`;
+                    message += `   Data: ${new Date(lead.date).toLocaleDateString('pt-BR')}\n\n`;
                 });
             } else {
-                message += `📧 Nenhum lead qualificado encontrado.\n\n`;
+                message += `Nenhum lead qualificado encontrado.\n\n`;
             }
             
-            message += `⚙️ OPÇÕES:\n`;
+            message += `OPÇÕES:\n`;
             message += `1. Excluir meus dados de leads\n`;
             message += `2. Cancelar`;
             
@@ -2238,7 +2308,7 @@
                                     <i class="bi bi-box-arrow-up-right"></i> Nova Guia
                                 </button>
                                 <button class="btn whatsapp-btn" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
-                                    <i class="bi bi-whatsapp"></i> WhatsApp
+                                    <i class="bi bi-whatsapp"></i> <span class="btn-text">WhatsApp</span>
                                 </button>
                             </div>
                         </div>
@@ -2635,7 +2705,7 @@
                 phone: phone || 'Não informado',
                 preferences: userPreferences,
                 date: new Date().toISOString(),
-                source: 'encontre_imovel_perfeito',
+                source: 'nao_encontrou_imovel',
                 status: 'ativo',
                 consent: {
                     privacy: 'accepted',
@@ -2685,11 +2755,11 @@
             }
             
             localStorage.setItem('novatte_leads_qualificados', JSON.stringify(leads));
-            console.log('📋 Lead qualificado salvo:', lead);
+            console.log('Lead qualificado salvo:', lead);
         }
 
         async function sendLeadToOwner(lead) {
-            // 🔧 CONFIGURAR AQUI SUA INTEGRAÇÃO
+            // CONFIGURAR AQUI SUA INTEGRAÇÃO
             
             // Opção 1: EmailJS (Recomendado)
             // await sendWithEmailJS(lead);
@@ -2698,7 +2768,7 @@
             // await saveToGoogleSheets(lead);
             
             // Por enquanto, apenas log no console
-            console.log('🎯 LEAD QUALIFICADO CAPTURADO:', {
+            console.log('LEAD QUALIFICADO CAPTURADO:', {
                 nome: lead.name,
                 email: lead.email,
                 telefone: lead.phone,
@@ -2753,10 +2823,10 @@
             return emailRegex.test(email);
         }
 
-        // 🔍 Função para ver leads qualificados (para você)
+        // Função para ver leads qualificados (para você)
         function viewQualifiedLeads() {
             const leads = JSON.parse(localStorage.getItem('novatte_leads_qualificados')) || [];
-            console.log('🎯 LEADS QUALIFICADOS:', leads);
+            console.log('LEADS QUALIFICADOS:', leads);
             
             if (leads.length === 0) {
                 alert('Nenhum lead qualificado encontrado.');
@@ -2766,12 +2836,12 @@
             let message = `Total de leads qualificados: ${leads.length}\n\n`;
             leads.forEach((lead, index) => {
                 message += `${index + 1}. ${lead.name} (${lead.email})\n`;
-                message += `   📞: ${lead.phone}\n`;
-                message += `   🏠: ${lead.preferences.transaction.join(', ')} ${lead.preferences.propertyType.join(', ')}\n`;
-                message += `   📍: ${lead.preferences.cities.join(', ')}\n`;
-                message += `   💰: ${lead.preferences.priceRange || 'Qualquer'}\n`;
-                message += `   📅: ${new Date(lead.date).toLocaleDateString('pt-BR')}\n`;
-                message += `   ✅ Consentimento: ${lead.consent ? 'Sim' : 'Não'}\n\n`;
+                message += `   Telefone: ${lead.phone}\n`;
+                message += `   Preferências: ${lead.preferences.transaction.join(', ')} ${lead.preferences.propertyType.join(', ')}\n`;
+                message += `   Cidades: ${lead.preferences.cities.join(', ')}\n`;
+                message += `   Preço: ${lead.preferences.priceRange || 'Qualquer'}\n`;
+                message += `   Data: ${new Date(lead.date).toLocaleDateString('pt-BR')}\n`;
+                message += `   Consentimento: ${lead.consent ? 'Sim' : 'Não'}\n\n`;
             });
             
             alert(message);
@@ -2876,14 +2946,14 @@
                                         .corretor-creci { color: #333; font-size: 0.85rem; margin-bottom: 5px; }
                                         /* Estilos da galeria para nova guia */
                                         .property-gallery { position: relative; margin-bottom: 20px; }
-                                        .main-image { height: 400px; object-fit: cover; width: 100%; border-radius: 8px; cursor: pointer; }
+                                        .main-image { height: 500px; object-fit: cover; width: 100%; border-radius: 8px; cursor: pointer; }
                                         .thumbnail-container { display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; padding: 10px 0; }
                                         .thumbnail { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer; opacity: 0.7; transition: all 0.3s ease; border: 2px solid transparent; }
                                         .thumbnail:hover, .thumbnail.active { opacity: 1; border-color: #FE4700; }
                                         .image-counter { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 20px; }
                                         .gallery-controls { position: absolute; top: 50%; left: 0; right: 0; display: flex; justify-content: space-between; transform: translateY(-50%); padding: 0 15px; pointer-events: none; }
                                         .gallery-btn { background-color: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 15px; border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease; pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; font-size: 1.2rem; }
-                                        /* ALTERAÇÃO: Estilo para descrição reposicionada */
+                                        /* Estilo para descrição reposicionada */
                                         .description-section { margin-top: 20px; margin-bottom: 20px; }
                                     </style>
                                 </head>
@@ -2904,7 +2974,7 @@
                                         <!-- Galeria de Fotos -->
                                         ${createGallery(propertyId)}
                                         
-                                        <!-- ALTERAÇÃO: Descrição reposicionada para ficar mais acima -->
+                                        <!-- Descrição reposicionada para ficar mais acima -->
                                         <div class="description-section">
                                             <h5>Descrição</h5>
                                             <p>${property.description}</p>
@@ -3077,7 +3147,7 @@
                         <!-- Galeria de Fotos -->
                         ${createGallery(propertyId)}
                         
-                        <!-- ALTERAÇÃO: Descrição reposicionada para ficar mais acima -->
+                        <!-- Descrição reposicionada para ficar mais acima -->
                         <div class="description-section">
                             <h5>Descrição</h5>
                             <p>${property.description}</p>
@@ -3210,8 +3280,8 @@
         }
     </script>
 
-    <!-- Botão secreto para ver leads qualificados -->
-    <div style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
+    <!-- Botão secreto para ver leads qualificados (OCULTO) -->
+    <div style="position: fixed; bottom: 10px; right: 10px; z-index: 1000; display: none;">
         <button class="btn btn-sm btn-success" onclick="viewQualifiedLeads()" title="Ver Leads Qualificados">
             <i class="bi bi-graph-up"></i> Leads Qualificados
         </button>
