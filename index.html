@@ -1437,7 +1437,7 @@
                         <a class="nav-link" href="#lancamentos">Lançamentos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#nao-encontrou">Não Encontrou?</a>
+                        <a class="nav-link" href="#encontre-imovel">Encontre seu imóvel</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">Contato</a>
@@ -1450,77 +1450,66 @@
     <!-- ALTERAÇÃO: Hero Section com logo e filtros integrados -->
     <section class="hero-section section-anchor" id="inicio">
         <div class="container hero-content text-center">
-            <!-- LOGO ADICIONADA -->
-            <img src="https://raw.githubusercontent.com/Coimbraitalo01/novatte-imoveis/main/frontend/src/assets/logo.png" 
-                 alt="Novatte Imóveis - Portal Imobiliário" 
-                 class="hero-logo">
+            <!-- LOGO REMOVIDA -->
             
             <!-- TEXTO ATUALIZADO -->
             <h1 class="display-4 fw-bold mb-3">Novatte Imóveis</h1>
-            <p class="lead mb-4">Seu novo lar no Noroeste Fluminense</p>
+            <p class="lead mb-4">Encontre seu imóvel no Noroeste Fluminense</p>
+            
+            <!-- ALTERAÇÃO: Filtros posicionados dentro da imagem de fundo -->
+            <div class="filter-section">
+                <h3 class="mb-4">Filtre sua busca</h3>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="property-type" class="form-label">Tipo de Imóvel</label>
+                        <select id="property-type" class="form-select">
+                            <option value="all" selected>Todos</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Apartamento">Apartamento</option>
+                            <option value="Terreno">Terreno</option>
+                            <option value="Comercial">Comercial</option>
+                            <option value="Sítio">Sítio</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="city" class="form-label">Cidade</label>
+                        <select id="city" class="form-select">
+                            <option value="all" selected>Todas</option>
+                            <option value="Santo Antônio de Pádua">Santo Antônio de Pádua</option>
+                            <option value="Itaperuna">Itaperuna</option>
+                            <option value="Miracema">Miracema</option>
+                            <option value="Itaocara">Itaocara</option>
+                            <option value="Aperibé">Aperibé</option>
+                            <option value="Cambuci">Cambuci</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="transaction-type" class="form-label">Compra ou Aluguel</label>
+                        <select id="transaction-type" class="form-select">
+                            <option value="all" selected>Todos</option>
+                            <option value="Venda">Compra</option>
+                            <option value="Aluguel">Aluguel</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="max-price" class="form-label">Preço Máximo</label>
+                        <!-- ALTERAÇÃO: Campo de valor digitável -->
+                        <input type="text" id="max-price" class="form-control" placeholder="Ex: 500.000">
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button class="btn btn-outline-secondary me-2" id="clearFiltersBtn" aria-label="Limpar filtros">Limpar</button>
+                    <button class="btn btn-primary" id="applyFiltersBtn" aria-label="Aplicar filtros">Aplicar Filtros</button>
+                </div>
+            </div>
         </div>
     </section>
-
-    <!-- ALTERAÇÃO: Filtros movidos para dentro do cabeçalho -->
-    <div class="container">
-        <div class="filter-section">
-            <h3 class="mb-4">Filtre sua busca</h3>
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <label for="property-type" class="form-label">Tipo de Imóvel</label>
-                    <select id="property-type" class="form-select">
-                        <option value="all" selected>Todos</option>
-                        <option value="Casa">Casa</option>
-                        <option value="Apartamento">Apartamento</option>
-                        <option value="Terreno">Terreno</option>
-                        <option value="Comercial">Comercial</option>
-                        <option value="Sítio">Sítio</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="city" class="form-label">Cidade</label>
-                    <select id="city" class="form-select">
-                        <option value="all" selected>Todas</option>
-                        <option value="Santo Antônio de Pádua">Santo Antônio de Pádua</option>
-                        <option value="Itaperuna">Itaperuna</option>
-                        <option value="Miracema">Miracema</option>
-                        <option value="Itaocara">Itaocara</option>
-                        <option value="Aperibé">Aperibé</option>
-                        <option value="Cambuci">Cambuci</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="transaction-type" class="form-label">Compra ou Aluguel</label>
-                    <select id="transaction-type" class="form-select">
-                        <option value="all" selected>Todos</option>
-                        <option value="Venda">Compra</option>
-                        <option value="Aluguel">Aluguel</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="max-price" class="form-label">Preço Máximo</label>
-                    <select id="max-price" class="form-select">
-                        <option value="all" selected>Qualquer preço</option>
-                        <option value="150000">R$ 150.000</option>
-                        <option value="300000">R$ 300.000</option>
-                        <option value="500000">R$ 500.000</option>
-                        <option value="750000">R$ 750.000</option>
-                        <option value="1000000">R$ 1.000.000</option>
-                    </select>
-                </div>
-            </div>
-            <div class="text-end">
-                <button class="btn btn-outline-secondary me-2" id="clearFiltersBtn" aria-label="Limpar filtros">Limpar</button>
-                <button class="btn btn-primary" id="applyFiltersBtn" aria-label="Aplicar filtros">Aplicar Filtros</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Main Content -->
     <div class="container">
         <!-- Carrossel de Destaques -->
         <h2 class="mb-4">Imóveis em Destaque</h2>
-        <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel">
+        <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel" data-bs-interval="15000">
             <div class="carousel-inner">
                 <!-- Slides serão gerados dinamicamente via JavaScript -->
             </div>
@@ -1581,7 +1570,7 @@
     </div>
 
     <!-- Seção Não Encontrou o que Buscava -->
-    <section class="find-perfect-section section-anchor" id="nao-encontrou">
+    <section class="find-perfect-section section-anchor" id="encontre-imovel">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
@@ -1589,7 +1578,7 @@
                         <div class="row align-items-center">
                             <div class="col-md-6">
                                 <!-- NOVO TEXTO -->
-                                <h3 class="fw-bold mb-3">Não achou o que buscava?</h3>
+                                <h3 class="fw-bold mb-3">Encontre seu imóvel</h3>
                                 <p class="text-muted mb-4">
                                     Preencha os dados que entraremos em contato quando encontrarmos algo do tipo que você procura.
                                 </p>
@@ -1865,7 +1854,7 @@
                         <li><a href="#comprar" class="text-white contact-link">Comprar</a></li>
                         <li><a href="#alugar" class="text-white contact-link">Alugar</a></li>
                         <li><a href="#lancamentos" class="text-white contact-link">Lançamentos</a></li>
-                        <li><a href="#nao-encontrou" class="text-white contact-link">Não Encontrou?</a></li>
+                        <li><a href="#encontre-imovel" class="text-white contact-link">Encontre seu imóvel</a></li>
                         <li><a href="#contact" class="text-white contact-link">Contato</a></li>
                     </ul>
                 </div>
@@ -1956,10 +1945,10 @@
                 lat: -21.2059, 
                 lng: -41.8879,
                 images: [
-                    "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Excelente casa moderna com piscina, área gourmet e acabamento de alto padrão. Localizada em região nobre de Itaperuna, próxima a comércios e escolas.",
                 corretor: "italo",
@@ -1982,9 +1971,9 @@
                 lat: -21.5394, 
                 lng: -42.1803,
                 images: [
-                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Apartamento bem localizado no centro de Santo Antônio de Pádua, com varanda gourmet e acabamentos modernos. Próximo a bancos, mercados e farmácias.",
                 corretor: "bruna",
@@ -2007,9 +1996,9 @@
                 lat: -21.4122, 
                 lng: -42.1968,
                 images: [
-                    "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Casa espaçosa ideal para família, com jardim amplo, área de lazer e garagem para dois carros. Localizada em bairro tranquilo de Miracema.",
                 corretor: "italo",
@@ -2032,8 +2021,8 @@
                 lat: -21.6692, 
                 lng: -42.0761,
                 images: [
-                    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Casa bem conservada a poucos minutos do centro de Itaocara. Possui quintal espaçoso e área de serviço coberta.",
                 corretor: "bruna",
@@ -2056,8 +2045,8 @@
                 lat: -21.6253, 
                 lng: -42.1039,
                 images: [
-                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Sítio com ampla área verde, ideal para quem busca tranquilidade e contato com a natureza. Possui casa principal, área de lazer e pomar.",
                 corretor: "italo",
@@ -2080,8 +2069,8 @@
                 lat: -21.5753, 
                 lng: -41.9111,
                 images: [
-                    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Apartamento totalmente reformado, com acabamentos modernos e boa localização no centro de Cambuci. Próximo a comércios e serviços.",
                 corretor: "bruna",
@@ -2104,7 +2093,7 @@
                 lat: -21.2159, 
                 lng: -41.8979,
                 images: [
-                    "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Excelente terreno residencial em localização privilegiada, plano e com boa infraestrutura. Ideal para construção de casa própria.",
                 corretor: "italo",
@@ -2127,7 +2116,7 @@
                 lat: -21.5494, 
                 lng: -42.1903,
                 images: [
-                    "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Ponto comercial bem localizado no centro da cidade, com grande fluxo de pessoas. Ideal para diversos tipos de comércio.",
                 corretor: "bruna",
@@ -2150,8 +2139,8 @@
                 lat: -21.4222, 
                 lng: -42.2068,
                 images: [
-                    "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1571896349842-33c89424de9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1571896349842-33c89424de9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Encantadora casa de campo com ampla área verde, ideal para quem busca tranquilidade. Possui varanda ampla e vista para a natureza.",
                 corretor: "carlos",
@@ -2174,8 +2163,8 @@
                 lat: -21.1959, 
                 lng: -41.8779,
                 images: [
-                    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1628592102751-ba83b0314276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1628592102751-ba83b0314276?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Exclusiva cobertura duplex com acabamento de alto padrão, varanda gourmet e vista panorâmica. Localização nobre no centro de Itaperuna.",
                 corretor: "carlos",
@@ -2198,8 +2187,8 @@
                 lat: -21.6592, 
                 lng: -42.0661,
                 images: [
-                    "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Sobrado moderno com design contemporâneo, distribuído em dois pavimentos. Excelente localização próxima ao centro comercial.",
                 corretor: "carlos",
@@ -2222,8 +2211,8 @@
                 lat: -21.5853, 
                 lng: -41.9211,
                 images: [
-                    "https://images.unsplash.com/photo-1581094794329-cdc2d8f99e4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    "https://images.unsplash.com/photo-1581094794329-cdc2d8f99e4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    "https://images.unsplash.com/photo-1581094794329-cdc2d8f99e4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
+                    "https://images.unsplash.com/photo-1581094794329-cdc2d8f99e4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80"
                 ],
                 description: "Amplo galpão industrial com excelente infraestrutura, ideal para armazenagem ou produção. Localizado no distrito industrial de Cambuci.",
                 corretor: "carlos",
@@ -2336,7 +2325,17 @@
             const propertyType = document.getElementById('property-type').value;
             const city = document.getElementById('city').value;
             const transactionType = document.getElementById('transaction-type').value;
-            const maxPrice = document.getElementById('max-price').value;
+            const maxPriceInput = document.getElementById('max-price').value;
+
+            // Converter valor digitado para número
+            let maxPrice = 'all';
+            if (maxPriceInput) {
+                // Remover caracteres não numéricos e converter para número
+                const priceValue = parseInt(maxPriceInput.replace(/\D/g, ''));
+                if (!isNaN(priceValue)) {
+                    maxPrice = priceValue;
+                }
+            }
 
             // Atualizar filtros atuais
             currentFilters = {
@@ -2369,7 +2368,7 @@
                     }
 
                     // Filtro por preço máximo
-                    if (maxPrice !== 'all' && property.priceValue > parseInt(maxPrice)) {
+                    if (maxPrice !== 'all' && property.priceValue > maxPrice) {
                         matches = false;
                     }
 
@@ -2392,7 +2391,7 @@
             document.getElementById('property-type').value = 'all';
             document.getElementById('city').value = 'all';
             document.getElementById('transaction-type').value = 'all';
-            document.getElementById('max-price').value = 'all';
+            document.getElementById('max-price').value = '';
 
             currentFilters = {
                 propertyType: 'all',
