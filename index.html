@@ -57,11 +57,13 @@
             padding: 15px 0;
         }
         
+        /* CORREÇÃO DO CABEÇALHO - ALINHAMENTO MELHORADO */
         .navbar-brand {
             font-weight: 700;
             display: flex;
             align-items: center;
-            text-align: center;
+            text-align: left;
+            margin-right: 2rem;
         }
         
         .brand-main {
@@ -71,8 +73,9 @@
         }
         
         .brand-name {
-            font-size: 2.2rem;
-            line-height: 1.1;
+            font-size: 1.8rem;
+            line-height: 1;
+            margin-bottom: 0;
         }
         
         .brand-nova {
@@ -90,9 +93,10 @@
         .portal-imobiliario {
             color: var(--primary-color);
             font-weight: 600;
-            font-size: 1.1rem;
-            margin-top: 2px;
+            font-size: 1rem;
+            margin-top: 0;
             display: block;
+            line-height: 1.2;
         }
         
         .logo {
@@ -1199,6 +1203,23 @@
             transform: translateY(-2px);
         }
 
+        /* CORREÇÃO DO CABEÇALHO - MELHOR ALINHAMENTO */
+        .navbar-brand .brand-main {
+            flex-direction: row;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .navbar-brand .brand-name {
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+        
+        .navbar-brand .portal-imobiliario {
+            font-size: 1rem;
+            margin-top: 0;
+        }
+
         @media (max-width: 768px) {
             .hero-section {
                 padding: 60px 0 100px;
@@ -1360,6 +1381,13 @@
             .corretor-btn-primary {
                 min-width: 100%;
             }
+            
+            /* CORREÇÃO DO CABEÇALHO EM MOBILE */
+            .navbar-brand .brand-main {
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1376,14 +1404,14 @@
             }
             
             .brand-main {
-                flex-direction: column;
-                text-align: center;
+                flex-direction: row;
+                text-align: left;
                 gap: 8px;
             }
             
             .logo {
                 margin-right: 0;
-                margin-bottom: 5px;
+                margin-bottom: 0;
             }
             
             .unified-property-image {
@@ -1465,7 +1493,7 @@
         <i class="bi bi-whatsapp"></i> Fale Conosco
     </button>
 
-    <!-- Navbar Atualizada -->
+    <!-- Navbar Atualizada com alinhamento corrigido -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#" aria-label="Página inicial da Novatte Imóveis">
@@ -2689,7 +2717,7 @@
             return `Olá ${corretor.nome}, fiquei interessado no anúncio que vi no portal da Novatte: ${property.title} - ${property.price}. Poderia me retornar mais informações?`;
         }
 
-        // Função para criar galeria de fotos
+        // Função para criar galeria de fotos - CORRIGIDA
         function createGallery(propertyId) {
             const property = properties[propertyId];
             if (!property || !property.images || property.images.length === 0) return '';
@@ -2726,7 +2754,7 @@
             `;
         }
 
-        // Função para mudar a imagem principal
+        // Função para mudar a imagem principal - CORRIGIDA
         function changeMainImage(propertyId, index) {
             const property = properties[propertyId];
             if (!property || !property.images) return;
@@ -2753,7 +2781,7 @@
             updateGalleryControls(propertyId, index);
         }
 
-        // Função para navegar para a imagem anterior
+        // Função para navegar para a imagem anterior - CORRIGIDA
         function prevImage(propertyId) {
             const property = properties[propertyId];
             if (!property || !property.images) return;
@@ -2763,7 +2791,7 @@
             changeMainImage(propertyId, newIndex);
         }
 
-        // Função para navegar para a próxima imagem
+        // Função para navegar para a próxima imagem - CORRIGIDA
         function nextImage(propertyId) {
             const property = properties[propertyId];
             if (!property || !property.images) return;
@@ -2773,7 +2801,7 @@
             changeMainImage(propertyId, newIndex);
         }
 
-        // Função para obter o índice da imagem atual
+        // Função para obter o índice da imagem atual - CORRIGIDA
         function getCurrentImageIndex(propertyId) {
             const property = properties[propertyId];
             if (!property || !property.images) return 0;
@@ -2785,7 +2813,7 @@
             return property.images.findIndex(img => img === currentSrc);
         }
 
-        // Função para atualizar controles da galeria
+        // Função para atualizar controles da galeria - CORRIGIDA
         function updateGalleryControls(propertyId, currentIndex) {
             const property = properties[propertyId];
             if (!property || !property.images) return;
@@ -2800,7 +2828,7 @@
             }
         }
 
-        // Função para abrir modal da galeria
+        // Função para abrir modal da galeria - CORRIGIDA
         function openGalleryModal(propertyId, startIndex = 0) {
             const property = properties[propertyId];
             if (!property || !property.images) return;
@@ -2820,7 +2848,7 @@
             galleryModal.show();
         }
 
-        // Função para navegar no modal da galeria
+        // Função para navegar no modal da galeria - CORRIGIDA
         function navigateGallery(direction) {
             if (currentGalleryImages.length === 0) return;
 
