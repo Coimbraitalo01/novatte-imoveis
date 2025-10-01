@@ -165,14 +165,6 @@
             z-index: 2;
         }
         
-        /* ALTERAÇÃO: Logo no cabeçalho */
-        .hero-logo {
-            max-width: 200px;
-            height: auto;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-        
         /* ALTERAÇÃO: Filtros integrados ao cabeçalho */
         .filter-section {
             background-color: white;
@@ -183,6 +175,21 @@
             position: relative;
             z-index: 10;
             margin-bottom: 30px;
+        }
+        
+        /* CORREÇÃO: Cor das letras do filtro */
+        .filter-section h3 {
+            color: var(--primary-color) !important;
+        }
+        
+        .filter-section .form-label {
+            color: var(--dark-color) !important;
+            font-weight: 600;
+        }
+        
+        .filter-section .form-select,
+        .filter-section .form-control {
+            color: var(--dark-color) !important;
         }
         
         /* NOVO ESTILO: Cards no estilo Booking */
@@ -1450,9 +1457,7 @@
     <!-- ALTERAÇÃO: Hero Section com logo e filtros integrados -->
     <section class="hero-section section-anchor" id="inicio">
         <div class="container hero-content text-center">
-            <!-- LOGO REMOVIDA -->
-            
-            <!-- TEXTO ATUALIZADO -->
+            <!-- TEXTO ATUALIZADO E ADICIONADO DE VOLTA -->
             <h1 class="display-4 fw-bold mb-3">Novatte Imóveis</h1>
             <p class="lead mb-4">Encontre seu imóvel no Noroeste Fluminense</p>
             
@@ -1673,15 +1678,9 @@
 
                                 <!-- Preço -->
                                 <div class="mb-4">
-                                    <label class="form-label fw-semibold">Faixa de preço:</label>
-                                    <select class="form-select" id="priceRange">
-                                        <option value="">Qualquer preço</option>
-                                        <option value="até R$ 150.000">até R$ 150.000</option>
-                                        <option value="R$ 150.000 - R$ 300.000">R$ 150.000 - R$ 300.000</option>
-                                        <option value="R$ 300.000 - R$ 500.000">R$ 300.000 - R$ 500.000</option>
-                                        <option value="R$ 500.000 - R$ 750.000">R$ 500.000 - R$ 750.000</option>
-                                        <option value="acima de R$ 750.000">acima de R$ 750.000</option>
-                                    </select>
+                                    <label class="form-label fw-semibold">Valor máximo:</label>
+                                    <!-- ALTERAÇÃO: Campo de valor digitável -->
+                                    <input type="text" class="form-control" id="customPriceRange" placeholder="Ex: 500.000">
                                 </div>
 
                                 <!-- Preferências selecionadas -->
@@ -2798,11 +2797,14 @@
                 });
             });
 
-            // Configurar select de preço
-            document.getElementById('priceRange').addEventListener('change', function() {
-                userPreferences.priceRange = this.value;
-                updateSelectedPreferences();
-            });
+            // Configurar campo de valor digitável na seção "Encontre seu imóvel"
+            const customPriceInput = document.getElementById('customPriceRange');
+            if (customPriceInput) {
+                customPriceInput.addEventListener('input', function() {
+                    userPreferences.priceRange = this.value;
+                    updateSelectedPreferences();
+                });
+            }
         });
 
         function togglePreference(type, value, element) {
@@ -2850,7 +2852,7 @@
             
             // Preço
             if (userPreferences.priceRange) {
-                preferences.push(`<span class="preference-tag">${userPreferences.priceRange}</span>`);
+                preferences.push(`<span class="preference-tag">Até R$ ${userPreferences.priceRange}</span>`);
             }
             
             if (preferences.length > 0) {
@@ -2996,8 +2998,8 @@
                 }
             });
             
-            // Resetar select
-            document.getElementById('priceRange').value = '';
+            // Resetar campo de preço
+            document.getElementById('customPriceRange').value = '';
             updateSelectedPreferences();
         }
 
