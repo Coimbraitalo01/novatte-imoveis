@@ -155,7 +155,7 @@
             background-size: cover;
             background-position: center;
             color: white;
-            padding: 80px 0 120px;
+            padding: 100px 0 120px;
             margin-bottom: 0;
             position: relative;
         }
@@ -165,13 +165,26 @@
             z-index: 2;
         }
         
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
         /* ALTERAÇÃO: Filtros integrados ao cabeçalho */
         .filter-section {
             background-color: white;
             border-radius: 10px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            margin-top: -60px;
+            margin-top: 0;
             position: relative;
             z-index: 10;
             margin-bottom: 30px;
@@ -640,9 +653,10 @@
         }
         
         .unified-property-image {
-            height: 300px;
+            height: 450px;
             object-fit: cover;
-            border-radius: 8px;
+            width: 100%;
+            border-radius: 12px;
         }
         
         .unified-map {
@@ -1176,37 +1190,27 @@
             border-radius: 6px;
             font-weight: 600;
             transition: all 0.3s ease;
-            flex: 1;
             text-align: center;
-            min-width: 140px;
+            min-width: 180px;
         }
         
         .corretor-btn-primary:hover {
             background-color: #e03e00;
             transform: translateY(-2px);
         }
-        
-        .corretor-btn-secondary {
-            background-color: white;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            flex: 1;
-            text-align: center;
-            min-width: 140px;
-        }
-        
-        .corretor-btn-secondary:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
 
         @media (max-width: 768px) {
             .hero-section {
-                padding: 40px 0 100px;
+                padding: 60px 0 100px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.4rem;
+                margin-bottom: 2rem;
             }
             
             .hero-logo {
@@ -1263,7 +1267,7 @@
             }
             
             .unified-property-image {
-                height: 200px;
+                height: 300px;
             }
             
             .unified-map {
@@ -1353,8 +1357,7 @@
                 flex-direction: column;
             }
             
-            .corretor-btn-primary,
-            .corretor-btn-secondary {
+            .corretor-btn-primary {
                 min-width: 100%;
             }
         }
@@ -1384,7 +1387,7 @@
             }
             
             .unified-property-image {
-                height: 150px;
+                height: 200px;
             }
             
             .unified-map {
@@ -1508,11 +1511,11 @@
         </div>
     </nav>
 
-    <!-- ALTERAÇÃO: Hero Section com logo e filtros integrados -->
+    <!-- ALTERAÇÃO: Hero Section simplificada com apenas a frase solicitada -->
     <section class="hero-section section-anchor" id="inicio">
         <div class="container hero-content text-center">
-            <!-- ALTERAÇÃO: Removido "Novatte Imóveis" e mantido apenas a frase solicitada -->
-            <p class="lead mb-4" style="font-size: 1.8rem; font-weight: 600;">Encontre seu Imóvel no Noroeste Fluminense</p>
+            <!-- ALTERAÇÃO: Apenas a frase solicitada, sem "Novatte Imóveis" -->
+            <h2 class="hero-subtitle">Encontre seu imóvel no Noroeste Fluminense</h2>
             
             <!-- ALTERAÇÃO: Filtros posicionados dentro da imagem de fundo -->
             <div class="filter-section">
@@ -3193,7 +3196,7 @@
                                         .unified-header { background-color: #f0f8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; }
                                         .brand-nova { color: #003602; }
                                         .brand-tte { color: #FE4700; }
-                                        .unified-property-image { height: 450px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+                                        .unified-property-image { height: 450px; object-fit: cover; width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
                                         .unified-logo { height: 40px; width: auto; margin-right: 10px; }
                                         .corretor-info { background-color: #f7eee9; border-radius: 8px; padding: 20px; margin-top: 20px; border-left: 4px solid #FE4700; }
                                         .corretor-header { display: flex; align-items: center; margin-bottom: 15px; }
@@ -3215,10 +3218,8 @@
                                         .description-section { margin-top: 20px; margin-bottom: 20px; }
                                         /* ALTERAÇÃO: Estilo para os botões dos corretores - mais simétricos */
                                         .corretor-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-                                        .corretor-btn-primary { background-color: #FE4700; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; flex: 1; text-align: center; min-width: 140px; }
+                                        .corretor-btn-primary { background-color: #FE4700; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; text-align: center; min-width: 180px; }
                                         .corretor-btn-primary:hover { background-color: #e03e00; transform: translateY(-2px); }
-                                        .corretor-btn-secondary { background-color: white; color: #003602; border: 1px solid #003602; padding: 10px 16px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; flex: 1; text-align: center; min-width: 140px; }
-                                        .corretor-btn-secondary:hover { background-color: #003602; color: white; }
                                     </style>
                                 </head>
                                 <body>
@@ -3267,7 +3268,7 @@
                                                     <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
                                                 </div>
                                             </div>
-                                            <!-- ALTERAÇÃO: Botões dos corretores mais simétricos - APENAS "ENTRAR EM CONTATO" -->
+                                            <!-- ALTERAÇÃO: Apenas um botão "Entrar em Contato" -->
                                             <div class="corretor-actions">
                                                 <button class="corretor-btn-primary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
                                                     <i class="bi bi-whatsapp"></i> Entrar em Contato
@@ -3443,7 +3444,7 @@
                                     <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
                                 </div>
                             </div>
-                            <!-- ALTERAÇÃO: Botões dos corretores mais simétricos - APENAS "ENTRAR EM CONTATO" -->
+                            <!-- ALTERAÇÃO: Apenas um botão "Entrar em Contato" -->
                             <div class="corretor-actions">
                                 <button class="corretor-btn-primary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
                                     <i class="bi bi-whatsapp"></i> Entrar em Contato
