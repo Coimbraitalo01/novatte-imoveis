@@ -1511,10 +1511,8 @@
     <!-- ALTERAÇÃO: Hero Section com logo e filtros integrados -->
     <section class="hero-section section-anchor" id="inicio">
         <div class="container hero-content text-center">
-            <!-- TEXTO ATUALIZADO E ADICIONADO DE VOLTA -->
-            <h1 class="display-4 fw-bold mb-3">Novatte Imóveis</h1>
-            <!-- ALTERAÇÃO: Texto "Encontre seu imóvel no Noroeste Fluminense" adicionado -->
-            <p class="lead mb-4">Encontre seu imóvel no Noroeste Fluminense</p>
+            <!-- ALTERAÇÃO: Removido "Novatte Imóveis" e mantido apenas a frase solicitada -->
+            <p class="lead mb-4" style="font-size: 1.8rem; font-weight: 600;">Encontre seu Imóvel no Noroeste Fluminense</p>
             
             <!-- ALTERAÇÃO: Filtros posicionados dentro da imagem de fundo -->
             <div class="filter-section">
@@ -3269,13 +3267,10 @@
                                                     <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
                                                 </div>
                                             </div>
-                                            <!-- ALTERAÇÃO: Botões dos corretores mais simétricos -->
+                                            <!-- ALTERAÇÃO: Botões dos corretores mais simétricos - APENAS "ENTRAR EM CONTATO" -->
                                             <div class="corretor-actions">
                                                 <button class="corretor-btn-primary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
                                                     <i class="bi bi-whatsapp"></i> Entrar em Contato
-                                                </button>
-                                                <button class="corretor-btn-secondary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent('Olá ' + corretor.nome + '! Vi o anúncio do imóvel ' + property.title + ' e gostaria de mais informações.')}', '_blank')">
-                                                    <i class="bi bi-chat-dots"></i> Solicitar Informações
                                                 </button>
                                             </div>
                                         </div>
@@ -3448,13 +3443,10 @@
                                     <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
                                 </div>
                             </div>
-                            <!-- ALTERAÇÃO: Botões dos corretores mais simétricos -->
+                            <!-- ALTERAÇÃO: Botões dos corretores mais simétricos - APENAS "ENTRAR EM CONTATO" -->
                             <div class="corretor-actions">
                                 <button class="corretor-btn-primary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
                                     <i class="bi bi-whatsapp"></i> Entrar em Contato
-                                </button>
-                                <button class="corretor-btn-secondary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent('Olá ' + corretor.nome + '! Vi o anúncio do imóvel ' + property.title + ' e gostaria de mais informações.')}', '_blank')">
-                                    <i class="bi bi-chat-dots"></i> Solicitar Informações
                                 </button>
                             </div>
                         </div>
