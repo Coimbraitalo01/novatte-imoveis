@@ -1160,6 +1160,50 @@
             box-shadow: 0 0 0 0.2rem rgba(254, 71, 0, 0.25);
         }
 
+        /* ALTERAÇÃO: Estilo para os botões dos corretores - mais simétricos */
+        .corretor-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .corretor-btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            min-width: 140px;
+        }
+        
+        .corretor-btn-primary:hover {
+            background-color: #e03e00;
+            transform: translateY(-2px);
+        }
+        
+        .corretor-btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            min-width: 140px;
+        }
+        
+        .corretor-btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .hero-section {
                 padding: 40px 0 100px;
@@ -1302,6 +1346,16 @@
                 right: 15px;
                 padding: 12px 16px;
                 font-size: 0.9rem;
+            }
+            
+            /* Ajustes para botões dos corretores em mobile */
+            .corretor-actions {
+                flex-direction: column;
+            }
+            
+            .corretor-btn-primary,
+            .corretor-btn-secondary {
+                min-width: 100%;
             }
         }
         
@@ -1459,6 +1513,7 @@
         <div class="container hero-content text-center">
             <!-- TEXTO ATUALIZADO E ADICIONADO DE VOLTA -->
             <h1 class="display-4 fw-bold mb-3">Novatte Imóveis</h1>
+            <!-- ALTERAÇÃO: Texto "Encontre seu imóvel no Noroeste Fluminense" adicionado -->
             <p class="lead mb-4">Encontre seu imóvel no Noroeste Fluminense</p>
             
             <!-- ALTERAÇÃO: Filtros posicionados dentro da imagem de fundo -->
@@ -3160,6 +3215,12 @@
                                         .gallery-btn { background-color: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 15px; border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease; pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; font-size: 1.2rem; }
                                         /* Estilo para descrição reposicionada */
                                         .description-section { margin-top: 20px; margin-bottom: 20px; }
+                                        /* ALTERAÇÃO: Estilo para os botões dos corretores - mais simétricos */
+                                        .corretor-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+                                        .corretor-btn-primary { background-color: #FE4700; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; flex: 1; text-align: center; min-width: 140px; }
+                                        .corretor-btn-primary:hover { background-color: #e03e00; transform: translateY(-2px); }
+                                        .corretor-btn-secondary { background-color: white; color: #003602; border: 1px solid #003602; padding: 10px 16px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; flex: 1; text-align: center; min-width: 140px; }
+                                        .corretor-btn-secondary:hover { background-color: #003602; color: white; }
                                     </style>
                                 </head>
                                 <body>
@@ -3208,9 +3269,13 @@
                                                     <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
                                                 </div>
                                             </div>
-                                            <div class="mt-4">
-                                                <button class="btn btn-success w-100" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
+                                            <!-- ALTERAÇÃO: Botões dos corretores mais simétricos -->
+                                            <div class="corretor-actions">
+                                                <button class="corretor-btn-primary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
                                                     <i class="bi bi-whatsapp"></i> Entrar em Contato
+                                                </button>
+                                                <button class="corretor-btn-secondary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent('Olá ' + corretor.nome + '! Vi o anúncio do imóvel ' + property.title + ' e gostaria de mais informações.')}', '_blank')">
+                                                    <i class="bi bi-chat-dots"></i> Solicitar Informações
                                                 </button>
                                             </div>
                                         </div>
@@ -3383,9 +3448,13 @@
                                     <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
                                 </div>
                             </div>
-                            <div class="mt-4">
-                                <button class="btn btn-success w-100" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
+                            <!-- ALTERAÇÃO: Botões dos corretores mais simétricos -->
+                            <div class="corretor-actions">
+                                <button class="corretor-btn-primary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
                                     <i class="bi bi-whatsapp"></i> Entrar em Contato
+                                </button>
+                                <button class="corretor-btn-secondary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent('Olá ' + corretor.nome + '! Vi o anúncio do imóvel ' + property.title + ' e gostaria de mais informações.')}', '_blank')">
+                                    <i class="bi bi-chat-dots"></i> Solicitar Informações
                                 </button>
                             </div>
                         </div>
