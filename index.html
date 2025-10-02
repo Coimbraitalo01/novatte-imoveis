@@ -57,7 +57,7 @@
             padding: 15px 0;
         }
         
-        /* CABEÇALHO CORRIGIDO - MAIS PRÓXIMO DO PORTAL IMOBILIÁRIO */
+        /* CABEÇALHO CORRIGIDO - ITENS NA MESMA LINHA */
         .navbar-brand {
             font-weight: 700;
             display: flex;
@@ -119,6 +119,23 @@
         
         .navbar-nav .nav-link:hover {
             color: var(--secondary-color) !important;
+        }
+        
+        /* CORREÇÃO: Itens do menu na mesma linha da marca */
+        .navbar-collapse {
+            display: flex !important;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        
+        .navbar-toggler {
+            display: none;
         }
         
         .btn-primary {
@@ -1443,6 +1460,24 @@
                 height: 50px;
             }
             
+            /* CORREÇÃO: Menu em mobile */
+            .navbar-collapse {
+                display: none !important;
+            }
+            
+            .navbar-toggler {
+                display: block;
+            }
+            
+            .navbar-nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .navbar-collapse.show {
+                display: block !important;
+            }
+            
             /* Ajustes para botão WhatsApp fixo em mobile */
             .whatsapp-btn-fixed {
                 bottom: 15px;
@@ -1584,7 +1619,7 @@
         <i class="bi bi-whatsapp"></i> Fale Conosco
     </button>
 
-    <!-- Navbar Atualizada com alinhamento corrigido -->
+    <!-- Navbar Atualizada com itens na mesma linha -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#" aria-label="Página inicial da Novatte Imóveis">
