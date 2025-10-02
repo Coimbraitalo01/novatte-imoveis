@@ -57,7 +57,7 @@
             padding: 15px 0;
         }
         
-        /* CORREÇÃO DO CABEÇALHO - ALINHAMENTO MELHORADO */
+        /* CABEÇALHO CORRIGIDO - MAIS PRÓXIMO DO PORTAL IMOBILIÁRIO */
         .navbar-brand {
             font-weight: 700;
             display: flex;
@@ -94,7 +94,7 @@
             color: var(--primary-color);
             font-weight: 600;
             font-size: 1rem;
-            margin-top: 0;
+            margin-top: -5px; /* Aproximado do nome */
             display: block;
             line-height: 1.2;
         }
@@ -1215,7 +1215,7 @@
         
         .navbar-brand .portal-imobiliario {
             font-size: 1rem;
-            margin-top: 0;
+            margin-top: -5px; /* Aproximado do nome */
         }
 
         /* NOVOS ESTILOS PARA GALERIA DE FOTOS NOS CARDS DA TELA INICIAL */
@@ -1941,7 +1941,7 @@
                         <ul>
                             <li><strong>Dados de contato:</strong> nome, e-mail, telefone (opcional)</li>
                             <li><strong>Preferências de busca:</strong> tipo de imóvel, localização, faixa de preço</li>
-                            <li><strong>Dados de navegação:</strong> cookies para melhorar a experiência do usuário</li>
+                            <li><strong>Dados de navegação:</strong> cookies para melhorar a experiência do user</li>
                         </ul>
                     </div>
                     
@@ -2642,7 +2642,7 @@
             document.getElementById('property-list-new').innerHTML = newHtml;
         }
 
-        // Função para criar card de propriedade no estilo Booking COM GALERIA
+        // Função para criar card de propriedade no estilo Booking COM GALERIA FUNCIONAL
         function createPropertyCardBooking(propertyId, property) {
             const galleryId = `gallery-${propertyId}`;
             
@@ -2725,7 +2725,7 @@
             `;
         }
 
-        // Funções para controle da galeria nos cards
+        // Funções para controle da galeria nos cards - CORRIGIDAS
         function changeCardImage(galleryId, index) {
             const gallery = cardGalleries[galleryId];
             if (!gallery) return;
@@ -2766,7 +2766,7 @@
             }
             
             // Atualizar miniaturas ativas
-            const thumbnails = document.querySelectorAll(`#${galleryId.replace('gallery-', '')} .thumbnail`);
+            const thumbnails = document.querySelectorAll(`.property-card-gallery [onclick*="${galleryId}"]`);
             thumbnails.forEach((thumb, index) => {
                 thumb.classList.toggle('active', index === gallery.currentIndex);
             });
