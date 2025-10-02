@@ -306,6 +306,12 @@
             font-size: 0.95rem;
             margin-bottom: 15px;
             flex-grow: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            line-height: 1.4;
+            max-height: 5.6em;
         }
         
         .property-footer-booking {
@@ -1330,6 +1336,21 @@
             color: var(--secondary-color);
         }
 
+        /* CORREÇÃO: Área não clicável para controles da galeria */
+        .gallery-controls *,
+        .thumbnail-container *,
+        .property-badge-booking {
+            pointer-events: auto !important;
+        }
+        
+        .property-card-gallery {
+            pointer-events: none;
+        }
+        
+        .property-card-gallery > * {
+            pointer-events: auto;
+        }
+
         @media (max-width: 768px) {
             .hero-section {
                 padding: 60px 0 100px;
@@ -2124,7 +2145,83 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     
     <script>
-        // Dados COMPLETOS dos corretores/anunciantes
+        // =============================================
+        // SISTEMA DE GALERIA ROBUSTO - CORRIGIDO
+        // =============================================
+        const gallerySystem = {
+            galleries: {},
+            
+            initGallery: function(galleryId, images) {
+                this.galleries[galleryId] = {
+                    currentIndex: 0,
+                    images: images,
+                    total: images.length
+                };
+                this.updateGalleryDisplay(galleryId);
+            },
+            
+            changeImage: function(galleryId, index) {
+                if (!this.galleries[galleryId]) return;
+                this.galleries[galleryId].currentIndex = index;
+                this.updateGalleryDisplay(galleryId);
+            },
+            
+            prevImage: function(galleryId) {
+                if (!this.galleries[galleryId]) return;
+                const gallery = this.galleries[galleryId];
+                gallery.currentIndex = gallery.currentIndex > 0 ? 
+                    gallery.currentIndex - 1 : gallery.total - 1;
+                this.updateGalleryDisplay(galleryId);
+            },
+            
+            nextImage: function(galleryId) {
+                if (!this.galleries[galleryId]) return;
+                const gallery = this.galleries[galleryId];
+                gallery.currentIndex = gallery.currentIndex < gallery.total - 1 ? 
+                    gallery.currentIndex + 1 : 0;
+                this.updateGalleryDisplay(galleryId);
+            },
+            
+            updateGalleryDisplay: function(galleryId) {
+                const gallery = this.galleries[galleryId];
+                if (!gallery) return;
+                
+                // Atualizar imagem principal
+                const mainImg = document.getElementById(`main-img-${galleryId}`);
+                if (mainImg && gallery.images[gallery.currentIndex]) {
+                    mainImg.src = gallery.images[gallery.currentIndex];
+                }
+                
+                // Atualizar contador
+                const counter = document.getElementById(`counter-${galleryId}`);
+                if (counter) {
+                    counter.textContent = `${gallery.currentIndex + 1}/${gallery.total}`;
+                }
+                
+                // Atualizar miniaturas ativas
+                const thumbnails = document.querySelectorAll(`[data-gallery="${galleryId}"]`);
+                thumbnails.forEach((thumb, index) => {
+                    thumb.classList.toggle('active', index === gallery.currentIndex);
+                });
+            }
+        };
+
+        // Funções globais para os botões
+        window.changeCardImage = function(galleryId, index) {
+            gallerySystem.changeImage(galleryId, index);
+        };
+
+        window.prevCardImage = function(galleryId) {
+            gallerySystem.prevImage(galleryId);
+        };
+
+        window.nextCardImage = function(galleryId) {
+            gallerySystem.nextImage(galleryId);
+        };
+
+        // =============================================
+        // DADOS DOS CORRETORES E IMÓVEIS
+        // =============================================
         const corretores = {
             "bruna": {
                 nome: "Bruna Magazzi",
@@ -2151,7 +2248,6 @@
             }
         };
 
-        // Dados COMPLETOS dos imóveis com coordenadas geográficas
         const properties = {
             1: { 
                 title: "Casa Moderna com Piscina", 
@@ -2496,6 +2592,99 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
             }
         };
 
+        // =============================================
+        // FUNÇÃO createPropertyCardBooking CORRIGIDA
+        // =============================================
+        function createPropertyCardBooking(propertyId, property) {
+            const galleryId = `gallery-${propertyId}`;
+            
+            // Inicializar galeria IMEDIATAMENTE
+            gallerySystem.initGallery(galleryId, property.images);
+            
+            // Função para limitar descrição
+            const limitDescription = (description) => {
+                const cleanDescription = description.replace(/\n/g, ' ').replace(/\s+/g, ' ');
+                return cleanDescription.length > 150 ? 
+                    cleanDescription.substring(0, 150) + '...' : cleanDescription;
+            };
+            
+            return `
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="property-card-booking" data-property-id="${propertyId}">
+                        <div class="position-relative property-card-gallery">
+                            <img src="${property.images[0]}" class="property-img-booking" alt="${property.title}" id="main-img-${galleryId}">
+                            <span class="badge ${property.type === 'Venda' ? 'bg-primary' : 'bg-secondary'} property-badge-booking">${property.type}</span>
+                            ${property.isNew ? '<span class="badge bg-success property-badge-booking" style="right: 100px;">Novo</span>' : ''}
+                            
+                            <!-- Controles da galeria -->
+                            <div class="image-counter" id="counter-${galleryId}">1/${property.images.length}</div>
+                            <div class="gallery-controls">
+                                <button class="gallery-btn" onclick="event.stopPropagation(); prevCardImage('${galleryId}')">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button class="gallery-btn" onclick="event.stopPropagation(); nextCardImage('${galleryId}')">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Miniaturas -->
+                            ${property.images.length > 1 ? `
+                            <div class="thumbnail-container">
+                                ${property.images.map((img, index) => `
+                                    <img src="${img}" class="thumbnail ${index === 0 ? 'active' : ''}" 
+                                         data-gallery="${galleryId}"
+                                         onclick="event.stopPropagation(); changeCardImage('${galleryId}', ${index})" 
+                                         alt="${property.title} - Foto ${index + 1}">
+                                `).join('')}
+                            </div>
+                            ` : ''}
+                        </div>
+                        <div class="property-content-booking">
+                            <div class="clickable-area" onclick="openPropertyInNewTab(${propertyId})">
+                                <h3 class="property-title-booking">${property.title}</h3>
+                                <p class="property-location-booking"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                                
+                                <div class="property-features-booking">
+                                    <div class="feature-item-booking">
+                                        <i class="bi bi-house-door"></i> ${property.size}
+                                    </div>
+                                    <div class="feature-item-booking">
+                                        <i class="bi bi-door-closed"></i> ${property.bedrooms} quarto${property.bedrooms !== 1 ? 's' : ''}
+                                    </div>
+                                    <div class="feature-item-booking">
+                                        <i class="bi bi-droplet"></i> ${property.bathrooms} banheiro${property.bathrooms !== 1 ? 's' : ''}
+                                    </div>
+                                    ${property.parking > 0 ? `
+                                    <div class="feature-item-booking">
+                                        <i class="bi bi-car-front"></i> ${property.parking} vaga${property.parking !== 1 ? 's' : ''}
+                                    </div>
+                                    ` : ''}
+                                </div>
+                                
+                                <p class="property-description-booking">${limitDescription(property.description)}</p>
+                            </div>
+                            
+                            <div class="property-footer-booking">
+                                <div class="property-price-booking">${property.price}</div>
+                                <div class="property-actions-booking">
+                                    <button class="btn-booking-secondary" onclick="event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
+                                        <i class="bi bi-eye"></i> Visualizar
+                                    </button>
+                                    <button class="btn-booking-whatsapp whatsapp-btn" onclick="event.stopPropagation()" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
+                                        <i class="bi bi-whatsapp"></i> WhatsApp
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // =============================================
+        // RESTANTE DO CÓDIGO EXISTENTE
+        // =============================================
+        
         // Variáveis para controle de filtros
         let currentFilters = {
             propertyType: 'all',
@@ -2529,9 +2718,6 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
         let currentGalleryImages = [];
         let currentGalleryIndex = 0;
         let currentGalleryPropertyId = null;
-
-        // Variáveis para controle de galeria nos cards
-        let cardGalleries = {};
 
         // Função para verificar e mostrar banner LGPD
         function checkLGPDConsent() {
@@ -2741,321 +2927,6 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
                 newHtml += createPropertyCardBooking(propertyId, property);
             });
             document.getElementById('property-list-new').innerHTML = newHtml;
-        }
-
-        // Função para criar card de propriedade no estilo Booking COM GALERIA FUNCIONAL E CLICÁVEL
-        function createPropertyCardBooking(propertyId, property) {
-            const galleryId = `gallery-${propertyId}`;
-            
-            // Inicializar galeria para este card
-            cardGalleries[galleryId] = {
-                currentIndex: 0,
-                images: property.images
-            };
-            
-            return `
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="property-card-booking" data-property-id="${propertyId}">
-                        <div class="position-relative property-card-gallery">
-                            <img src="${property.images[0]}" class="property-img-booking" alt="${property.title}" id="main-img-${galleryId}">
-                            <span class="badge ${property.type === 'Venda' ? 'bg-primary' : 'bg-secondary'} property-badge-booking">${property.type}</span>
-                            ${property.isNew ? '<span class="badge bg-success property-badge-booking" style="right: 100px;">Novo</span>' : ''}
-                            
-                            <!-- Controles da galeria -->
-                            <div class="image-counter" id="counter-${galleryId}">1/${property.images.length}</div>
-                            <div class="gallery-controls">
-                                <button class="gallery-btn" onclick="prevCardImage('${galleryId}')" id="prev-btn-${galleryId}">
-                                    <i class="bi bi-chevron-left"></i>
-                                </button>
-                                <button class="gallery-btn" onclick="nextCardImage('${galleryId}')" id="next-btn-${galleryId}">
-                                    <i class="bi bi-chevron-right"></i>
-                                </button>
-                            </div>
-                            
-                            <!-- Miniaturas -->
-                            ${property.images.length > 1 ? `
-                            <div class="thumbnail-container">
-                                ${property.images.map((img, index) => `
-                                    <img src="${img}" class="thumbnail ${index === 0 ? 'active' : ''}" 
-                                         onclick="changeCardImage('${galleryId}', ${index})" 
-                                         alt="${property.title} - Foto ${index + 1}">
-                                `).join('')}
-                            </div>
-                            ` : ''}
-                        </div>
-                        <div class="property-content-booking">
-                            <div class="clickable-area" onclick="openPropertyInNewTab(${propertyId})">
-                                <h3 class="property-title-booking">${property.title}</h3>
-                                <p class="property-location-booking"><i class="bi bi-geo-alt"></i> ${property.location}</p>
-                                
-                                <div class="property-features-booking">
-                                    <div class="feature-item-booking">
-                                        <i class="bi bi-house-door"></i> ${property.size}
-                                    </div>
-                                    <div class="feature-item-booking">
-                                        <i class="bi bi-door-closed"></i> ${property.bedrooms} quarto${property.bedrooms !== 1 ? 's' : ''}
-                                    </div>
-                                    <div class="feature-item-booking">
-                                        <i class="bi bi-droplet"></i> ${property.bathrooms} banheiro${property.bathrooms !== 1 ? 's' : ''}
-                                    </div>
-                                    ${property.parking > 0 ? `
-                                    <div class="feature-item-booking">
-                                        <i class="bi bi-car-front"></i> ${property.parking} vaga${property.parking !== 1 ? 's' : ''}
-                                    </div>
-                                    ` : ''}
-                                </div>
-                                
-                                <p class="property-description-booking">${property.description}</p>
-                            </div>
-                            
-                            <div class="property-footer-booking">
-                                <div class="property-price-booking">${property.price}</div>
-                                <div class="property-actions-booking">
-                                    <button class="btn-booking-secondary" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
-                                        <i class="bi bi-eye"></i> Visualizar
-                                    </button>
-                                    <button class="btn-booking-whatsapp whatsapp-btn" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
-                                        <i class="bi bi-whatsapp"></i> WhatsApp
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Função para abrir propriedade em nova guia
-        function openPropertyInNewTab(propertyId) {
-            const property = properties[propertyId];
-            if (!property) return;
-            
-            const corretor = corretores[property.corretor];
-            
-            // Criar página de detalhes em nova guia
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>${property.title} - Novatte Imóveis - Portal Imobiliário</title>
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-                    <style>
-                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f8f9fa; }
-                        .unified-map { height: 400px; border-radius: 8px; overflow: hidden; margin: 20px 0; }
-                        .price-tag { font-weight: 700; color: #FE4700; }
-                        .map-actions { margin-top: 15px; }
-                        .unified-header { background-color: #f0f8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; }
-                        .brand-nova { color: #003602; }
-                        .brand-tte { color: #FE4700; }
-                        .unified-property-image { height: 450px; object-fit: cover; width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-                        .unified-logo { height: 40px; width: auto; margin-right: 10px; }
-                        .corretor-info { background-color: #f7eee9; border-radius: 8px; padding: 20px; margin-top: 20px; border-left: 4px solid #FE4700; }
-                        .corretor-header { display: flex; align-items: center; margin-bottom: 15px; }
-                        .corretor-photo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #FE4700; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #003602; font-size: 24px; }
-                        .corretor-name { font-weight: 600; color: #003602; margin-bottom: 5px; font-size: 1.1rem; }
-                        .corretor-type { color: #FE4700; font-size: 0.9rem; margin-bottom: 5px; }
-                        .corretor-creci { color: #333; font-size: 0.85rem; margin-bottom: 5px; }
-                        /* Estilos da galeria para nova guia - FORMATO MELHORADO */
-                        .property-gallery { position: relative; margin-bottom: 20px; }
-                        .main-image { height: 450px; object-fit: cover; width: 100%; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-                        .main-image:hover { transform: scale(1.01); }
-                        .thumbnail-container { display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; padding: 10px 0; }
-                        .thumbnail { width: 100px; height: 75px; object-fit: cover; border-radius: 8px; cursor: pointer; opacity: 0.7; transition: all 0.3s ease; border: 2px solid transparent; }
-                        .thumbnail:hover, .thumbnail.active { opacity: 1; border-color: #FE4700; transform: scale(1.05); }
-                        .image-counter { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 20px; }
-                        .gallery-controls { position: absolute; top: 50%; left: 0; right: 0; display: flex; justify-content: space-between; transform: translateY(-50%); padding: 0 15px; pointer-events: none; }
-                        .gallery-btn { background-color: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 15px; border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease; pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; font-size: 1.2rem; }
-                        /* Estilo para descrição reposicionada */
-                        .description-section { margin-top: 20px; margin-bottom: 20px; }
-                        /* ALTERAÇÃO: Estilo para os botões dos corretores - mais simétricos */
-                        .corretor-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-                        .corretor-btn-primary { background-color: #FE4700; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; text-align: center; min-width: 180px; }
-                        .corretor-btn-primary:hover { background-color: #e03e00; transform: translateY(-2px); }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="unified-header">
-                            <img src="https://raw.githubusercontent.com/Coimbraitalo01/novatte-imoveis/main/frontend/src/assets/logo.png" alt="Logo Novatte Imóveis" class="unified-logo">
-                            <div>
-                                <h1><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis</h1>
-                                <p class="lead mb-0">Portal Imobiliário - Detalhes do Imóvel</p>
-                            </div>
-                        </div>
-                        
-                        <h2>${property.title}</h2>
-                        <p><i class="bi bi-geo-alt"></i> ${property.location}</p>
-                        <h3 class="price-tag">${property.price}</h3>
-                        
-                        <!-- Galeria de Fotos -->
-                        ${createGallery(propertyId)}
-                        
-                        <!-- Descrição reposicionada para ficar mais acima -->
-                        <div class="description-section">
-                            <h5>Descrição</h5>
-                            <p>${property.description}</p>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>Detalhes do Imóvel</h5>
-                                <ul class="list-group">
-                                    <li class="list-group-item"><i class="bi bi-house-door"></i> Área útil: ${property.size}</li>
-                                    <li class="list-group-item"><i class="bi bi-door-closed"></i> Quartos: ${property.bedrooms}</li>
-                                    <li class="list-group-item"><i class="bi bi-droplet"></i> Banheiros: ${property.bathrooms}</li>
-                                    <li class="list-group-item"><i class="bi bi-car-front"></i> Vagas: ${property.parking}</li>
-                                </ul>
-                            </div>
-                        </div>
-                        
-                        <!-- Informações do Corretor -->
-                        <div class="corretor-info">
-                            <div class="corretor-header">
-                                <div class="corretor-photo">${corretor.avatar}</div>
-                                <div class="corretor-details">
-                                    <div class="corretor-name">${corretor.nome}</div>
-                                    <div class="corretor-type">${corretor.tipo}</div>
-                                    ${corretor.creci ? `<div class="corretor-creci">${corretor.creci}</div>` : ''}
-                                    <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
-                                </div>
-                            </div>
-                            <!-- ALTERAÇÃO: Apenas um botão "Entrar em Contato" -->
-                            <div class="corretor-actions">
-                                <button class="corretor-btn-primary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
-                                    <i class="bi bi-whatsapp"></i> Entrar em Contato
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <h5>Localização</h5>
-                            <p><i class="bi bi-geo-alt-fill"></i> ${property.address}</p>
-                            <div id="property-map" class="unified-map"></div>
-                            <div class="map-actions">
-                                <button class="btn btn-primary" onclick="window.open('https://www.google.com/maps?q=${property.lat},${property.lng}', '_blank')">
-                                    <i class="bi bi-arrow-up-right-square"></i> Abrir no Google Maps
-                                </button>
-                                <button class="btn btn-outline-secondary" onclick="window.open('https://www.google.com/maps/dir//${property.lat},${property.lng}', '_blank')">
-                                    <i class="bi bi-signpost"></i> Traçar Rota
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <a href="javascript:window.close()" class="btn btn-secondary">Fechar</a>
-                        </div>
-                    </div>
-                    
-                    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"><\/script>
-                    <script>
-                        // Inicializar mapa
-                        const map = L.map('property-map').setView([${property.lat}, ${property.lng}], 15);
-                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            attribution: '&copy; OpenStreetMap contributors'
-                        }).addTo(map);
-                        L.marker([${property.lat}, ${property.lng}]).addTo(map)
-                            .bindPopup('<b>${property.title}</b><br>${property.address}')
-                            .openPopup();
-                            
-                        // Função para criar mensagem do WhatsApp
-                        function createWhatsAppMessage(property, corretor) {
-                            return "Olá " + corretor.nome + ", fiquei interessado no anúncio que vi no portal da Novatte: " + property.title + " - " + property.price + ". Poderia me retornar mais informações?";
-                        }
-                        
-                        // Funções da galeria para nova guia
-                        function changeMainImage(index) {
-                            const images = ${JSON.stringify(property.images)};
-                            const mainImage = document.querySelector('.main-image');
-                            const counter = document.querySelector('.image-counter');
-                            
-                            if (mainImage && counter) {
-                                mainImage.src = images[index];
-                                counter.textContent = (index + 1) + '/' + images.length;
-                                
-                                // Atualizar miniaturas ativas
-                                document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-                                    thumb.classList.toggle('active', i === index);
-                                });
-                            }
-                        }
-                        
-                        function prevImage() {
-                            const images = ${JSON.stringify(property.images)};
-                            const currentIndex = getCurrentImageIndex();
-                            const newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
-                            changeMainImage(newIndex);
-                        }
-                        
-                        function nextImage() {
-                            const images = ${JSON.stringify(property.images)};
-                            const currentIndex = getCurrentImageIndex();
-                            const newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
-                            changeMainImage(newIndex);
-                        }
-                        
-                        function getCurrentImageIndex() {
-                            const images = ${JSON.stringify(property.images)};
-                            const mainImage = document.querySelector('.main-image');
-                            if (!mainImage) return 0;
-                            
-                            const currentSrc = mainImage.src;
-                            return images.findIndex(img => img === currentSrc);
-                        }
-                    <\/script>
-                </body>
-                </html>
-            `);
-            newWindow.document.close();
-        }
-
-        // Funções para controle da galeria nos cards - CORRIGIDAS
-        function changeCardImage(galleryId, index) {
-            const gallery = cardGalleries[galleryId];
-            if (!gallery) return;
-            
-            gallery.currentIndex = index;
-            updateCardGallery(galleryId);
-        }
-
-        function prevCardImage(galleryId) {
-            const gallery = cardGalleries[galleryId];
-            if (!gallery) return;
-            
-            gallery.currentIndex = gallery.currentIndex > 0 ? gallery.currentIndex - 1 : gallery.images.length - 1;
-            updateCardGallery(galleryId);
-        }
-
-        function nextCardImage(galleryId) {
-            const gallery = cardGalleries[galleryId];
-            if (!gallery) return;
-            
-            gallery.currentIndex = gallery.currentIndex < gallery.images.length - 1 ? gallery.currentIndex + 1 : 0;
-            updateCardGallery(galleryId);
-        }
-
-        function updateCardGallery(galleryId) {
-            const gallery = cardGalleries[galleryId];
-            if (!gallery) return;
-            
-            const mainImg = document.getElementById(`main-img-${galleryId}`);
-            const counter = document.getElementById(`counter-${galleryId}`);
-            
-            if (mainImg) {
-                mainImg.src = gallery.images[gallery.currentIndex];
-            }
-            
-            if (counter) {
-                counter.textContent = `${gallery.currentIndex + 1}/${gallery.images.length}`;
-            }
-            
-            // Atualizar miniaturas ativas
-            const thumbnails = document.querySelectorAll(`.property-card-gallery [onclick*="${galleryId}"]`);
-            thumbnails.forEach((thumb, index) => {
-                thumb.classList.toggle('active', index === gallery.currentIndex);
-            });
         }
 
         // Função para gerar o carrossel de destaques
@@ -3607,6 +3478,217 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
             lazyImages.forEach(img => imageObserver.observe(img));
         }
 
+        // Função para abrir propriedade em nova guia
+        function openPropertyInNewTab(propertyId) {
+            const property = properties[propertyId];
+            if (!property) return;
+            
+            const corretor = corretores[property.corretor];
+            
+            // Criar página de detalhes em nova guia
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${property.title} - Novatte Imóveis - Portal Imobiliário</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+                    <style>
+                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f8f9fa; }
+                        .unified-map { height: 400px; border-radius: 8px; overflow: hidden; margin: 20px 0; }
+                        .price-tag { font-weight: 700; color: #FE4700; }
+                        .map-actions { margin-top: 15px; }
+                        .unified-header { background-color: #f0f8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; }
+                        .brand-nova { color: #003602; }
+                        .brand-tte { color: #FE4700; }
+                        .unified-property-image { height: 450px; object-fit: cover; width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+                        .unified-logo { height: 40px; width: auto; margin-right: 10px; }
+                        .corretor-info { background-color: #f7eee9; border-radius: 8px; padding: 20px; margin-top: 20px; border-left: 4px solid #FE4700; }
+                        .corretor-header { display: flex; align-items: center; margin-bottom: 15px; }
+                        .corretor-photo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #FE4700; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #003602; font-size: 24px; }
+                        .corretor-name { font-weight: 600; color: #003602; margin-bottom: 5px; font-size: 1.1rem; }
+                        .corretor-type { color: #FE4700; font-size: 0.9rem; margin-bottom: 5px; }
+                        .corretor-creci { color: #333; font-size: 0.85rem; margin-bottom: 5px; }
+                        /* Estilos da galeria para nova guia - FORMATO MELHORADO */
+                        .property-gallery { position: relative; margin-bottom: 20px; }
+                        .main-image { height: 450px; object-fit: cover; width: 100%; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+                        .main-image:hover { transform: scale(1.01); }
+                        .thumbnail-container { display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; padding: 10px 0; }
+                        .thumbnail { width: 100px; height: 75px; object-fit: cover; border-radius: 8px; cursor: pointer; opacity: 0.7; transition: all 0.3s ease; border: 2px solid transparent; }
+                        .thumbnail:hover, .thumbnail.active { opacity: 1; border-color: #FE4700; transform: scale(1.05); }
+                        .image-counter { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 20px; }
+                        .gallery-controls { position: absolute; top: 50%; left: 0; right: 0; display: flex; justify-content: space-between; transform: translateY(-50%); padding: 0 15px; pointer-events: none; }
+                        .gallery-btn { background-color: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 15px; border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease; pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; font-size: 1.2rem; }
+                        /* Estilo para descrição reposicionada */
+                        .description-section { margin-top: 20px; margin-bottom: 20px; }
+                        /* ALTERAÇÃO: Estilo para os botões dos corretores - mais simétricos */
+                        .corretor-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+                        .corretor-btn-primary { background-color: #FE4700; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; text-align: center; min-width: 180px; }
+                        .corretor-btn-primary:hover { background-color: #e03e00; transform: translateY(-2px); }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="unified-header">
+                            <img src="https://raw.githubusercontent.com/Coimbraitalo01/novatte-imoveis/main/frontend/src/assets/logo.png" alt="Logo Novatte Imóveis" class="unified-logo">
+                            <div>
+                                <h1><span class="brand-nova">Nova</span><span class="brand-tte">tte</span> Imóveis</h1>
+                                <p class="lead mb-0">Portal Imobiliário - Detalhes do Imóvel</p>
+                            </div>
+                        </div>
+                        
+                        <h2>${property.title}</h2>
+                        <p><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                        <h3 class="price-tag">${property.price}</h3>
+                        
+                        <!-- Galeria de Fotos -->
+                        ${createGallery(propertyId)}
+                        
+                        <!-- Descrição reposicionada para ficar mais acima -->
+                        <div class="description-section">
+                            <h5>Descrição</h5>
+                            <p>${property.description}</p>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Detalhes do Imóvel</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-house-door"></i> Área útil: ${property.size}</li>
+                                    <li class="list-group-item"><i class="bi bi-door-closed"></i> Quartos: ${property.bedrooms}</li>
+                                    <li class="list-group-item"><i class="bi bi-droplet"></i> Banheiros: ${property.bathrooms}</li>
+                                    <li class="list-group-item"><i class="bi bi-car-front"></i> Vagas: ${property.parking}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Informações do Corretor -->
+                        <div class="corretor-info">
+                            <div class="corretor-header">
+                                <div class="corretor-photo">${corretor.avatar}</div>
+                                <div class="corretor-details">
+                                    <div class="corretor-name">${corretor.nome}</div>
+                                    <div class="corretor-type">${corretor.tipo}</div>
+                                    ${corretor.creci ? `<div class="corretor-creci">${corretor.creci}</div>` : ''}
+                                    <div><i class="bi bi-telephone"></i> ${corretor.telefone}</div>
+                                </div>
+                            </div>
+                            <!-- ALTERAÇÃO: Apenas um botão "Entrar em Contato" -->
+                            <div class="corretor-actions">
+                                <button class="corretor-btn-primary" onclick="window.open('https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(createWhatsAppMessage(property, corretor))}', '_blank')">
+                                    <i class="bi bi-whatsapp"></i> Entrar em Contato
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5>Localização</h5>
+                            <p><i class="bi bi-geo-alt-fill"></i> ${property.address}</p>
+                            <div id="property-map" class="unified-map"></div>
+                            <div class="map-actions">
+                                <button class="btn btn-primary" onclick="window.open('https://www.google.com/maps?q=${property.lat},${property.lng}', '_blank')">
+                                    <i class="bi bi-arrow-up-right-square"></i> Abrir no Google Maps
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="window.open('https://www.google.com/maps/dir//${property.lat},${property.lng}', '_blank')">
+                                    <i class="bi bi-signpost"></i> Traçar Rota
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="javascript:window.close()" class="btn btn-secondary">Fechar</a>
+                        </div>
+                    </div>
+                    
+                    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"><\/script>
+                    <script>
+                        // Inicializar mapa
+                        const map = L.map('property-map').setView([${property.lat}, ${property.lng}], 15);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; OpenStreetMap contributors'
+                        }).addTo(map);
+                        L.marker([${property.lat}, ${property.lng}]).addTo(map)
+                            .bindPopup('<b>${property.title}</b><br>${property.address}')
+                            .openPopup();
+                            
+                        // Função para criar mensagem do WhatsApp
+                        function createWhatsAppMessage(property, corretor) {
+                            return "Olá " + corretor.nome + ", fiquei interessado no anúncio que vi no portal da Novatte: " + property.title + " - " + property.price + ". Poderia me retornar mais informações?";
+                        }
+                        
+                        // Funções da galeria para nova guia
+                        function changeMainImage(index) {
+                            const images = ${JSON.stringify(property.images)};
+                            const mainImage = document.querySelector('.main-image');
+                            const counter = document.querySelector('.image-counter');
+                            
+                            if (mainImage && counter) {
+                                mainImage.src = images[index];
+                                counter.textContent = (index + 1) + '/' + images.length;
+                                
+                                // Atualizar miniaturas ativas
+                                document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                                    thumb.classList.toggle('active', i === index);
+                                });
+                            }
+                        }
+                        
+                        function prevImage() {
+                            const images = ${JSON.stringify(property.images)};
+                            const currentIndex = getCurrentImageIndex();
+                            const newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+                            changeMainImage(newIndex);
+                        }
+                        
+                        function nextImage() {
+                            const images = ${JSON.stringify(property.images)};
+                            const currentIndex = getCurrentImageIndex();
+                            const newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+                            changeMainImage(newIndex);
+                        }
+                        
+                        function getCurrentImageIndex() {
+                            const images = ${JSON.stringify(property.images)};
+                            const mainImage = document.querySelector('.main-image');
+                            if (!mainImage) return 0;
+                            
+                            const currentSrc = mainImage.src;
+                            return images.findIndex(img => img === currentSrc);
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            newWindow.document.close();
+        }
+
+        // Funções para ações do mapa
+        function openInGoogleMaps(lat, lng) {
+            const url = `https://www.google.com/maps?q=${lat},${lng}`;
+            window.open(url, '_blank');
+        }
+
+        function getDirections(lat, lng) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    const url = `https://www.google.com/maps/dir/${userLat},${userLng}/${lat},${lng}`;
+                    window.open(url, '_blank');
+                }, function(error) {
+                    // Se o usuário negar a localização ou ocorrer erro
+                    const url = `https://www.google.com/maps/dir//${lat},${lng}`;
+                    window.open(url, '_blank');
+                });
+            } else {
+                // Navegador não suporta geolocalização
+                const url = `https://www.google.com/maps/dir//${lat},${lng}`;
+                window.open(url, '_blank');
+            }
+        }
+
         // Inicialização COMPLETA
         document.addEventListener('DOMContentLoaded', function() {
             // Verificar consentimento LGPD
@@ -3654,10 +3736,14 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
                 resetFiltersBtn.addEventListener('click', clearFilters);
             }
 
-            // Evento para clicar em qualquer parte do card (exceto botões)
+            // Evento para clicar em qualquer parte do card (exceto controles da galeria)
             document.addEventListener('click', function(e) {
                 const card = e.target.closest('.property-card-booking');
-                if (card && !e.target.closest('.property-actions-booking')) {
+                if (card && 
+                    !e.target.closest('.property-actions-booking') && 
+                    !e.target.closest('.gallery-controls') && 
+                    !e.target.closest('.thumbnail-container') &&
+                    !e.target.closest('.property-badge-booking')) {
                     const propertyId = card.getAttribute('data-property-id');
                     if (propertyId) {
                         openPropertyInNewTab(parseInt(propertyId));
@@ -3827,31 +3913,6 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
                 });
             });
         });
-
-        // Funções para ações do mapa
-        function openInGoogleMaps(lat, lng) {
-            const url = `https://www.google.com/maps?q=${lat},${lng}`;
-            window.open(url, '_blank');
-        }
-
-        function getDirections(lat, lng) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const userLat = position.coords.latitude;
-                    const userLng = position.coords.longitude;
-                    const url = `https://www.google.com/maps/dir/${userLat},${userLng}/${lat},${lng}`;
-                    window.open(url, '_blank');
-                }, function(error) {
-                    // Se o usuário negar a localização ou ocorrer erro
-                    const url = `https://www.google.com/maps/dir//${lat},${lng}`;
-                    window.open(url, '_blank');
-                });
-            } else {
-                // Navegador não suporta geolocalização
-                const url = `https://www.google.com/maps/dir//${lat},${lng}`;
-                window.open(url, '_blank');
-            }
-        }
     </script>
 
     <!-- Botão secreto para ver leads qualificados (OCULTO) -->
