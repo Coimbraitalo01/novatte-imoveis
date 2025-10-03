@@ -1682,13 +1682,7 @@
                         <a class="nav-link active" href="#inicio" aria-current="page">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#comprar">Comprar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#alugar">Alugar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#lancamentos">Lançamentos</a>
+                        <a class="nav-link" href="#destaques">Imóveis em Destaque</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#encontre-imovel">Encontre seu imóvel</a>
@@ -1756,10 +1750,10 @@
         </div>
     </section>
 
-    <!-- Main Content -->
+    <!-- Main Content - APENAS IMÓVEIS EM DESTAQUE -->
     <div class="container">
         <!-- Carrossel de Destaques -->
-        <h2 class="mb-4">Imóveis em Destaque</h2>
+        <h2 class="mb-4 section-anchor" id="destaques">Imóveis em Destaque</h2>
         <div id="featuredCarousel" class="carousel slide featured-carousel mb-5" data-bs-ride="carousel" data-bs-interval="15000">
             <div class="carousel-inner">
                 <!-- Slides serão gerados dinamicamente via JavaScript -->
@@ -1772,30 +1766,6 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Próximo</span>
             </button>
-        </div>
-
-        <!-- Seção Comprar -->
-        <div class="section-anchor" id="comprar">
-            <h2 class="mb-4">Imóveis para Comprar</h2>
-            <div class="row" id="property-list-buy">
-                <!-- Imóveis para compra serão carregados aqui -->
-            </div>
-        </div>
-
-        <!-- Seção Alugar -->
-        <div class="section-anchor" id="alugar">
-            <h2 class="mb-4">Imóveis para Alugar</h2>
-            <div class="row" id="property-list-rent">
-                <!-- Imóveis para alugar serão carregados aqui -->
-            </div>
-        </div>
-
-        <!-- Seção Lançamentos -->
-        <div class="section-anchor" id="lancamentos">
-            <h2 class="mb-4">Lançamentos</h2>
-            <div class="row" id="property-list-new">
-                <!-- Lançamentos serão carregados aqui -->
-            </div>
         </div>
 
         <!-- Lista de Imóveis -->
@@ -2096,9 +2066,7 @@
                     <h5>Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="#inicio" class="text-white contact-link">Início</a></li>
-                        <li><a href="#comprar" class="text-white contact-link">Comprar</a></li>
-                        <li><a href="#alugar" class="text-white contact-link">Alugar</a></li>
-                        <li><a href="#lancamentos" class="text-white contact-link">Lançamentos</a></li>
+                        <li><a href="#destaques" class="text-white contact-link">Imóveis em Destaque</a></li>
                         <li><a href="#encontre-imovel" class="text-white contact-link">Encontre seu imóvel</a></li>
                         <li><a href="#contact" class="text-white contact-link">Contato</a></li>
                     </ul>
@@ -2146,7 +2114,7 @@
     
     <script>
         // =============================================
-        // SISTEMA DE GALERIA ROBUSTO - CORRIGIDO
+        // SISTEMA DE GALERIA SIMPLIFICADO - CORRIGIDO
         // =============================================
         const gallerySystem = {
             galleries: {},
@@ -2220,7 +2188,7 @@
         };
 
         // =============================================
-        // DADOS DOS CORRETORES E IMÓVEIS
+        // DADOS DOS CORRETORES E IMÓVEIS - ATUALIZADO
         // =============================================
         const corretores = {
             "bruna": {
@@ -2528,8 +2496,8 @@
                 bathrooms: 4, 
                 parking: 2,
                 address: "Bairro Residencial, Santo Antônio de Pádua - RJ",
-                lat: -21.5394, 
-                lng: -42.1803,
+                lat: -21.54672590186827, 
+                lng: -42.19299804446804,
                 images: [
                     "https://i.ibb.co/MyyHNB5h/casa.jpg",
                     "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=900&q=80",
@@ -2670,7 +2638,7 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
                                     <button class="btn-booking-secondary" onclick="event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#propertyModal" data-property-id="${propertyId}" aria-label="Visualizar detalhes de ${property.title}">
                                         <i class="bi bi-eye"></i> Visualizar
                                     </button>
-                                    <button class="btn-booking-whatsapp whatsapp-btn" onclick="event.stopPropagation()" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
+                                    <button class="btn-booking-whatsapp whatsapp-btn" onclick="event.stopPropagation(); openWhatsAppFromCard(${propertyId})" data-property-id="${propertyId}" aria-label="Entrar em contato via WhatsApp sobre ${property.title}">
                                         <i class="bi bi-whatsapp"></i> WhatsApp
                                     </button>
                                 </div>
@@ -2679,6 +2647,19 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
                     </div>
                 </div>
             `;
+        }
+
+        // =============================================
+        // FUNÇÃO PARA ABRIR WHATSAPP DOS CARDS
+        // =============================================
+        function openWhatsAppFromCard(propertyId) {
+            const property = properties[propertyId];
+            if (!property) return;
+            
+            const corretor = corretores[property.corretor];
+            const message = createWhatsAppMessage(property, corretor);
+            const whatsappUrl = `https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
         }
 
         // =============================================
@@ -2891,42 +2872,6 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
                 noResults.style.display = 'none';
                 propertyList.style.display = 'flex';
             }
-        }
-
-        // Função para carregar propriedades por categoria
-        function loadPropertiesByCategory() {
-            // Imóveis para compra
-            const buyProperties = Object.entries(properties)
-                .filter(([id, property]) => property.type === 'Venda')
-                .slice(0, 3);
-            
-            let buyHtml = '';
-            buyProperties.forEach(([propertyId, property]) => {
-                buyHtml += createPropertyCardBooking(propertyId, property);
-            });
-            document.getElementById('property-list-buy').innerHTML = buyHtml;
-
-            // Imóveis para alugar
-            const rentProperties = Object.entries(properties)
-                .filter(([id, property]) => property.type === 'Aluguel')
-                .slice(0, 3);
-            
-            let rentHtml = '';
-            rentProperties.forEach(([propertyId, property]) => {
-                rentHtml += createPropertyCardBooking(propertyId, property);
-            });
-            document.getElementById('property-list-rent').innerHTML = rentHtml;
-
-            // Lançamentos
-            const newProperties = Object.entries(properties)
-                .filter(([id, property]) => property.isNew)
-                .slice(0, 3);
-            
-            let newHtml = '';
-            newProperties.forEach(([propertyId, property]) => {
-                newHtml += createPropertyCardBooking(propertyId, property);
-            });
-            document.getElementById('property-list-new').innerHTML = newHtml;
         }
 
         // Função para gerar o carrossel de destaques
@@ -3606,7 +3551,7 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
                     <script>
                         // Inicializar mapa
                         const map = L.map('property-map').setView([${property.lat}, ${property.lng}], 15);
-                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}/', {
                             attribution: '&copy; OpenStreetMap contributors'
                         }).addTo(map);
                         L.marker([${property.lat}, ${property.lng}]).addTo(map)
@@ -3707,12 +3652,9 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
             // Gerar carrossel de destaques
             generateFeaturedCarousel();
             
-            // Carregar propriedades por categoria
-            loadPropertiesByCategory();
-            
             // Carregar primeira página de imóveis
             loadProperties(currentPage);
-            
+
             // Evento para o botão "Ver Mais"
             const loadMoreBtn = document.getElementById('loadMoreBtn');
             if (loadMoreBtn) {
@@ -3757,13 +3699,7 @@ Uma oportunidade única de adquirir um imóvel com acabamentos de alto padrão e
                     const button = e.target.closest('.whatsapp-btn');
                     const propertyId = button.getAttribute('data-property-id');
                     if (propertyId) {
-                        const property = properties[propertyId];
-                        if (property) {
-                            const corretor = corretores[property.corretor];
-                            const message = createWhatsAppMessage(property, corretor);
-                            const whatsappUrl = `https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(message)}`;
-                            window.open(whatsappUrl, '_blank');
-                        }
+                        openWhatsAppFromCard(parseInt(propertyId));
                     }
                 }
             });
