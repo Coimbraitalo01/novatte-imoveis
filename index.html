@@ -1027,13 +1027,15 @@
         @media (max-width: 768px) {
             header {
                 padding: 8px 20px;
-                height: 80px;
+                height: auto;
+                min-height: 60px; 
                 flex-wrap: nowrap;
             }
             
             .logo-img {
-                height: 85px; /* Aumentado de 65px para 85px */
-                max-width: 280px; /* Aumentado de 220px para 280px */
+                max-height: 70px; 
+                width: auto;
+                max-width: 100%; 
             }
             
             nav {
@@ -1140,12 +1142,13 @@
         @media (max-width: 480px) {
             header {
                 padding: 5px 15px;
-                height: 70px;
+                height: 50px;
             }
             
             .logo-img {
-                height: 75px; /* Aumentado de 55px para 75px */
-                max-width: 240px; /* Aumentado de 180px para 240px */
+                max-height: 60px; 
+                width: auto;
+                max-width: 100%;
             }
             
             nav {
