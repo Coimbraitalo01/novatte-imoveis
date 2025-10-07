@@ -142,6 +142,53 @@
             font-size: 24px;
         }
         
+        /* Header para páginas de imóveis (sem opções clicáveis) */
+        .property-header {
+            background-color: var(--primary-color);
+            padding: 10px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 100px;
+        }
+
+        .property-header .logo-container {
+            cursor: default; /* Remove o cursor pointer */
+        }
+
+        .property-header nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-end;
+            margin-left: 40px;
+        }
+
+        .property-header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 400;
+            position: relative;
+            padding: 8px 0;
+            cursor: default; /* Remove o cursor pointer */
+        }
+
+        .property-header nav a::after {
+            display: none; /* Remove o efeito hover */
+        }
+
+        .property-header nav a:hover {
+            color: white; /* Mantém a cor branca no hover */
+        }
+        
         /* CORREÇÃO: Hero Section com sua foto de fundo */
         .hero-section {
             background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
@@ -1033,7 +1080,7 @@
             }
             
             .logo-img {
-                max-height: 70px; 
+                max-height: 120px; /* Aumentado de 70px para 120px para mobile */
                 width: auto;
                 max-width: 100%; 
             }
@@ -1146,7 +1193,7 @@
             }
             
             .logo-img {
-                max-height: 60px; 
+                max-height: 100px; /* Aumentado de 60px para 100px para telas muito pequenas */
                 width: auto;
                 max-width: 100%;
             }
