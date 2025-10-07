@@ -74,13 +74,14 @@
             align-items: center;
             height: 100%;
             flex: 0 0 auto;
+            cursor: pointer; /* Adicionado para indicar que é clicável */
         }
 
         .logo-img {
-            height: 400px;
+            height: 300px; /* Diminuído de 400px para 300px */
             width: auto;
             object-fit: contain;
-            max-width: 2000px;
+            max-width: 1500px; /* Diminuído de 2000px para 1500px */
         }
 
         .brand-text {
@@ -161,6 +162,7 @@
             width: 100%;
         }
         
+        /* CORREÇÃO: Título ajustado para não cortar */
         .hero-title {
             font-size: 42px;
             font-weight: 300;
@@ -169,8 +171,10 @@
             margin-bottom: 40px;
             text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
             text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
+            overflow: visible; /* Alterado de hidden para visible */
+            white-space: normal; /* Alterado de nowrap para normal */
+            line-height: 1.2; /* Adicionado para melhor espaçamento */
+            word-wrap: break-word; /* Garante que palavras longas quebrem */
         }
         
         /* Filtros com estilo Canva - LETRAS LARANJA */
@@ -1028,7 +1032,7 @@
             }
             
             .logo-img {
-                height: 65px;
+                height: 65px; /* Ajustado para mobile */
                 max-width: 220px;
             }
             
@@ -1054,10 +1058,13 @@
                 font-size: 10px;
             }
             
+            /* CORREÇÃO: Título ajustado para mobile */
             .hero-title {
                 font-size: 24px;
                 letter-spacing: 2px;
                 white-space: normal;
+                line-height: 1.3;
+                padding: 0 10px;
             }
             
             .filter-section {
@@ -1137,7 +1144,7 @@
             }
             
             .logo-img {
-                height: 55px;
+                height: 55px; /* Ajustado para mobile */
                 max-width: 180px;
             }
             
@@ -1149,6 +1156,13 @@
             nav a {
                 font-size: 9px;
                 letter-spacing: 0.5px;
+            }
+            
+            /* CORREÇÃO: Título ajustado para telas muito pequenas */
+            .hero-title {
+                font-size: 20px;
+                letter-spacing: 1px;
+                line-height: 1.4;
             }
         }
 
@@ -1217,7 +1231,7 @@
 
     <!-- Header com novo estilo -->
     <header>
-        <div class="logo-container">
+        <div class="logo-container" onclick="scrollToTop()">
             <!-- SUA IMAGEM PERSONALIZADA EXPANDIDA -->
             <img src="https://raw.githubusercontent.com/Coimbraitalo01/novatte-imoveis/main/frontend/src/assets/logo.png" 
                  alt="Novatte Imóveis - Portal Imobiliário" 
@@ -1718,6 +1732,14 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     
     <script>
+        // Função para rolar para o topo ao clicar na logo
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
         // Menu toggle para mobile
         function toggleMenu() {
             const nav = document.getElementById('navMenu');
