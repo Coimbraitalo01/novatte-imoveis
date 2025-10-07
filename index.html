@@ -31,7 +31,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    
+ 
     <style>
         :root {
             --primary-color: #1a4d2e;
@@ -55,10 +55,10 @@
             scroll-behavior: smooth;
         }
         
-        /* Header com estilo Canva - VERDE - LINHAS LATERAIS */
+        /* Header - Estilo da Imagem Fornecida - MODIFICADO */
         header {
             background-color: var(--primary-color);
-            padding: 15px 60px;
+            padding: 10px 60px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -66,113 +66,67 @@
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 100px;
         }
-        
+
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 15px;
-        }
-        
-        .logo-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 6px;
-            object-fit: contain;
-        }
-        
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-            color: white;
-            position: relative;
-        }
-        
-        .brand-text::before,
-        .brand-text::after {
-            content: '';
-            position: absolute;
-            width: 2px;
             height: 100%;
-            background: linear-gradient(to bottom, transparent, var(--secondary-color), transparent);
-            top: 0;
+            flex: 0 0 auto;
         }
-        
-        .brand-text::before {
-            left: -10px;
+
+        .logo-img {
+            height: 400px;
+            width: auto;
+            object-fit: contain;
+            max-width: 2000px;
         }
-        
-        .brand-text::after {
-            right: -10px;
-        }
-        
-        .brand-name {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            line-height: 1.2;
-        }
-        
-        .brand-subtitle {
-            font-size: 10px;
-            letter-spacing: 1.5px;
-            color: var(--secondary-color);
-            text-align: center;
-            margin-top: 2px;
-        }
-        
-        .brand-line {
+
+        .brand-text {
             display: none;
         }
-        
+
         nav {
             display: flex;
-            gap: 35px;
+            gap: 20px;
             align-items: center;
-            position: relative;
+            flex: 1;
+            justify-content: flex-end;
+            margin-left: 40px;
         }
-        
-        nav::before {
-            content: '';
-            position: absolute;
-            left: -30px;
-            width: 2px;
-            height: 60%;
-            background: linear-gradient(to bottom, transparent, var(--secondary-color), transparent);
-        }
-        
+
         nav a {
             color: white;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             transition: all 0.3s;
-            font-weight: 300;
+            font-weight: 400;
             position: relative;
             padding: 8px 0;
         }
-        
+
         nav a::after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
-            height: 2px;
+            height: 1px;
             background: var(--secondary-color);
-            transition: width 0.3s;
+            transition: width 0.3s ease;
         }
-        
+
         nav a:hover {
             color: var(--secondary-color);
         }
-        
+
         nav a:hover::after {
             width: 100%;
         }
-        
+
         .navbar-toggler {
             display: none;
             background: white;
@@ -181,7 +135,7 @@
             cursor: pointer;
             border-radius: 4px;
         }
-        
+
         .navbar-toggler i {
             color: var(--primary-color);
             font-size: 24px;
@@ -193,7 +147,7 @@
                         url('https://i.ibb.co/Jw7vPs69/casa-de-madeira-fotorrealista-com-estrutura-de-madeira-1.jpg') no-repeat center center;
             background-size: cover;
             color: white;
-            padding: 100px 0 120px;
+            padding: 80px 0 100px;
             margin-bottom: 0;
             position: relative;
             min-height: 70vh;
@@ -212,9 +166,11 @@
             font-weight: 300;
             letter-spacing: 5px;
             text-transform: uppercase;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
             text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
         }
         
         /* Filtros com estilo Canva - LETRAS LARANJA */
@@ -224,6 +180,7 @@
             padding: 35px 40px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
             margin: 0 auto;
+            margin-top: 0;
         }
         
         .filter-section h3 {
@@ -952,9 +909,21 @@
         footer p, 
         footer a {
             color: white !important;
+            text-decoration: none !important;
         }
         
         footer a:hover {
+            color: var(--secondary-color) !important;
+            text-decoration: none !important;
+        }
+
+        /* Links do footer sem sublinhado */
+        .contact-link {
+            text-decoration: none !important;
+        }
+        
+        .contact-link:hover {
+            text-decoration: none !important;
             color: var(--secondary-color) !important;
         }
 
@@ -1053,8 +1022,14 @@
         /* Responsive */
         @media (max-width: 768px) {
             header {
-                padding: 15px 20px;
-                flex-wrap: wrap;
+                padding: 8px 20px;
+                height: 80px;
+                flex-wrap: nowrap;
+            }
+            
+            .logo-img {
+                height: 65px;
+                max-width: 220px;
             }
             
             nav {
@@ -1064,10 +1039,7 @@
                 gap: 15px;
                 margin-top: 15px;
                 position: relative;
-            }
-            
-            nav::before {
-                display: none;
+                margin-left: 0;
             }
             
             nav.show {
@@ -1078,19 +1050,14 @@
                 display: block;
             }
             
-            .brand-name {
-                font-size: 18px;
-                letter-spacing: 1px;
-            }
-            
-            .brand-subtitle {
-                font-size: 8px;
-                letter-spacing: 1px;
+            nav a {
+                font-size: 10px;
             }
             
             .hero-title {
                 font-size: 24px;
                 letter-spacing: 2px;
+                white-space: normal;
             }
             
             .filter-section {
@@ -1107,13 +1074,8 @@
             }
             
             .hero-section {
-                padding: 80px 0 100px;
+                padding: 60px 0 80px;
                 min-height: 60vh;
-            }
-            
-            .logo-img {
-                width: 40px;
-                height: 40px;
             }
 
             .lgpd-banner .container {
@@ -1155,6 +1117,39 @@
             .carousel-next {
                 right: 10px;
             }
+
+            /* Melhorias para miniaturas em mobile */
+            .thumbnail-container {
+                padding: 5px 0;
+                gap: 5px;
+            }
+            
+            .thumbnail {
+                width: 60px;
+                height: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 5px 15px;
+                height: 70px;
+            }
+            
+            .logo-img {
+                height: 55px;
+                max-width: 180px;
+            }
+            
+            nav {
+                gap: 10px;
+                margin-left: 10px;
+            }
+            
+            nav a {
+                font-size: 9px;
+                letter-spacing: 0.5px;
+            }
         }
 
         /* Modal Styles */
@@ -1191,6 +1186,12 @@
             line-height: 1.6;
             margin-bottom: 0;
         }
+
+        /* Estilo para ícones de contato no footer */
+        .contact-icon {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
@@ -1214,16 +1215,13 @@
         <i class="bi bi-whatsapp"></i> Fale Conosco
     </button>
 
-    <!-- Header com estilo Canva - VERDE - LINHAS LATERAIS -->
+    <!-- Header com novo estilo -->
     <header>
         <div class="logo-container">
+            <!-- SUA IMAGEM PERSONALIZADA EXPANDIDA -->
             <img src="https://raw.githubusercontent.com/Coimbraitalo01/novatte-imoveis/main/frontend/src/assets/logo.png" 
                  alt="Novatte Imóveis - Portal Imobiliário" 
                  class="logo-img">
-            <div class="brand-text">
-                <div class="brand-name">NOVATTE IMÓVEIS</div>
-                <div class="brand-subtitle">PORTAL IMOBILIÁRIO</div>
-            </div>
         </div>
         <button class="navbar-toggler" onclick="toggleMenu()">
             <i class="bi bi-list"></i>
@@ -1491,17 +1489,17 @@
                     <ul class="list-unstyled">
                         <li>
                             <a href="https://wa.me/5522992054592" class="text-white contact-link" target="_blank">
-                                <i class="bi bi-whatsapp"></i> (22) 99205-4592
+                                <i class="bi bi-whatsapp contact-icon"></i> (22) 99205-4592
                             </a>
                         </li>
                         <li>
                             <a href="mailto:novatteimoveis@gmail.com" class="text-white contact-link">
-                                <i class="bi bi-envelope"></i> novatteimoveis@gmail.com
+                                <i class="bi bi-envelope contact-icon"></i> novatteimoveis@gmail.com
                             </a>
                         </li>
                         <li>
                             <a href="https://instagram.com/novatteimoveis" class="text-white contact-link" target="_blank">
-                                <i class="bi bi-instagram"></i> @novatteimoveis
+                                <i class="bi bi-instagram contact-icon"></i> @novatteimoveis
                             </a>
                         </li>
                     </ul>
@@ -1739,8 +1737,8 @@
                 nome: "Bruna Magazzi", 
                 tipo: "Corretora",
                 creci: "CRECI: 12345-6",
-                telefone: "32991480246", // REMOVIDO: 041 do início
-                whatsapp: "5532991480246", // ATUALIZADO: removido 041 e ajustado código do país
+                telefone: "32991480246",
+                whatsapp: "5532991480246",
                 avatar: "BM"
             }
         };
@@ -1886,144 +1884,6 @@
                     "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400"
                 ],
                 corretor: "bruna"
-            },
-            // NOVOS ANÚNCIOS ADICIONADOS
-            {
-                id: 7,
-                title: "Casa Próxima ao Centro",
-                type: "Aluguel",
-                price: "R$ 1.500/mês",
-                location: "Itaocara, RJ",
-                city: "Itaocara",
-                propertyType: "Casa",
-                size: "90m²",
-                bedrooms: 2,
-                bathrooms: 2,
-                parking: 1,
-                address: "Rua Principal, 321, Centro, Itaocara - RJ",
-                lat: -21.6692, 
-                lng: -42.0761,
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400",
-                description: "Casa bem conservada a poucos minutos do centro de Itaocara. Possui quintal espaçoso, área de serviço coberta, lavanderia e jardim frontal. Reformada recentemente com pintura nova, piso cerâmico e instalações modernas. Localização privilegiada perto de escolas, mercados e farmácias.",
-                images: [
-                    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400",
-                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400"
-                ],
-                corretor: "italo"
-            },
-            {
-                id: 8,
-                title: "Sítio com Área Verde",
-                type: "Venda",
-                price: "R$ 620.000",
-                location: "Aperibé, RJ",
-                city: "Aperibé",
-                propertyType: "Sítio",
-                size: "180m²",
-                bedrooms: 3,
-                bathrooms: 3,
-                parking: 4,
-                address: "Estrada Rural, S/N, Zona Rural, Aperibé - RJ",
-                lat: -21.6253, 
-                lng: -42.1039,
-                image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400",
-                description: "Sítio com ampla área verde, ideal para quem busca tranquilidade e contato com a natureza. Possui casa principal com acabamento rústico, área de lazer com churrasqueira, pomar com diversas frutíferas e nascente de água. Documentação regularizada, acesso pavimentado e energia trifásica.",
-                images: [
-                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400",
-                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400"
-                ],
-                corretor: "italo"
-            },
-            {
-                id: 9,
-                title: "Apartamento Reformado",
-                type: "Aluguel",
-                price: "R$ 980/mês",
-                location: "Cambuci, RJ",
-                city: "Cambuci",
-                propertyType: "Apartamento",
-                size: "65m²",
-                bedrooms: 1,
-                bathrooms: 1,
-                parking: 1,
-                address: "Rua das Palmeiras, 654, Centro, Cambuci - RJ",
-                lat: -21.5753, 
-                lng: -41.9111,
-                image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400",
-                description: "Apartamento totalmente reformado no centro de Cambuci, com acabamentos modernos e ótima localização. Próximo a comércios, serviços e transporte público. Possui piso laminado, cozinha americana, armários embutidos e varanda. Condomínio com portaria e elevador.",
-                images: [
-                    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400",
-                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?w=400"
-                ],
-                corretor: "bruna"
-            },
-            {
-                id: 10,
-                title: "Casa com Vista Panorâmica",
-                type: "Venda",
-                price: "R$ 700.000",
-                location: "Itaperuna, RJ",
-                city: "Itaperuna",
-                propertyType: "Casa",
-                size: "200m²",
-                bedrooms: 4,
-                bathrooms: 3,
-                parking: 3,
-                address: "Alto da Colina, 1000, Bairro Alto, Itaperuna - RJ",
-                lat: -21.1959, 
-                lng: -41.8779,
-                image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400",
-                description: "Casa com vista panorâmica da cidade, em local privilegiado de Itaperuna. Acabamento de alto padrão com área de lazer completa incluindo piscina, sauna e churrasqueira. Possui 4 suítes, home office, lavanderia e garagem coberta para 3 carros. Segurança 24h e privacidade total.",
-                images: [
-                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400",
-                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=400"
-                ],
-                corretor: "italo"
-            },
-            {
-                id: 11,
-                title: "Apartamento Compacto",
-                type: "Aluguel",
-                price: "R$ 800/mês",
-                location: "Miracema, RJ",
-                city: "Miracema",
-                propertyType: "Apartamento",
-                size: "50m²",
-                bedrooms: 1,
-                bathrooms: 1,
-                parking: 1,
-                address: "Rua das Acácias, 222, Centro, Miracema - RJ",
-                lat: -21.4222, 
-                lng: -42.1868,
-                image: "https://images.unsplash.com/photo-1521783988139-89397d761dce?w=400",
-                description: "Apartamento compacto e aconchegante no centro de Miracema, ideal para solteiros ou casais. Bem localizado próximo a tudo. Possui piso cerâmico, cozinha com armários, banheiro reformado e área de serviço. Condomínio com limpeza periódica e iluminação LED nas áreas comuns.",
-                images: [
-                    "https://images.unsplash.com/photo-1521783988139-89397d761dce?w=400"
-                ],
-                corretor: "bruna"
-            },
-            {
-                id: 12,
-                title: "Casa Térrea Espaçosa",
-                type: "Venda",
-                price: "R$ 450.000",
-                location: "Santo Antônio de Pádua, RJ",
-                city: "Santo Antônio de Pádua",
-                propertyType: "Casa",
-                size: "140m²",
-                bedrooms: 3,
-                bathrooms: 2,
-                parking: 2,
-                address: "Rua das Hortênsias, 555, Vila Nova, Santo Antônio de Pádua - RJ",
-                lat: -21.5494, 
-                lng: -42.1703,
-                image: "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=400",
-                description: "Casa térrea espaçosa com quintal amplo, localizada em bairro residencial tranquilo de Santo Antônio de Pádua. Possui sala ampla, 3 dormitórios sendo 1 suíte, cozinha planejada, área de serviço e garagem coberta. Documentação regularizada e IPTU em dia. Excelente oportunidade para família.",
-                images: [
-                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=400",
-                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400"
-                ],
-                corretor: "italo"
             }
         ];
 
@@ -2269,7 +2129,7 @@
         // Iniciar autoplay do carrossel
         function startCarouselAutoPlay() {
             clearInterval(carouselInterval);
-            carouselInterval = setInterval(nextSlide, 15000); // 15 segundos
+            carouselInterval = setInterval(nextSlide, 15000);
         }
 
         // Pausar autoplay
@@ -2277,12 +2137,14 @@
             clearInterval(carouselInterval);
         }
 
-        // Galeria de imagens
+        // Galeria de imagens - CORREÇÃO PARA MOBILE
         function changeImage(propertyId, direction) {
             const property = properties.find(p => p.id === propertyId);
             if (!property) return;
 
             const card = document.querySelector(`[onclick*="changeImage(${propertyId}"]`).closest('.property-card-gallery');
+            if (!card) return;
+
             const img = card.querySelector('.property-img-booking');
             const counter = card.querySelector('.image-counter');
             const thumbnails = card.querySelectorAll('.thumbnail');
@@ -2291,7 +2153,9 @@
             let newIndex = (currentIndex + direction + property.images.length) % property.images.length;
 
             img.src = property.images[newIndex];
-            counter.textContent = `${newIndex + 1}/${property.images.length}`;
+            if (counter) {
+                counter.textContent = `${newIndex + 1}/${property.images.length}`;
+            }
             
             thumbnails.forEach((thumb, index) => {
                 thumb.classList.toggle('active', index === newIndex);
@@ -2303,12 +2167,16 @@
             if (!property) return;
 
             const card = document.querySelector(`[onclick*="showImage(${propertyId}"]`).closest('.property-card-gallery');
+            if (!card) return;
+
             const img = card.querySelector('.property-img-booking');
             const counter = card.querySelector('.image-counter');
             const thumbnails = card.querySelectorAll('.thumbnail');
 
             img.src = property.images[index];
-            counter.textContent = `${index + 1}/${property.images.length}`;
+            if (counter) {
+                counter.textContent = `${index + 1}/${property.images.length}`;
+            }
             
             thumbnails.forEach((thumb, i) => {
                 thumb.classList.toggle('active', i === index);
