@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portal de anúncios imobiliários no Noroeste Fluminense. Encontre casas, apartamentos e terrenos para venda e aluguel na região.">
+    <meta name="keywords" content="imóveis noroeste fluminense, casas itaperuna, apartamentos santo antônio de pádua, terrenos miracema">
+    <title>Novatte Imóveis - Portal Imobiliário do Noroeste Fluminense</title>
+    
+    <!-- Schema Markup para Portal Imobiliário -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "RealEstateAgent",
+        "name": "Novatte Imóveis",
+        "description": "Portal de anúncios imobiliários do Noroeste Fluminense",
+        "url": "https://novatteimoveis.com.br",
+        "telephone": "+5522992054592",
+        "email": "novatteimoveis@gmail.com",
+        "address": {
+            "@type": "PostalAddress",
+            "addressRegion": "Rio de Janeiro",
+            "addressLocality": "Noroeste Fluminense"
+        },
+        "sameAs": [
+            "https://www.instagram.com/novatteimoveis"
+        ]
+    }
+    </script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Banner LGPD -->
+    <div id="lgpdBanner" class="lgpd-banner">
+        <div class="container">
+            <p>
+                <strong>Privacidade e Proteção de Dados</strong> - 
+                Utilizamos cookies para melhorar sua experiência. Ao continuar navegando, você concorda com nossa 
+                <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a>.
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-outline-light btn-sm" id="rejectCookies">Recusar</button>
+                <button class="btn btn-light btn-sm" id="acceptCookies">Aceitar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Fixo -->
+    <button class="whatsapp-btn-fixed" id="whatsappFixedBtn">
+        <i class="bi bi-whatsapp"></i> Fale Conosco
+    </button>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container" onclick="scrollToTop()">
+            <img src="assets/logo.png" 
+                 alt="Novatte Imóveis - Portal Imobiliário" 
+                 class="logo-img">
+        </div>
+        <button class="navbar-toggler" onclick="toggleMenu()" id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        <nav id="navMenu">
+            <a href="#inicio" onclick="closeMenu()">INÍCIO</a>
+            <a href="#destaques" onclick="closeMenu()">IMÓVEIS EM DESTAQUE</a>
+            <a href="#todos-imoveis" onclick="closeMenu()">TODOS OS IMÓVEIS</a>
+            <a href="#encontre-imovel" onclick="closeMenu()">ENCONTRE SEU IMÓVEL</a>
+            <a href="#contact" onclick="closeMenu()">CONTATO</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="inicio">
+        <div class="container hero-content text-center">
+            <h1 class="hero-title">ENCONTRE SEU IMÓVEL<br>NO NOROESTE FLUMINENSE</h1>
+            
+            <div class="filter-section">
+                <h3>Filtre sua busca</h3>
+                <div class="row">
+                    <div class="col-md-3 filter-group">
+                        <label for="property-type">Tipo de Imóvel</label>
+                        <select id="property-type">
+                            <option value="all">Todos</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Apartamento">Apartamento</option>
+                            <option value="Terreno">Terreno</option>
+                            <option value="Comercial">Comercial</option>
+                            <option value="Sítio">Sítio</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 filter-group">
+                        <label for="city">Cidade</label>
+                        <select id="city">
+                            <option value="all">Todas</option>
+                            <option value="Itaperuna">Itaperuna</option>
+                            <option value="Santo Antônio de Pádua">Santo Antônio de Pádua</option>
+                            <option value="Miracema">Miracema</option>
+                            <option value="Itaocara">Itaocara</option>
+                            <option value="Aperibé">Aperibé</option>
+                            <option value="Cambuci">Cambuci</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 filter-group">
+                        <label for="transaction-type">Compra ou Aluguel</label>
+                        <select id="transaction-type">
+                            <option value="all">Todos</option>
+                            <option value="Venda">Compra</option>
+                            <option value="Aluguel">Aluguel</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 filter-group">
+                        <label for="max-price">Preço Máximo</label>
+                        <input type="text" id="max-price" placeholder="Ex: 500.000">
+                    </div>
+                </div>
+                <div class="filter-buttons">
+                    <button class="btn-clear" id="clearFiltersBtn">Limpar</button>
+                    <button class="btn-search" id="applyFiltersBtn">Aplicar Filtros</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <h2 id="destaques">Imóveis em Destaque</h2>
+        <p class="text-center text-muted mb-4">Confira nossos principais imóveis disponíveis</p>
+        
+        <div class="carousel-section">
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack"></div>
+                <button class="carousel-nav carousel-prev" id="carouselPrev">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <button class="carousel-nav carousel-next" id="carouselNext">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+        
+        <div class="row" id="property-list"></div>
+
+        <div id="no-results" class="no-results" style="display: none;">
+            <i class="bi bi-search display-1"></i>
+            <h4 class="mt-3">Nenhum imóvel encontrado</h4>
+            <p class="text-muted">Tente ajustar os filtros para ver mais resultados</p>
+            <button class="btn-search mt-3" id="resetFiltersBtn">Limpar Filtros</button>
+        </div>
+
+        <div class="load-more-container">
+            <button class="btn-load-more" id="loadMoreBtn">
+                <i class="bi bi-arrow-down-circle me-2"></i>Ver Mais Imóveis
+            </button>
+        </div>
+    </div>
+
+    <!-- Todos os Imóveis -->
+    <div class="container" id="todos-imoveis">
+        <h2>Todos os Imóveis</h2>
+        <p class="text-center text-muted mb-4">Confira todos os imóveis disponíveis em nosso portal</p>
+        
+        <div class="row" id="all-properties-list"></div>
+    </div>
+
+    <!-- Encontre seu Imóvel -->
+    <section class="find-property-section" id="encontre-imovel">
+        <div class="container">
+            <h2>Não encontrou o que procurava?</h2>
+            <p class="text-center text-muted mb-5">Preencha os dados que entraremos em contato quando encontrarmos algo do tipo que você procura</p>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="find-property-form">
+                        <form id="propertySearchForm">
+                            <div class="form-section">
+                                <h4>Seus dados</h4>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="fullName" class="form-label">Seu nome completo</label>
+                                        <input type="text" class="form-control" id="fullName" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="whatsapp" class="form-label">Seu WhatsApp (opcional)</label>
+                                        <input type="tel" class="form-control" id="whatsapp">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Seu melhor email</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="privacyAgreement1" required>
+                                            <label class="form-check-label" for="privacyAgreement1">
+                                                Aceito receber oportunidades personalizadas do portal Novatte Imóveis e concordo com a <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h4>O que você está procurando?</h4>
+                                <div class="mb-4">
+                                    <label class="form-label">Quero:</label>
+                                    <div class="checkbox-square-group">
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="want-buy" name="want" value="Comprar">
+                                            <label for="want-buy">Comprar</label>
+                                        </div>
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="want-rent" name="want" value="Alugar">
+                                            <label for="want-rent">Alugar</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="form-label">Tipo de imóvel:</label>
+                                    <div class="checkbox-square-group">
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="type-house" name="property-type" value="Casa">
+                                            <label for="type-house">Casa</label>
+                                        </div>
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="type-apartment" name="property-type" value="Apartamento">
+                                            <label for="type-apartment">Apartamento</label>
+                                        </div>
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="type-commercial" name="property-type" value="Comercial">
+                                            <label for="type-commercial">Comercial</label>
+                                        </div>
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="type-farm" name="property-type" value="Sitio">
+                                            <label for="type-farm">Sítio</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="form-label">Cidades de interesse:</label>
+                                    <div class="checkbox-square-group">
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="city-itaperuna" name="cities" value="Itaperuna">
+                                            <label for="city-itaperuna">Itaperuna</label>
+                                        </div>
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="city-sapadua" name="cities" value="S.A.Pádua">
+                                            <label for="city-sapadua">S.A.Pádua</label>
+                                        </div>
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="city-miracema" name="cities" value="Miracema">
+                                            <label for="city-miracema">Miracema</label>
+                                        </div>
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="city-itaocara" name="cities" value="Itaocara">
+                                            <label for="city-itaocara">Itaocara</label>
+                                        </div>
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="city-aperibe" name="cities" value="Aperibe">
+                                            <label for="city-aperibe">Aperibe</label>
+                                        </div>
+                                        <div class="checkbox-square-item">
+                                            <input type="checkbox" id="city-cambuci" name="cities" value="Cambuci">
+                                            <label for="city-cambuci">Cambuci</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="maxValue" class="form-label">Valor máximo:</label>
+                                    <input type="text" class="form-control" id="maxValue" placeholder="Digite o valor">
+                                </div>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="privacyAgreement2" required>
+                                <label class="form-check-label" for="privacyAgreement2">
+                                    Aceito receber oportunidades personalizadas do portal Novatte Imóveis e concordo com a <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a>
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn-submit-property">
+                                <i class="bi bi-bell-fill me-2"></i>Me avise quando encontrar!
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Novatte Imóveis - Portal Imobiliário</h5>
+                    <p>O maior portal de anúncios imobiliários do Noroeste Fluminense. Conectamos você aos melhores imóveis da região.</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#inicio" class="text-white contact-link">Início</a></li>
+                        <li><a href="#destaques" class="text-white contact-link">Imóveis em Destaque</a></li>
+                        <li><a href="#todos-imoveis" class="text-white contact-link">Todos os Imóveis</a></li>
+                        <li><a href="#encontre-imovel" class="text-white contact-link">Encontre seu imóvel</a></li>
+                        <li><a href="#contact" class="text-white contact-link">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Contato do Portal</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="https://wa.me/5522992054592" class="text-white contact-link" target="_blank">
+                                <i class="bi bi-whatsapp contact-icon"></i> (22) 99205-4592
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:novatteimoveis@gmail.com" class="text-white contact-link">
+                                <i class="bi bi-envelope contact-icon"></i> novatteimoveis@gmail.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://instagram.com/novatteimoveis" class="text-white contact-link" target="_blank">
+                                <i class="bi bi-instagram contact-icon"></i> @novatteimoveis
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white contact-link" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-white contact-link" data-bs-toggle="modal" data-bs-target="#termsModal">Termos de Uso</a></li>
+                        <li><a href="#" class="text-white contact-link" onclick="openDataManagement()">Gerenciar Meus Dados</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center py-3">
+                <p class="mb-0">&copy; 2025 Novatte Imóveis - Portal Imobiliário. Todos os direitos reservados.</p>
+                <p class="mb-0"><small>Conformidade com a LGPD - Lei 13.709/2018</small></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para Detalhes do Imóvel -->
+    <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="property-header">
+                    <div class="logo-container">
+                        <img src="assets/logo.png" 
+                             alt="Novatte Imóveis - Portal Imobiliário" 
+                             class="logo-img">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="property-detail-content" class="unified-view">
+                        <!-- Conteúdo será carregado via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Galeria de Fotos -->
+    <div class="modal fade gallery-modal" id="galleryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn gallery-modal-close" data-bs-dismiss="modal" aria-label="Fechar galeria">&times;</button>
+                <div class="modal-body">
+                    <img id="galleryModalImg" class="gallery-modal-img" src="" alt="">
+                    <div id="galleryModalCounter" class="gallery-modal-counter"></div>
+                    <button id="galleryModalPrev" class="gallery-modal-nav gallery-modal-prev">&lt;</button>
+                    <button id="galleryModalNext" class="gallery-modal-nav gallery-modal-next">&gt;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal LGPD -->
+    <div class="modal fade" id="privacyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Política de Privacidade - Novatte Imóveis</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="compliance-section">
+                        <h5>1. Coleta de Dados</h5>
+                        <p>Coletamos apenas os dados necessários para fornecer nossos serviços:</p>
+                        <ul>
+                            <li><strong>Dados de contato:</strong> nome, e-mail, telefone (opcional)</li>
+                            <li><strong>Preferências de busca:</strong> tipo de imóvel, localização, faixa de preço</li>
+                            <li><strong>Dados de navegação:</strong> cookies para melhorar a experiência do user</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>2. Finalidade do Tratamento</h5>
+                        <p>Utilizamos seus dados para:</p>
+                        <ul>
+                            <li>Enviar oportunidades de imóveis que correspondam ao seu perfil</li>
+                            <li>Melhorar nossa plataforma e serviços</li>
+                            <li>Entrar em contato para esclarecer dúvidas sobre imóveis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>3. Compartilhamento de Dados</h5>
+                        <p>Seus dados são compartilhados apenas com:</p>
+                        <ul>
+                            <li><strong>Corretores parceiros:</strong> quando você demonstra interesse em um imóvel específico</li>
+                            <li><strong>Prestadores de serviço:</strong> para envio de e-mails e análise de dados (sempre com contratos de proteção de dados)</li>
+                            <li><strong>Autoridades:</strong> quando exigido por lei</li>
+                        </ul>
+                        <p><strong>Não vendemos</strong> seus dados para terceiros.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>4. Seus Direitos</h5>
+                        <p>De acordo com a LGPD, você tem direito a:</p>
+                        <ul>
+                            <li>Acessar seus dados pessoais</li>
+                            <li>Corrigir dados incompletos ou desatualizados</li>
+                            <li>Excluir seus dados a qualquer momento</li>
+                            <li>Revogar consentimentos anteriores</li>
+                            <li>Solicitar portabilidade de dados</li>
+                        </ul>
+                        <p>Para exercer seus direitos, entre em contato: <strong>novatteimoveis@gmail.com</strong></p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>5. Segurança</h5>
+                        <p>Implementamos medidas técnicas e organizacionais para proteger seus dados contra acesso não autorizado, alteração ou destruição.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>6. Retenção de Dados</h5>
+                        <p>Mantemos seus dados apenas pelo tempo necessário para cumprir as finalidades descritas ou exigido por lei.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>7. Cookies</h5>
+                        <p>Utilizamos cookies para:</p>
+                        <ul>
+                            <li>Lembrar suas preferências de busca</li>
+                            <li>Analisar o uso do site para melhorias</li>
+                        </ul>
+                        <p>Você pode controlar cookies através das configurações do seu navegador.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>8. Contato do Encarregado de Dados</h5>
+                        <p>Para questões sobre proteção de dados:</p>
+                        <p><strong>E-mail:</strong> novatteimoveis@gmail.com<br>
+                        <strong>Telefone:</strong> (22) 99205-4592</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Termos de Uso -->
+    <div class="modal fade" id="termsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Termos de Uso - Novatte Imóveis</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="compliance-section">
+                        <h5>1. Aceitação dos Termos</h5>
+                        <p>Ao utilizar nosso site, você concorda com estes Termos de Uso e com nossa Política de Privacidade.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>2. Serviços Prestados</h5>
+                        <p>O Novatte Imóveis atua como portal imobiliário, conectando:</p>
+                        <ul>
+                            <li>Proprietários e corretores a potenciais compradores/locatários</li>
+                            <li>Usuários a oportunidades imobiliárias na região do Noroeste Fluminense</li>
+                            <li>Interessados a informações sobre o mercado imobiliário local</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>3. Responsabilidades do Usuário</h5>
+                        <p>Você concorda em:</p>
+                        <ul>
+                            <li>Fornecer informações verdadeiras e atualizadas</li>
+                            <li>Utilizar o site apenas para fins legítimos</li>
+                            <li>Respeitar os direitos de propriedade intelectual</li>
+                            <li>Não realizar atividades que possam prejudicar o funcionamento do site</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>4. Propriedade Intelectual</h5>
+                        <p>Todo o conteúdo do site, incluindo textos, imagens, logotipos e design, é propriedade da Novatte Imóveis ou de seus licenciadores.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>5. Limitação de Responsabilidade</h5>
+                        <p>O Novatte Imóveis atua como intermediário e não se responsabiliza por:</p>
+                        <ul>
+                            <li>Informações incorretas fornecidas por anunciantes</li>
+                            <li>Transações realizadas entre as partes</li>
+                            <li>Danos decorrentes do uso das informações do site</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>6. Modificações nos Termos</h5>
+                        <p>Reservamo-nos o direito de modificar estes Termos a qualquer momento. Alterações significativas serão comunicadas aos usuários.</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>7. Lei Aplicável</h5>
+                        <p>Estes Termos são regidos pelas leis brasileiras, especialmente a Lei 13.709/2018 (LGPD).</p>
+                    </div>
+                    
+                    <div class="compliance-section">
+                        <h5>8. Contato</h5>
+                        <p>Para questões sobre estes Termos:</p>
+                        <p><strong>E-mail:</strong> novatteimoveis@gmail.com<br>
+                        <strong>Telefone:</strong> (22) 99205-4592</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Separados -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="data/properties.js"></script>
+    <script src="js/api-mock.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/templates.js"></script>
+    <script>
+        // Função para alternar o menu mobile
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            navMenu.classList.toggle('show');
+            
+            // Alterna entre ícone de menu e X
+            if (navMenu.classList.contains('show')) {
+                menuToggle.innerHTML = '<i class="bi bi-x"></i>';
+            } else {
+                menuToggle.innerHTML = '<i class="bi bi-list"></i>';
+            }
+        }
+
+        // Função para fechar o menu quando um link for clicado
+        function closeMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            navMenu.classList.remove('show');
+            menuToggle.innerHTML = '<i class="bi bi-list"></i>';
+        }
+
+        // Fecha o menu ao clicar fora dele
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            if (!event.target.closest('header') && navMenu.classList.contains('show')) {
+                navMenu.classList.remove('show');
+                menuToggle.innerHTML = '<i class="bi bi-list"></i>';
+            }
+        });
+
+        // Função para rolar para o topo
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Função para abrir gerenciamento de dados
+        function openDataManagement() {
+            alert('Para gerenciar seus dados, entre em contato conosco pelo email: novatteimoveis@gmail.com');
+        }
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>
