@@ -205,11 +205,8 @@ class PropertyTemplates {
         `;
     }
 
-    // Template da página completa (nova guia) - COM LOGO CORRIGIDA
+    // Template da página completa (nova guia) - COM A MESMA LOGO DO ARQUIVO
     static createPropertyPage(property, corretor) {
-        // CORREÇÃO: Logo em Base64 para funcionar em qualquer ambiente
-        const logoBase64 = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDQwMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiMxYTRkMmUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiPk5vdmF0dGUgSW3Ds3ZlaXM8L3RleHQ+PC9zdmc+';
-        
         return `
             <!DOCTYPE html>
             <html lang="pt-BR">
@@ -221,9 +218,12 @@ class PropertyTemplates {
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
                 <style>
-                    ${this.getPageStyles()}
-                    
-                    /* Estilos adicionais para garantir que a logo apareça */
+                    .property-header {
+                        background-color: #1a4d2e;
+                        padding: 15px 0;
+                        text-align: center;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    }
                     .logo-container {
                         display: flex;
                         justify-content: center;
@@ -238,24 +238,232 @@ class PropertyTemplates {
                         object-fit: contain;
                         margin: -140px 0;
                     }
+                    .property-gallery-page .main-gallery-image {
+                        margin-bottom: 15px;
+                        position: relative;
+                    }
+                    .main-gallery-img {
+                        width: 100%;
+                        height: 500px;
+                        object-fit: cover;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    }
+                    
+                    /* Botões de navegação da galeria */
+                    .gallery-controls-page {
+                        position: absolute;
+                        top: 50%;
+                        left: 0;
+                        right: 0;
+                        display: flex;
+                        justify-content: space-between;
+                        transform: translateY(-50%);
+                        padding: 0 20px;
+                        pointer-events: none;
+                    }
+                    .gallery-btn-page {
+                        background-color: rgba(0, 0, 0, 0.6);
+                        color: white;
+                        border: none;
+                        padding: 12px 16px;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                        pointer-events: auto;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 50px;
+                        height: 50px;
+                        font-size: 1.2rem;
+                    }
+                    .gallery-btn-page:hover {
+                        background-color: rgba(0, 0, 0, 0.8);
+                    }
+                    .image-counter-page {
+                        position: absolute;
+                        top: 20px;
+                        right: 20px;
+                        background: rgba(0, 0, 0, 0.7);
+                        color: white;
+                        padding: 8px 15px;
+                        border-radius: 20px;
+                        font-size: 1rem;
+                        font-weight: 600;
+                    }
+                    
+                    .gallery-thumbnails {
+                        display: flex;
+                        gap: 12px;
+                        overflow-x: auto;
+                        padding: 15px 0;
+                    }
+                    .gallery-thumbnails .thumbnail {
+                        width: 100px;
+                        height: 80px;
+                        object-fit: cover;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        opacity: 0.7;
+                        transition: all 0.3s ease;
+                        border: 3px solid transparent;
+                    }
+                    .gallery-thumbnails .thumbnail:hover,
+                    .gallery-thumbnails .thumbnail.active {
+                        opacity: 1;
+                        border-color: #ff6b35;
+                        transform: scale(1.05);
+                    }
+                    .property-map {
+                        height: 400px;
+                        border-radius: 12px;
+                        overflow: hidden;
+                        border: 1px solid #dee2e6;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    }
+                    
+                    /* Card do corretor MENOR */
+                    .corretor-card {
+                        background: #f8f9fa;
+                        border-radius: 12px;
+                        padding: 20px;
+                        border-left: 4px solid #ff6b35;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+                        position: sticky;
+                        top: 20px;
+                    }
+                    .corretor-header {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 15px;
+                    }
+                    .corretor-photo {
+                        width: 60px;
+                        height: 60px;
+                        border-radius: 50%;
+                        background-color: #e9ecef;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        color: #1a4d2e;
+                        font-size: 24px;
+                        margin-right: 15px;
+                        border: 2px solid #ff6b35;
+                    }
+                    .corretor-name {
+                        font-weight: 600;
+                        color: #1a4d2e;
+                        margin-bottom: 5px;
+                        font-size: 1.1rem;
+                    }
+                    .corretor-type {
+                        color: #ff6b35;
+                        font-size: 0.9rem;
+                        margin-bottom: 5px;
+                        font-weight: 500;
+                    }
+                    .corretor-creci {
+                        color: #666;
+                        font-size: 0.8rem;
+                        margin-bottom: 5px;
+                    }
+                    .corretor-phone {
+                        color: #333;
+                        font-size: 0.9rem;
+                    }
+                    .corretor-whatsapp-btn {
+                        background-color: #25D366;
+                        color: white;
+                        border: none;
+                        padding: 12px 15px;
+                        border-radius: 8px;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                        font-size: 1rem;
+                    }
+                    .corretor-whatsapp-btn:hover {
+                        background-color: #128C7E;
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+                    }
+                    .property-details {
+                        background: #f8f9fa;
+                        border-radius: 12px;
+                        padding: 20px;
+                        margin: 20px 0;
+                    }
+                    .property-description {
+                        background: white;
+                        border-radius: 12px;
+                        padding: 20px;
+                        border-left: 4px solid #1a4d2e;
+                        margin: 20px 0;
+                    }
+                    .property-location {
+                        background: white;
+                        border-radius: 12px;
+                        padding: 20px;
+                        margin: 20px 0;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+                    }
+                    .map-actions {
+                        display: flex;
+                        gap: 10px;
+                        flex-wrap: wrap;
+                    }
+                    .btn {
+                        border-radius: 6px;
+                        padding: 8px 16px;
+                        font-weight: 600;
+                        font-size: 0.9rem;
+                    }
                     @media (max-width: 768px) {
                         .logo-img {
                             height: 200px;
                             max-width: 280px;
                             margin: -40px 0;
                         }
+                        .main-gallery-img {
+                            height: 300px;
+                        }
+                        .gallery-thumbnails .thumbnail {
+                            width: 80px;
+                            height: 60px;
+                        }
+                        .corretor-card {
+                            position: static;
+                            margin-top: 30px;
+                        }
+                        .corretor-header {
+                            flex-direction: column;
+                            text-align: center;
+                        }
+                        .corretor-photo {
+                            margin-right: 0;
+                            margin-bottom: 10px;
+                        }
+                        .gallery-btn-page {
+                            width: 40px;
+                            height: 40px;
+                            padding: 8px 12px;
+                            font-size: 1rem;
+                        }
                     }
                 </style>
             </head>
             <body>
                 <div class="property-page">
-                    <!-- Header COM LOGO EM BASE64 -->
+                    <!-- Header COM A MESMA LOGO DO ARQUIVO -->
                     <header class="property-header">
                         <div class="container">
                             <div class="logo-container">
-                                <img src="${logoBase64}" 
+                                <img src="../assets/logo.png" 
                                      alt="Novatte Imóveis - Portal Imobiliário" 
-                                     class="logo-img">
+                                     class="logo-img"
+                                     onerror="this.onerror=null; this.src='assets/logo.png';">
                             </div>
                         </div>
                     </header>
@@ -435,227 +643,6 @@ class PropertyTemplates {
                 </div>
                 ` : ''}
             </div>
-        `;
-    }
-
-    // Estilos para a página completa
-    static getPageStyles() {
-        return `
-            .property-header {
-                background-color: #1a4d2e;
-                padding: 15px 0;
-                text-align: center;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            .property-gallery-page .main-gallery-image {
-                margin-bottom: 15px;
-                position: relative;
-            }
-            .main-gallery-img {
-                width: 100%;
-                height: 500px;
-                object-fit: cover;
-                border-radius: 12px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            }
-            
-            /* Botões de navegação da galeria */
-            .gallery-controls-page {
-                position: absolute;
-                top: 50%;
-                left: 0;
-                right: 0;
-                display: flex;
-                justify-content: space-between;
-                transform: translateY(-50%);
-                padding: 0 20px;
-                pointer-events: none;
-            }
-            .gallery-btn-page {
-                background-color: rgba(0, 0, 0, 0.6);
-                color: white;
-                border: none;
-                padding: 12px 16px;
-                border-radius: 50%;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-                pointer-events: auto;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-            }
-            .gallery-btn-page:hover {
-                background-color: rgba(0, 0, 0, 0.8);
-            }
-            .image-counter-page {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                background: rgba(0, 0, 0, 0.7);
-                color: white;
-                padding: 8px 15px;
-                border-radius: 20px;
-                font-size: 1rem;
-                font-weight: 600;
-            }
-            
-            .gallery-thumbnails {
-                display: flex;
-                gap: 12px;
-                overflow-x: auto;
-                padding: 15px 0;
-            }
-            .gallery-thumbnails .thumbnail {
-                width: 100px;
-                height: 80px;
-                object-fit: cover;
-                border-radius: 8px;
-                cursor: pointer;
-                opacity: 0.7;
-                transition: all 0.3s ease;
-                border: 3px solid transparent;
-            }
-            .gallery-thumbnails .thumbnail:hover,
-            .gallery-thumbnails .thumbnail.active {
-                opacity: 1;
-                border-color: #ff6b35;
-                transform: scale(1.05);
-            }
-            .property-map {
-                height: 400px;
-                border-radius: 12px;
-                overflow: hidden;
-                border: 1px solid #dee2e6;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            
-            /* Card do corretor MENOR */
-            .corretor-card {
-                background: #f8f9fa;
-                border-radius: 12px;
-                padding: 20px;
-                border-left: 4px solid #ff6b35;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-                position: sticky;
-                top: 20px;
-            }
-            .corretor-header {
-                display: flex;
-                align-items: center;
-                margin-bottom: 15px;
-            }
-            .corretor-photo {
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                background-color: #e9ecef;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-                color: #1a4d2e;
-                font-size: 24px;
-                margin-right: 15px;
-                border: 2px solid #ff6b35;
-            }
-            .corretor-name {
-                font-weight: 600;
-                color: #1a4d2e;
-                margin-bottom: 5px;
-                font-size: 1.1rem;
-            }
-            .corretor-type {
-                color: #ff6b35;
-                font-size: 0.9rem;
-                margin-bottom: 5px;
-                font-weight: 500;
-            }
-            .corretor-creci {
-                color: #666;
-                font-size: 0.8rem;
-                margin-bottom: 5px;
-            }
-            .corretor-phone {
-                color: #333;
-                font-size: 0.9rem;
-            }
-            .corretor-whatsapp-btn {
-                background-color: #25D366;
-                color: white;
-                border: none;
-                padding: 12px 15px;
-                border-radius: 8px;
-                font-weight: 600;
-                transition: all 0.3s ease;
-                cursor: pointer;
-                font-size: 1rem;
-            }
-            .corretor-whatsapp-btn:hover {
-                background-color: #128C7E;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-            }
-            .property-details {
-                background: #f8f9fa;
-                border-radius: 12px;
-                padding: 20px;
-                margin: 20px 0;
-            }
-            .property-description {
-                background: white;
-                border-radius: 12px;
-                padding: 20px;
-                border-left: 4px solid #1a4d2e;
-                margin: 20px 0;
-            }
-            .property-location {
-                background: white;
-                border-radius: 12px;
-                padding: 20px;
-                margin: 20px 0;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            }
-            .map-actions {
-                display: flex;
-                gap: 10px;
-                flex-wrap: wrap;
-            }
-            .btn {
-                border-radius: 6px;
-                padding: 8px 16px;
-                font-weight: 600;
-                font-size: 0.9rem;
-            }
-            @media (max-width: 768px) {
-                .main-gallery-img {
-                    height: 300px;
-                }
-                .gallery-thumbnails .thumbnail {
-                    width: 80px;
-                    height: 60px;
-                }
-                .corretor-card {
-                    position: static;
-                    margin-top: 30px;
-                }
-                .corretor-header {
-                    flex-direction: column;
-                    text-align: center;
-                }
-                .corretor-photo {
-                    margin-right: 0;
-                    margin-bottom: 10px;
-                }
-                .gallery-btn-page {
-                    width: 40px;
-                    height: 40px;
-                    padding: 8px 12px;
-                    font-size: 1rem;
-                }
-            }
         `;
     }
 
