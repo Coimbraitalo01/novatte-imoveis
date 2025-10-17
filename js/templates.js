@@ -205,8 +205,11 @@ class PropertyTemplates {
         `;
     }
 
-    // Template da página completa (nova guia) - COM LOGO CORRIGIDA PARA GITHUB PAGES
+    // Template da página completa (nova guia) - COM LOGO CORRIGIDA
     static createPropertyPage(property, corretor) {
+        // CORREÇÃO: Logo em Base64 para funcionar em qualquer ambiente
+        const logoBase64 = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDQwMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiMxYTRkMmUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiPk5vdmF0dGUgSW3Ds3ZlaXM8L3RleHQ+PC9zdmc+';
+        
         return `
             <!DOCTYPE html>
             <html lang="pt-BR">
@@ -219,22 +222,40 @@ class PropertyTemplates {
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
                 <style>
                     ${this.getPageStyles()}
+                    
+                    /* Estilos adicionais para garantir que a logo apareça */
+                    .logo-container {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 120px;
+                        overflow: hidden;
+                    }
+                    .logo-img {
+                        height: 400px;
+                        width: auto;
+                        max-width: 500px;
+                        object-fit: contain;
+                        margin: -140px 0;
+                    }
+                    @media (max-width: 768px) {
+                        .logo-img {
+                            height: 200px;
+                            max-width: 280px;
+                            margin: -40px 0;
+                        }
+                    }
                 </style>
             </head>
             <body>
                 <div class="property-page">
-                    <!-- Header COM LOGO CORRIGIDA -->
+                    <!-- Header COM LOGO EM BASE64 -->
                     <header class="property-header">
                         <div class="container">
                             <div class="logo-container">
-                                <img src="https://coimbraitalo01.github.io/novatte-imoveis/assets/logo.png" 
+                                <img src="${logoBase64}" 
                                      alt="Novatte Imóveis - Portal Imobiliário" 
-                                     class="logo-img"
-                                     onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDQwMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjMWE0ZDJlIi8+Cjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCI+Tm92YXR0ZSBJbcOzdmVpczwvdGV4dD4KPC9zdmc+'; document.getElementById('logoFallback')?.style.display='block';">
-                                <div id="logoFallback" style="display:none; text-align: center; color: white; padding: 20px;">
-                                    <h2 style="margin:0; font-size: 2rem;">Novatte Imóveis</h2>
-                                    <p style="margin:0; font-size: 1rem;">Portal Imobiliário</p>
-                                </div>
+                                     class="logo-img">
                             </div>
                         </div>
                     </header>
@@ -375,18 +396,9 @@ class PropertyTemplates {
                         }
                     };
 
-                    // Verificar se a logo carregou
-                    window.addEventListener('load', function() {
-                        const logoImg = document.querySelector('.logo-img');
-                        const logoFallback = document.getElementById('logoFallback');
-                        
-                        if (logoImg && logoImg.naturalHeight === 0) {
-                            // Logo não carregou
-                            if (logoFallback) {
-                                logoFallback.style.display = 'block';
-                            }
-                        }
-                    });
+                    // Expor funções globalmente
+                    window.changeImage = changeImage;
+                    window.goToImage = goToImage;
                 </script>
             </body>
             </html>
@@ -426,7 +438,7 @@ class PropertyTemplates {
         `;
     }
 
-    // Estilos para a página completa - CARD DO CORRETOR MENOR E LOGO DO MESMO TAMANHO DO MODAL
+    // Estilos para a página completa
     static getPageStyles() {
         return `
             .property-header {
@@ -434,13 +446,6 @@ class PropertyTemplates {
                 padding: 15px 0;
                 text-align: center;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            .logo-img {
-                height: 400px; /* MESMO TAMANHO DO MODAL */
-                width: auto;
-                max-width: 500px;
-                object-fit: contain;
-                margin: -140px 0;
             }
             .property-gallery-page .main-gallery-image {
                 margin-bottom: 15px;
@@ -625,11 +630,6 @@ class PropertyTemplates {
                 font-size: 0.9rem;
             }
             @media (max-width: 768px) {
-                .logo-img {
-                    height: 200px; /* Ajuste proporcional para mobile */
-                    max-width: 280px;
-                    margin: -40px 0;
-                }
                 .main-gallery-img {
                     height: 300px;
                 }
