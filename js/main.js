@@ -40,6 +40,10 @@ function openDataManagement() {
 let currentCarouselIndex = 0;
 let carouselInterval;
 
+// Variáveis para controle de galeria
+let currentGalleryIndex = 0;
+let currentGalleryImages = [];
+
 // Inicializar carrossel
 function initCarousel() {
     const carouselTrack = document.getElementById('carouselTrack');
@@ -51,38 +55,12 @@ function initCarousel() {
         return;
     }
 
-    // Selecionar os primeiros 6 imóveis para o carrossel (se properties existir)
+    // Selecionar os primeiros 6 imóveis para o carrossel
     let carouselProperties = [];
     if (typeof properties !== 'undefined' && properties.length > 0) {
         carouselProperties = properties.slice(0, 6);
     } else {
-        // Fallback - criar dados básicos se properties não existir
-        carouselProperties = [
-            {
-                id: 1,
-                title: "Imóvel Exemplo 1",
-                type: "Venda",
-                price: "R$ 350.000",
-                location: "Itaperuna, RJ",
-                size: "120m²",
-                bedrooms: 3,
-                bathrooms: 2,
-                parking: 2,
-                description: "Excelente imóvel para sua família"
-            },
-            {
-                id: 2,
-                title: "Imóvel Exemplo 2", 
-                type: "Aluguel",
-                price: "R$ 1.200/mês",
-                location: "Santo Antônio de Pádua, RJ",
-                size: "70m²",
-                bedrooms: 2,
-                bathrooms: 1,
-                parking: 1,
-                description: "Apartamento bem localizado"
-            }
-        ];
+        carouselProperties = [];
     }
     
     // Criar slides do carrossel
@@ -123,7 +101,7 @@ function initCarousel() {
                             <div class="property-price-booking">${prop.price}</div>
                             <div class="property-actions-booking">
                                 <button class="btn-booking-secondary" onclick="event.stopPropagation(); showPropertyDetails(${prop.id})">Mais Detalhes</button>
-                                <button class="btn-booking-whatsapp" onclick="event.stopPropagation(); contactCorretor('italo')">
+                                <button class="btn-booking-whatsapp" onclick="event.stopPropagation(); contactCorretor('${prop.corretor}', ${prop.id})">
                                     <i class="bi bi-whatsapp"></i> Contato
                                 </button>
                             </div>
@@ -184,23 +162,232 @@ function pauseCarouselAutoPlay() {
     clearInterval(carouselInterval);
 }
 
-// Funções placeholder para evitar erros
-function openPropertyInNewTab(propertyId) {
-    console.log('Abrir propriedade:', propertyId);
-    // Implementação temporária
-    alert(`Detalhes do imóvel ${propertyId} - Esta funcionalidade será implementada em breve`);
+// Função para renderizar a lista de imóveis
+function renderProperties(properties, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    if (properties.length === 0) {
+        container.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-search display-1 text-muted"></i>
+                <h4 class="mt-3 text-muted">Nenhum imóvel encontrado</h4>
+                <p class="text-muted">Tente ajustar os filtros para ver mais resultados</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = properties.map(property => 
+        PropertyTemplates.createPropertyCard(property)
+    ).join('');
 }
 
+// Função para renderizar todos os imóveis
+function renderAllProperties() {
+    if (typeof properties !== 'undefined') {
+        renderProperties(properties, 'all-properties-list');
+        renderProperties(properties.slice(0, 6), 'property-list');
+    } else {
+        console.error('Properties não definido');
+    }
+}
+
+// ===== FUNÇÕES DA GALERIA CORRIGIDAS =====
+
+// Mudar imagem na galeria do card - FUNÇÃO CORRIGIDA
+function changeImage(propertyId, direction) {
+    const property = properties.find(p => p.id === propertyId);
+    if (!property || !property.images || property.images.length <= 1) return;
+    
+    // Encontrar o card correto usando data-id
+    const card = document.querySelector(`.property-card-booking[onclick="openPropertyInNewTab(${propertyId})"]`);
+    if (!card) return;
+    
+    const imgElement = card.querySelector('.property-img-booking');
+    const counterElement = card.querySelector('.image-counter');
+    const thumbnails = card.querySelectorAll('.thumbnail');
+    
+    let currentIndex = parseInt(counterElement.textContent.split('/')[0]) - 1;
+    let newIndex = (currentIndex + direction + property.images.length) % property.images.length;
+    
+    // Atualizar imagem principal
+    imgElement.src = property.images[newIndex];
+    
+    // Atualizar contador
+    counterElement.textContent = `${newIndex + 1}/${property.images.length}`;
+    
+    // Atualizar thumbnails ativos
+    thumbnails.forEach((thumb, index) => {
+        thumb.classList.toggle('active', index === newIndex);
+    });
+}
+
+// Mostrar imagem específica - FUNÇÃO CORRIGIDA
+function showImage(propertyId, index) {
+    const property = properties.find(p => p.id === propertyId);
+    if (!property || !property.images) return;
+    
+    // Encontrar o card correto usando data-id
+    const card = document.querySelector(`.property-card-booking[onclick="openPropertyInNewTab(${propertyId})"]`);
+    if (!card) return;
+    
+    const imgElement = card.querySelector('.property-img-booking');
+    const counterElement = card.querySelector('.image-counter');
+    const thumbnails = card.querySelectorAll('.thumbnail');
+    
+    // Atualizar imagem principal
+    imgElement.src = property.images[index];
+    
+    // Atualizar contador
+    counterElement.textContent = `${index + 1}/${property.images.length}`;
+    
+    // Atualizar thumbnails ativos
+    thumbnails.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+    });
+}
+
+// ===== FUNÇÕES DO MODAL DE DETALHES =====
+
+// Mostrar detalhes do imóvel no modal
 function showPropertyDetails(propertyId) {
-    console.log('Mostrar detalhes:', propertyId);
-    // Implementação temporária
-    alert(`Detalhes do imóvel ${propertyId} - Esta funcionalidade será implementada em breve`);
+    const property = properties.find(p => p.id === propertyId);
+    if (!property) return;
+    
+    const corretor = corretores[property.corretor];
+    const modalContent = document.getElementById('property-detail-content');
+    
+    if (modalContent) {
+        modalContent.innerHTML = PropertyTemplates.createPropertyDetail(property, corretor);
+        
+        // Inicializar mapa
+        setTimeout(() => {
+            initPropertyMap(propertyId, property.lat, property.lng, property.title);
+        }, 100);
+        
+        // Abrir modal
+        const modal = new bootstrap.Modal(document.getElementById('propertyModal'));
+        modal.show();
+    }
 }
 
-function contactCorretor(corretorId) {
-    console.log('Contatar corretor:', corretorId);
-    // Implementação temporária
-    window.open('https://wa.me/5522992054592?text=Olá! Gostaria de mais informações sobre os imóveis.', '_blank');
+// Inicializar mapa do imóvel
+function initPropertyMap(propertyId, lat, lng, title) {
+    const mapElement = document.getElementById(`property-map-${propertyId}`);
+    if (!mapElement) return;
+    
+    try {
+        const map = L.map(mapElement).setView([lat, lng], 15);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup(`<b>${title}</b><br>Localização do imóvel`)
+            .openPopup();
+            
+    } catch (error) {
+        console.error('Erro ao carregar mapa:', error);
+        mapElement.innerHTML = `
+            <div class="text-center p-4 bg-light rounded">
+                <i class="bi bi-map display-4 text-muted"></i>
+                <p class="mt-2 text-muted">Mapa não disponível</p>
+                <button class="btn btn-primary mt-2" onclick="openInGoogleMaps(${lat}, ${lng})">
+                    Abrir no Google Maps
+                </button>
+            </div>
+        `;
+    }
+}
+
+// ===== FUNÇÕES DA GALERIA MODAL =====
+
+// Abrir galeria modal
+function openGalleryModal(propertyId, startIndex = 0) {
+    const property = properties.find(p => p.id === propertyId);
+    if (!property || !property.images) return;
+    
+    currentGalleryImages = property.images;
+    currentGalleryIndex = startIndex;
+    
+    updateGalleryModal();
+    
+    const modal = new bootstrap.Modal(document.getElementById('galleryModal'));
+    modal.show();
+}
+
+// Atualizar galeria modal
+function updateGalleryModal() {
+    const modalImg = document.getElementById('galleryModalImg');
+    const modalCounter = document.getElementById('galleryModalCounter');
+    
+    if (modalImg && modalCounter && currentGalleryImages.length > 0) {
+        modalImg.src = currentGalleryImages[currentGalleryIndex];
+        modalCounter.textContent = `${currentGalleryIndex + 1}/${currentGalleryImages.length}`;
+    }
+}
+
+// Navegar na galeria modal
+function galleryModalNext() {
+    if (currentGalleryImages.length === 0) return;
+    currentGalleryIndex = (currentGalleryIndex + 1) % currentGalleryImages.length;
+    updateGalleryModal();
+}
+
+function galleryModalPrev() {
+    if (currentGalleryImages.length === 0) return;
+    currentGalleryIndex = (currentGalleryIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+    updateGalleryModal();
+}
+
+// ===== FUNÇÕES PRINCIPAIS =====
+
+// Abrir imóvel em nova guia
+function openPropertyInNewTab(propertyId) {
+    // Criar uma página temporária com os detalhes do imóvel
+    const property = properties.find(p => p.id === propertyId);
+    if (!property) return;
+    
+    const corretor = corretores[property.corretor];
+    const newWindow = window.open('', '_blank');
+    
+    // Usar caminho relativo para a logo
+    const propertyPage = PropertyTemplates.createPropertyPage(property, corretor);
+    newWindow.document.write(propertyPage);
+    newWindow.document.close();
+}
+
+// Contatar corretor via WhatsApp
+function contactCorretor(corretorId, propertyId = null) {
+    const corretor = corretores[corretorId];
+    const property = propertyId ? properties.find(p => p.id === propertyId) : null;
+    
+    if (!corretor) return;
+    
+    let message = `Olá ${corretor.nome}! `;
+    
+    if (property) {
+        message += `Tenho interesse no imóvel: ${property.title} - ${property.price}. `;
+        message += `Localizado em: ${property.location}. `;
+        message += `Poderia me fornecer mais informações?`;
+    } else {
+        message += `Gostaria de mais informações sobre os imóveis disponíveis.`;
+    }
+    
+    const whatsappUrl = `https://wa.me/${corretor.whatsapp}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+}
+
+// Funções de mapa
+function openInGoogleMaps(lat, lng) {
+    window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+}
+
+function getDirections(lat, lng) {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
 }
 
 // Event listeners
@@ -230,6 +417,18 @@ document.addEventListener('DOMContentLoaded', function() {
         carouselContainer.addEventListener('mouseenter', pauseCarouselAutoPlay);
         carouselContainer.addEventListener('mouseleave', startCarouselAutoPlay);
     }
+
+    // Eventos da galeria modal
+    document.getElementById('galleryModalNext')?.addEventListener('click', galleryModalNext);
+    document.getElementById('galleryModalPrev')?.addEventListener('click', galleryModalPrev);
+
+    // INICIALIZAR E RENDERIZAR IMÓVEIS
+    setTimeout(() => {
+        renderAllProperties();
+        if (typeof initFilter === 'function') {
+            initFilter();
+        }
+    }, 100);
 
     // Scroll suave
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -269,20 +468,49 @@ document.addEventListener('DOMContentLoaded', function() {
         this.reset();
     });
 
-    // Filtros (implementação básica)
+    // Filtros
     document.getElementById('applyFiltersBtn')?.addEventListener('click', function() {
-        alert('Funcionalidade de filtros será implementada em breve');
+        if (typeof propertyFilter !== 'undefined') {
+            const filtered = propertyFilter.applyFilters();
+            renderProperties(filtered, 'property-list');
+            document.getElementById('loadMoreBtn').style.display = 
+                propertyFilter.hasMoreProperties() ? 'block' : 'none';
+        } else {
+            alert('Sistema de filtros em desenvolvimento');
+        }
     });
 
     document.getElementById('clearFiltersBtn')?.addEventListener('click', function() {
-        alert('Funcionalidade de limpar filtros será implementada em breve');
+        if (typeof propertyFilter !== 'undefined') {
+            const allProperties = propertyFilter.clearFilters();
+            renderProperties(allProperties.slice(0, 6), 'property-list');
+            document.getElementById('loadMoreBtn').style.display = 'block';
+        } else {
+            document.getElementById('property-type').value = 'all';
+            document.getElementById('city').value = 'all';
+            document.getElementById('transaction-type').value = 'all';
+            document.getElementById('max-price').value = '';
+        }
     });
 
     document.getElementById('resetFiltersBtn')?.addEventListener('click', function() {
-        alert('Funcionalidade de resetar filtros será implementada em breve');
+        if (typeof propertyFilter !== 'undefined') {
+            const allProperties = propertyFilter.clearFilters();
+            renderProperties(allProperties.slice(0, 6), 'property-list');
+            document.getElementById('loadMoreBtn').style.display = 'block';
+        }
     });
 
     document.getElementById('loadMoreBtn')?.addEventListener('click', function() {
-        alert('Funcionalidade de carregar mais será implementada em breve');
+        if (typeof propertyFilter !== 'undefined') {
+            const moreProperties = propertyFilter.loadMore();
+            renderProperties(moreProperties, 'property-list');
+            
+            if (!propertyFilter.hasMoreProperties()) {
+                this.style.display = 'none';
+            }
+        } else {
+            alert('Funcionalidade de carregar mais será implementada em breve');
+        }
     });
 });

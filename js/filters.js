@@ -24,7 +24,7 @@ class PropertyFilter {
             if (city !== 'all' && prop.city !== city) return false;
             if (transaction !== 'all' && prop.type !== transaction) return false;
             if (maxPrice) {
-                const priceNum = parseInt(prop.price.replace(/\D/g, ''));
+                const priceNum = this.extractPriceNumber(prop.price);
                 const maxPriceNum = parseInt(maxPrice.replace(/\D/g, ''));
                 if (priceNum > maxPriceNum) return false;
             }
@@ -32,7 +32,11 @@ class PropertyFilter {
         });
 
         this.displayedCount = 6;
-        return this.filteredProperties;
+        return this.filteredProperties.slice(0, this.displayedCount);
+    }
+
+    extractPriceNumber(priceString) {
+        return parseInt(priceString.replace(/\D/g, ''));
     }
 
     clearFilters() {
@@ -43,7 +47,7 @@ class PropertyFilter {
         
         this.filteredProperties = [...this.properties];
         this.displayedCount = 6;
-        return this.filteredProperties;
+        return this.filteredProperties.slice(0, this.displayedCount);
     }
 
     loadMore() {
@@ -69,22 +73,12 @@ let propertyFilter;
 
 // Inicializa o filtro
 function initFilter() {
-    propertyFilter = new PropertyFilter(properties);
-}
-
-// Formatação de preços
-function formatPriceInput(input) {
-    input.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 0) {
-            value = parseInt(value).toLocaleString('pt-BR');
-            e.target.value = value;
-        }
-    });
+    if (typeof properties !== 'undefined') {
+        propertyFilter = new PropertyFilter(properties);
+    }
 }
 
 // Exporta para uso global
 window.PropertyFilter = PropertyFilter;
 window.propertyFilter = propertyFilter;
 window.initFilter = initFilter;
-window.formatPriceInput = formatPriceInput;
