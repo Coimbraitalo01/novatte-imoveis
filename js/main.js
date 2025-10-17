@@ -200,7 +200,7 @@ function changeImage(propertyId, direction) {
     const property = properties.find(p => p.id === propertyId);
     if (!property || !property.images || property.images.length <= 1) return;
     
-    // Encontrar o card correto usando data-id
+    // Encontrar o card correto
     const card = document.querySelector(`.property-card-booking[onclick="openPropertyInNewTab(${propertyId})"]`);
     if (!card) return;
     
@@ -208,14 +208,26 @@ function changeImage(propertyId, direction) {
     const counterElement = card.querySelector('.image-counter');
     const thumbnails = card.querySelectorAll('.thumbnail');
     
-    let currentIndex = parseInt(counterElement.textContent.split('/')[0]) - 1;
+    // CORREÇÃO: Verificar se counterElement existe antes de usar
+    let currentIndex = 0;
+    if (counterElement && counterElement.textContent) {
+        try {
+            currentIndex = parseInt(counterElement.textContent.split('/')[0]) - 1;
+        } catch (e) {
+            console.log('Erro ao ler contador, usando índice 0');
+            currentIndex = 0;
+        }
+    }
+    
     let newIndex = (currentIndex + direction + property.images.length) % property.images.length;
     
     // Atualizar imagem principal
     imgElement.src = property.images[newIndex];
     
-    // Atualizar contador
-    counterElement.textContent = `${newIndex + 1}/${property.images.length}`;
+    // Atualizar contador apenas se existir
+    if (counterElement) {
+        counterElement.textContent = `${newIndex + 1}/${property.images.length}`;
+    }
     
     // Atualizar thumbnails ativos
     thumbnails.forEach((thumb, index) => {
@@ -228,7 +240,7 @@ function showImage(propertyId, index) {
     const property = properties.find(p => p.id === propertyId);
     if (!property || !property.images) return;
     
-    // Encontrar o card correto usando data-id
+    // Encontrar o card correto
     const card = document.querySelector(`.property-card-booking[onclick="openPropertyInNewTab(${propertyId})"]`);
     if (!card) return;
     
@@ -239,8 +251,10 @@ function showImage(propertyId, index) {
     // Atualizar imagem principal
     imgElement.src = property.images[index];
     
-    // Atualizar contador
-    counterElement.textContent = `${index + 1}/${property.images.length}`;
+    // Atualizar contador apenas se existir
+    if (counterElement) {
+        counterElement.textContent = `${index + 1}/${property.images.length}`;
+    }
     
     // Atualizar thumbnails ativos
     thumbnails.forEach((thumb, i) => {
