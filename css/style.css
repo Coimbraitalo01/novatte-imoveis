@@ -622,62 +622,14 @@ h2 {
     border-color: var(--primary-color);
 }
 
-/* Estilos para a galeria de fotos */
-.property-gallery {
+/* ===== ESTILOS ADICIONAIS PARA GALERIA E MODAL ===== */
+
+/* Galeria no card */
+.property-card-gallery {
     position: relative;
-    margin-bottom: 20px;
 }
 
-.main-image {
-    height: 400px;
-    object-fit: cover;
-    width: 100%;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.main-image:hover {
-    transform: scale(1.02);
-}
-
-.thumbnail-container {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-    overflow-x: auto;
-    padding: 10px 0;
-}
-
-.thumbnail {
-    width: 80px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.thumbnail:hover, .thumbnail.active {
-    opacity: 1;
-    border-color: var(--secondary-color);
-    transform: scale(1.05);
-}
-
-.image-counter {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-}
-
-.gallery-controls {
+.property-card-gallery .gallery-controls {
     position: absolute;
     top: 50%;
     left: 0;
@@ -685,15 +637,15 @@ h2 {
     display: flex;
     justify-content: space-between;
     transform: translateY(-50%);
-    padding: 0 15px;
+    padding: 0 10px;
     pointer-events: none;
 }
 
-.gallery-btn {
-    background-color: rgba(0, 0, 0, 0.5);
+.property-card-gallery .gallery-btn {
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
-    padding: 12px 15px;
+    padding: 8px 12px;
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -701,21 +653,239 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+}
+
+.property-card-gallery .gallery-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.property-card-gallery .image-counter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.property-card-gallery .thumbnail-container {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    overflow-x: auto;
+    padding: 5px 0;
+}
+
+.property-card-gallery .thumbnail {
     width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
-.gallery-btn:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+.property-card-gallery .thumbnail:hover,
+.property-card-gallery .thumbnail.active {
+    opacity: 1;
+    border-color: var(--secondary-color);
 }
 
-.gallery-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+/* ===== MODAL MAIS LARGO E CORRIGIDO ===== */
+
+#propertyModal .modal-dialog {
+    max-width: 1200px;
+    margin: 1.75rem auto;
 }
 
-/* Modal para visualização ampliada das imagens */
+#propertyModal .modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+#propertyModal .modal-body {
+    padding: 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+#propertyModal .unified-view {
+    padding: 30px;
+}
+
+/* Galeria no modal de detalhes - SEM BOTÕES DUPLICADOS */
+.property-gallery {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.property-gallery .main-image {
+    height: 450px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.property-gallery .main-image:hover {
+    transform: scale(1.01);
+}
+
+/* REMOVIDOS OS BOTÕES DE CONTROLE DUPLICADOS */
+.property-gallery .gallery-controls {
+    display: none; /* Remove os botões duplicados */
+}
+
+.property-gallery .image-counter {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.property-gallery .thumbnail-container {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    overflow-x: auto;
+    padding: 15px 0;
+}
+
+.property-gallery .thumbnail {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+}
+
+.property-gallery .thumbnail:hover,
+.property-gallery .thumbnail.active {
+    opacity: 1;
+    border-color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+/* Card do corretor MENOR no modal */
+.corretor-info {
+    background-color: var(--light-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    border-left: 4px solid var(--secondary-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.corretor-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.corretor-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 20px;
+    margin-right: 15px;
+    border: 2px solid var(--secondary-color);
+}
+
+.corretor-details {
+    flex: 1;
+}
+
+.corretor-name {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.corretor-type {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.corretor-creci {
+    color: var(--dark-color);
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+
+.corretor-phone {
+    color: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.corretor-whatsapp-btn {
+    background-color: #25D366;
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.corretor-whatsapp-btn:hover {
+    background-color: #128C7E;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+/* Mapa unificado */
+.unified-map {
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px 0;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.map-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Estilos para a galeria de fotos */
 .gallery-modal .modal-dialog {
     max-width: 90%;
     max-height: 90vh;
@@ -787,122 +957,6 @@ h2 {
     padding: 5px 15px;
     border-radius: 20px;
     font-size: 1rem;
-}
-
-/* Estilos para informações do corretor */
-.corretor-info {
-    background-color: var(--light-color);
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 20px;
-    border-left: 4px solid var(--secondary-color);
-}
-
-.corretor-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.corretor-photo {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 15px;
-    border: 2px solid var(--secondary-color);
-    background-color: #e9ecef;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: var(--primary-color);
-    font-size: 24px;
-}
-
-.corretor-details {
-    flex: 1;
-}
-
-.corretor-name {
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 5px;
-    font-size: 1.1rem;
-}
-
-.corretor-type {
-    color: var(--secondary-color);
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-}
-
-.corretor-creci {
-    color: var(--dark-color);
-    font-size: 0.85rem;
-    margin-bottom: 5px;
-}
-
-.corretor-contact {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-}
-
-.contact-badge {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    padding: 5px 12px;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* Estilos para visualização unificada */
-.unified-view {
-    padding: 20px;
-}
-
-.unified-property-image {
-    height: 300px;
-    object-fit: cover;
-    width: 100%;
-    border-radius: 8px;
-}
-
-.unified-map {
-    height: 400px;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 20px 0;
-}
-
-/* Botão WhatsApp no card do corretor */
-.corretor-whatsapp-btn {
-    background-color: #25D366;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-    width: 100%;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.corretor-whatsapp-btn:hover {
-    background-color: #128C7E;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Footer */
@@ -1024,6 +1078,24 @@ footer a:hover {
 .carousel-dot.active {
     background: var(--secondary-color);
     transform: scale(1.2);
+}
+
+/* Logo na aba do navegador */
+link[rel="icon"] {
+    width: 32px;
+    height: 32px;
+}
+
+/* Logo do modal */
+.logo-modal {
+    width: 150px;
+    height: auto;
+}
+
+/* Logo na página */
+.header-logo {
+    width: 150px;
+    height: auto;
 }
 
 /* ===== MOBILE ===== */
@@ -1149,51 +1221,75 @@ footer a:hover {
         font-size: 0.9rem;
     }
 
-    .gallery-controls {
-        padding: 0 10px;
+    /* Ajustes mobile para galeria */
+    .property-card-gallery .gallery-btn {
+        width: 30px;
+        height: 30px;
+        padding: 6px 8px;
+        font-size: 0.8rem;
     }
     
-    .gallery-btn {
+    .property-card-gallery .thumbnail {
         width: 40px;
-        height: 40px;
-        padding: 10px 12px;
+        height: 30px;
+    }
+    
+    .property-gallery .main-image {
+        height: 300px;
+    }
+    
+    .property-gallery .thumbnail {
+        width: 80px;
+        height: 60px;
+    }
+    
+    .corretor-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .corretor-photo {
+        margin-right: 0;
+        margin-bottom: 15px;
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+    }
+    
+    .map-actions {
+        flex-direction: column;
+    }
+    
+    .map-actions .btn {
+        width: 100%;
+    }
+
+    /* Modal mobile */
+    #propertyModal .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+    
+    #propertyModal .unified-view {
+        padding: 20px;
+    }
+
+    /* Ajustes mobile para card do corretor menor */
+    .corretor-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .corretor-photo {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+    
+    .corretor-name {
         font-size: 1rem;
-    }
-    
-    .carousel-nav {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .carousel-prev {
-        left: 10px;
-    }
-    
-    .carousel-next {
-        right: 10px;
-    }
-
-    .thumbnail-container {
-        padding: 5px 0;
-        gap: 5px;
-    }
-    
-    .thumbnail {
-        width: 60px;
-        height: 45px;
-    }
-
-    .find-property-form {
-        padding: 25px 20px;
-    }
-
-    .checkbox-square-group {
-        gap: 8px;
-    }
-
-    .checkbox-square-item {
-        padding: 8px 12px;
-        font-size: 0.85rem;
     }
 }
 
