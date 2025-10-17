@@ -205,7 +205,7 @@ class PropertyTemplates {
         `;
     }
 
-    // Template da página completa (nova guia) - COM LOGO E BOTÕES DE GALERIA
+    // Template da página completa (nova guia) - COM LOGO CORRIGIDA PARA GITHUB PAGES
     static createPropertyPage(property, corretor) {
         return `
             <!DOCTYPE html>
@@ -223,14 +223,18 @@ class PropertyTemplates {
             </head>
             <body>
                 <div class="property-page">
-                    <!-- Header COM LOGO -->
+                    <!-- Header COM LOGO CORRIGIDA -->
                     <header class="property-header">
                         <div class="container">
                             <div class="logo-container">
-                                <img src="${window.location.origin}/assets/logo.png" 
+                                <img src="https://coimbraitalo01.github.io/novatte-imoveis/assets/logo.png" 
                                      alt="Novatte Imóveis - Portal Imobiliário" 
                                      class="logo-img"
-                                     onerror="this.src='https://via.placeholder.com/200x80/1a4d2e/ffffff?text=Novatte+Imóveis'">
+                                     onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDQwMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjMWE0ZDJlIi8+Cjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCI+Tm92YXR0ZSBJbcOzdmVpczwvdGV4dD4KPC9zdmc+'; document.getElementById('logoFallback')?.style.display='block';">
+                                <div id="logoFallback" style="display:none; text-align: center; color: white; padding: 20px;">
+                                    <h2 style="margin:0; font-size: 2rem;">Novatte Imóveis</h2>
+                                    <p style="margin:0; font-size: 1rem;">Portal Imobiliário</p>
+                                </div>
                             </div>
                         </div>
                     </header>
@@ -320,8 +324,11 @@ class PropertyTemplates {
                         if (propertyImages.length <= 1) return;
                         
                         currentImageIndex = (currentImageIndex + direction + propertyImages.length) % propertyImages.length;
-                        document.getElementById('mainGalleryImage').src = propertyImages[currentImageIndex];
-                        document.getElementById('galleryCounter').textContent = \`\${currentImageIndex + 1}/\${propertyImages.length}\`;
+                        const mainImage = document.getElementById('mainGalleryImage');
+                        const galleryCounter = document.getElementById('galleryCounter');
+                        
+                        if (mainImage) mainImage.src = propertyImages[currentImageIndex];
+                        if (galleryCounter) galleryCounter.textContent = \`\${currentImageIndex + 1}/\${propertyImages.length}\`;
                         
                         // Atualizar thumbnails ativos
                         document.querySelectorAll('.gallery-thumbnails .thumbnail').forEach((thumb, index) => {
@@ -331,8 +338,11 @@ class PropertyTemplates {
                     
                     function goToImage(index) {
                         currentImageIndex = index;
-                        document.getElementById('mainGalleryImage').src = propertyImages[currentImageIndex];
-                        document.getElementById('galleryCounter').textContent = \`\${currentImageIndex + 1}/\${propertyImages.length}\`;
+                        const mainImage = document.getElementById('mainGalleryImage');
+                        const galleryCounter = document.getElementById('galleryCounter');
+                        
+                        if (mainImage) mainImage.src = propertyImages[currentImageIndex];
+                        if (galleryCounter) galleryCounter.textContent = \`\${currentImageIndex + 1}/\${propertyImages.length}\`;
                         
                         // Atualizar thumbnails ativos
                         document.querySelectorAll('.gallery-thumbnails .thumbnail').forEach((thumb, i) => {
@@ -358,8 +368,25 @@ class PropertyTemplates {
                             }
                         } catch (error) {
                             console.error('Erro ao carregar mapa:', error);
+                            const mapElement = document.getElementById('property-map');
+                            if (mapElement) {
+                                mapElement.innerHTML = '<div class="text-center p-4 bg-light rounded"><i class="bi bi-map display-4 text-muted"></i><p class="mt-2 text-muted">Mapa não disponível</p></div>';
+                            }
                         }
                     };
+
+                    // Verificar se a logo carregou
+                    window.addEventListener('load', function() {
+                        const logoImg = document.querySelector('.logo-img');
+                        const logoFallback = document.getElementById('logoFallback');
+                        
+                        if (logoImg && logoImg.naturalHeight === 0) {
+                            // Logo não carregou
+                            if (logoFallback) {
+                                logoFallback.style.display = 'block';
+                            }
+                        }
+                    });
                 </script>
             </body>
             </html>
