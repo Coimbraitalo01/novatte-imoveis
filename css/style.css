@@ -101,21 +101,18 @@ nav a:hover::after {
     display: none;
     background: none;
     border: none;
-    padding: 10px;
+    padding: 8px;
     cursor: pointer;
     flex-direction: column;
     justify-content: space-between;
-    width: 30px;
-    height: 25px;
+    width: 40px;
+    height: 40px;
     z-index: 1001;
 }
 
-.navbar-toggler span {
-    display: block;
-    height: 3px;
-    width: 100%;
-    background-color: white;
-    border-radius: 2px;
+.navbar-toggler i {
+    color: white;
+    font-size: 1.8rem;
     transition: all 0.3s ease;
 }
 
@@ -1111,19 +1108,20 @@ link[rel="icon"] {
         position: relative;
     }
     
-    /* Logo Mobile - Ocupa todo o espaço disponível */
+    /* Logo Mobile - OCUPA TODO O ESPAÇO DISPONÍVEL */
     .logo-container {
         flex: 1;
         display: flex;
         justify-content: center;
+        align-items: center;
         height: 100%;
         margin-right: 10px;
     }
     
     .logo-img {
-        height: 120px; /* Aumentada proporcionalmente */
-        max-width: 280px;
-        margin: -20px 0; /* Ajuste para centralizar verticalmente */
+        height: 180px !important; /* AUMENTADA SIGNIFICATIVAMENTE */
+        max-width: 320px !important;
+        margin: -50px 0 !important; /* Ajuste para centralizar verticalmente */
         object-fit: contain;
     }
     
@@ -1135,9 +1133,10 @@ link[rel="icon"] {
         padding: 8px;
         cursor: pointer;
         flex-direction: column;
-        justify-content: space-between;
-        width: 30px;
-        height: 25px;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
         z-index: 1001;
         order: 2;
         flex-shrink: 0;
@@ -1145,7 +1144,7 @@ link[rel="icon"] {
     
     .navbar-toggler i {
         color: white;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         transition: all 0.3s ease;
     }
     
@@ -1325,9 +1324,9 @@ link[rel="icon"] {
     }
     
     .logo-img {
-        height: 100px;
-        max-width: 240px;
-        margin: -15px 0;
+        height: 160px !important;
+        max-width: 280px !important;
+        margin: -40px 0 !important;
     }
     
     nav {

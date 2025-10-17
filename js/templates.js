@@ -232,7 +232,7 @@ class PropertyTemplates {
         `;
     }
 
-    // Template da página completa (nova guia) - COM LAYOUT IDÊNTICO AO MODAL
+    // Template da página completa (nova guia) - COM LOGO CORRIGIDA
     static createPropertyPage(property, corretor) {
         return `
             <!DOCTYPE html>
@@ -269,6 +269,13 @@ class PropertyTemplates {
                         align-items: center;
                         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
                         height: 120px;
+                    }
+                    
+                    .logo-container {
+                        display: flex;
+                        align-items: center;
+                        height: 100%;
+                        flex: 0 0 auto;
                     }
                     
                     .logo-img {
@@ -548,7 +555,7 @@ class PropertyTemplates {
             <body>
                 <div class="property-header">
                     <div class="logo-container">
-                        <img src="${window.location.origin}/assets/logo.png" 
+                        <img src="https://coimbraitalo01.github.io/novatte-imoveis/assets/logo.png" 
                              alt="Novatte Imóveis - Portal Imobiliário" 
                              class="logo-img">
                     </div>

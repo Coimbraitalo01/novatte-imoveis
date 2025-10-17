@@ -25,12 +25,13 @@ function scrollToTop() {
     });
 }
 
-// Menu toggle para mobile - FUNÇÃO ATUALIZADA
+// Menu toggle para mobile - FUNÇÃO CORRIGIDA
 function toggleMenu() {
     const nav = document.getElementById('navMenu');
     const menuToggle = document.getElementById('menuToggle');
     const menuOverlay = document.getElementById('menuOverlay');
     
+    // Alterna a classe show
     nav.classList.toggle('show');
     menuOverlay.classList.toggle('active');
     
@@ -850,6 +851,11 @@ function openPropertyInNewTab(propertyId) {
                 const message = \`Olá! Tenho interesse no imóvel: \${propertyTitle} - \${propertyPrice}. Poderia me fornecer mais informações?\`;
                 const whatsappUrl = \`https://wa.me/\${whatsapp}?text=\${encodeURIComponent(message)}\`;
                 window.open(whatsappUrl, '_blank');
+            }
+            
+            function openGalleryModal(startIndex) {
+                // Simples implementação para nova guia
+                changeMainImage(startIndex);
             }
         </script>
     </body>
