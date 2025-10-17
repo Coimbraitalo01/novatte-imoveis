@@ -25,10 +25,35 @@ function scrollToTop() {
     });
 }
 
-// Menu toggle para mobile
+// Menu toggle para mobile - FUNÇÃO ATUALIZADA
 function toggleMenu() {
     const nav = document.getElementById('navMenu');
+    const menuToggle = document.getElementById('menuToggle');
+    const menuOverlay = document.getElementById('menuOverlay');
+    
     nav.classList.toggle('show');
+    menuOverlay.classList.toggle('active');
+    
+    // Alterna entre ícone de menu e X
+    if (nav.classList.contains('show')) {
+        menuToggle.innerHTML = '<i class="bi bi-x"></i>';
+        menuToggle.classList.add('active');
+    } else {
+        menuToggle.innerHTML = '<i class="bi bi-list"></i>';
+        menuToggle.classList.remove('active');
+    }
+}
+
+// Função para fechar o menu quando um link for clicado
+function closeMenu() {
+    const nav = document.getElementById('navMenu');
+    const menuToggle = document.getElementById('menuToggle');
+    const menuOverlay = document.getElementById('menuOverlay');
+    
+    nav.classList.remove('show');
+    menuOverlay.classList.remove('active');
+    menuToggle.innerHTML = '<i class="bi bi-list"></i>';
+    menuToggle.classList.remove('active');
 }
 
 // Função para gerenciar dados do usuário
@@ -193,76 +218,147 @@ function renderAllProperties() {
     }
 }
 
-// ===== FUNÇÕES DA GALERIA CORRIGIDAS =====
+// ===== FUNÇÕES DA GALERIA COMPLETAMENTE CORRIGIDAS =====
 
-// Mudar imagem na galeria do card - FUNÇÃO CORRIGIDA
+// Mudar imagem na galeria do card - FUNÇÃO CORRIGIDA PARA AMBAS AS SEÇÕES
 function changeImage(propertyId, direction) {
+    console.log('changeImage chamado:', propertyId, direction);
+    
     const property = properties.find(p => p.id === propertyId);
     if (!property || !property.images || property.images.length <= 1) return;
     
-    // Encontrar o card correto
-    const card = document.querySelector(`.property-card-booking[onclick="openPropertyInNewTab(${propertyId})"]`);
-    if (!card) return;
+    // Encontrar todos os cards que pertencem a este propertyId
+    const cards = document.querySelectorAll('.property-card-booking');
     
-    const imgElement = card.querySelector('.property-img-booking');
-    const counterElement = card.querySelector('.image-counter');
-    const thumbnails = card.querySelectorAll('.thumbnail');
-    
-    // CORREÇÃO: Verificar se counterElement existe antes de usar
-    let currentIndex = 0;
-    if (counterElement && counterElement.textContent) {
-        try {
-            currentIndex = parseInt(counterElement.textContent.split('/')[0]) - 1;
-        } catch (e) {
-            console.log('Erro ao ler contador, usando índice 0');
-            currentIndex = 0;
+    cards.forEach(card => {
+        // Verificar se este card tem imagens deste property
+        const imgElement = card.querySelector('.property-img-booking');
+        if (imgElement && property.images.includes(imgElement.src) || 
+            (property.images[0] && imgElement.src.includes(property.images[0].split('/').pop()))) {
+            
+            const counterElement = card.querySelector('.image-counter');
+            const thumbnails = card.querySelectorAll('.thumbnail');
+            
+            // Encontrar índice atual
+            let currentIndex = 0;
+            if (counterElement && counterElement.textContent) {
+                try {
+                    currentIndex = parseInt(counterElement.textContent.split('/')[0]) - 1;
+                } catch (e) {
+                    currentIndex = 0;
+                }
+            } else {
+                // Fallback: encontrar pelo src da imagem
+                const currentSrc = imgElement.src;
+                currentIndex = property.images.findIndex(img => currentSrc.includes(img.split('/').pop()));
+                if (currentIndex === -1) currentIndex = 0;
+            }
+            
+            let newIndex = (currentIndex + direction + property.images.length) % property.images.length;
+            
+            // Atualizar imagem principal
+            imgElement.src = property.images[newIndex];
+            
+            // Atualizar contador
+            if (counterElement) {
+                counterElement.textContent = `${newIndex + 1}/${property.images.length}`;
+            }
+            
+            // Atualizar thumbnails ativos
+            thumbnails.forEach((thumb, index) => {
+                thumb.classList.toggle('active', index === newIndex);
+            });
         }
-    }
-    
-    let newIndex = (currentIndex + direction + property.images.length) % property.images.length;
-    
-    // Atualizar imagem principal
-    imgElement.src = property.images[newIndex];
-    
-    // Atualizar contador apenas se existir
-    if (counterElement) {
-        counterElement.textContent = `${newIndex + 1}/${property.images.length}`;
-    }
-    
-    // Atualizar thumbnails ativos
-    thumbnails.forEach((thumb, index) => {
-        thumb.classList.toggle('active', index === newIndex);
     });
 }
 
-// Mostrar imagem específica - FUNÇÃO CORRIGIDA
+// Mostrar imagem específica - FUNÇÃO CORRIGIDA PARA AMBAS AS SEÇÕES
 function showImage(propertyId, index) {
+    console.log('showImage chamado:', propertyId, index);
+    
     const property = properties.find(p => p.id === propertyId);
     if (!property || !property.images) return;
     
-    // Encontrar o card correto
-    const card = document.querySelector(`.property-card-booking[onclick="openPropertyInNewTab(${propertyId})"]`);
-    if (!card) return;
+    // Encontrar todos os cards que pertencem a este propertyId
+    const cards = document.querySelectorAll('.property-card-booking');
     
-    const imgElement = card.querySelector('.property-img-booking');
-    const counterElement = card.querySelector('.image-counter');
-    const thumbnails = card.querySelectorAll('.thumbnail');
+    cards.forEach(card => {
+        const imgElement = card.querySelector('.property-img-booking');
+        if (imgElement && property.images.includes(imgElement.src) || 
+            (property.images[0] && imgElement.src.includes(property.images[0].split('/').pop()))) {
+            
+            const counterElement = card.querySelector('.image-counter');
+            const thumbnails = card.querySelectorAll('.thumbnail');
+            
+            // Atualizar imagem principal
+            imgElement.src = property.images[index];
+            
+            // Atualizar contador
+            if (counterElement) {
+                counterElement.textContent = `${index + 1}/${property.images.length}`;
+            }
+            
+            // Atualizar thumbnails ativos
+            thumbnails.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+    });
+}
+
+// ===== FUNÇÕES DO MODAL DE DETALHES CORRIGIDAS =====
+
+// Mudar imagem principal no modal
+function changeMainImage(propertyId, index) {
+    console.log('changeMainImage chamado:', propertyId, index);
     
-    // Atualizar imagem principal
-    imgElement.src = property.images[index];
+    const property = properties.find(p => p.id === propertyId);
+    if (!property || !property.images) return;
     
-    // Atualizar contador apenas se existir
-    if (counterElement) {
-        counterElement.textContent = `${index + 1}/${property.images.length}`;
-    }
+    const modal = document.getElementById('propertyModal');
+    const mainImage = modal.querySelector('.main-image');
+    const counter = modal.querySelector('.image-counter-modal');
+    const thumbnails = modal.querySelectorAll('.thumbnail-container-modal .thumbnail');
     
-    // Atualizar thumbnails ativos
+    if (mainImage) mainImage.src = property.images[index];
+    if (counter) counter.textContent = `${index + 1}/${property.images.length}`;
+    
     thumbnails.forEach((thumb, i) => {
         thumb.classList.toggle('active', i === index);
     });
 }
 
-// ===== FUNÇÕES DO MODAL DE DETALHES =====
+// Navegar para imagem anterior no modal
+function prevImage(propertyId) {
+    console.log('prevImage chamado:', propertyId);
+    
+    const property = properties.find(p => p.id === propertyId);
+    if (!property || !property.images) return;
+    
+    const modal = document.getElementById('propertyModal');
+    const counter = modal.querySelector('.image-counter-modal');
+    if (!counter) return;
+    
+    let currentIndex = parseInt(counter.textContent.split('/')[0]) - 1;
+    let newIndex = (currentIndex - 1 + property.images.length) % property.images.length;
+    changeMainImage(propertyId, newIndex);
+}
+
+// Navegar para próxima imagem no modal
+function nextImage(propertyId) {
+    console.log('nextImage chamado:', propertyId);
+    
+    const property = properties.find(p => p.id === propertyId);
+    if (!property || !property.images) return;
+    
+    const modal = document.getElementById('propertyModal');
+    const counter = modal.querySelector('.image-counter-modal');
+    if (!counter) return;
+    
+    let currentIndex = parseInt(counter.textContent.split('/')[0]) - 1;
+    let newIndex = (currentIndex + 1) % property.images.length;
+    changeMainImage(propertyId, newIndex);
+}
 
 // Mostrar detalhes do imóvel no modal
 function showPropertyDetails(propertyId) {
@@ -359,18 +455,408 @@ function galleryModalPrev() {
 
 // ===== FUNÇÕES PRINCIPAIS =====
 
-// Abrir imóvel em nova guia
+// Abrir imóvel em nova guia - FUNÇÃO COMPLETAMENTE REFEITA
 function openPropertyInNewTab(propertyId) {
-    // Criar uma página temporária com os detalhes do imóvel
     const property = properties.find(p => p.id === propertyId);
     if (!property) return;
     
     const corretor = corretores[property.corretor];
-    const newWindow = window.open('', '_blank');
     
-    // Usar caminho relativo para a logo
-    const propertyPage = PropertyTemplates.createPropertyPage(property, corretor);
-    newWindow.document.write(propertyPage);
+    // Criar HTML completo para a nova guia
+    const propertyPageHTML = `
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${property.title} - Novatte Imóveis</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <style>
+            :root {
+                --primary-color: #1a4d2e;
+                --secondary-color: #ff6b35;
+                --light-color: #f8f9fa;
+                --dark-color: #333;
+            }
+            
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: var(--light-color);
+                color: var(--dark-color);
+                line-height: 1.6;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .property-header {
+                background-color: var(--primary-color);
+                padding: 15px 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                height: 120px;
+            }
+            
+            .logo-img {
+                height: 400px;
+                width: auto;
+                object-fit: contain;
+                max-width: 500px;
+                margin: -140px 0;
+            }
+            
+            .property-content {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 30px;
+            }
+            
+            .property-gallery-modal {
+                margin-bottom: 25px;
+            }
+            
+            .main-gallery-container {
+                position: relative;
+                margin-bottom: 15px;
+            }
+            
+            .property-gallery-modal .main-image {
+                height: 450px;
+                object-fit: cover;
+                width: 100%;
+                border-radius: 12px;
+                cursor: pointer;
+                transition: transform 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            }
+            
+            .gallery-controls-modal {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                display: flex;
+                justify-content: space-between;
+                transform: translateY(-50%);
+                padding: 0 20px;
+                pointer-events: none;
+            }
+            
+            .gallery-btn-modal {
+                background-color: rgba(0, 0, 0, 0.6);
+                color: white;
+                border: none;
+                padding: 12px 16px;
+                border-radius: 50%;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                pointer-events: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .gallery-btn-modal:hover {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+            
+            .image-counter-modal {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.7);
+                color: white;
+                padding: 8px 15px;
+                border-radius: 20px;
+                font-size: 1rem;
+                font-weight: 600;
+            }
+            
+            .thumbnail-container-modal {
+                display: flex;
+                gap: 12px;
+                margin-top: 15px;
+                overflow-x: auto;
+                padding: 10px 0;
+            }
+            
+            .thumbnail-container-modal .thumbnail {
+                width: 100px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 8px;
+                cursor: pointer;
+                opacity: 0.7;
+                transition: all 0.3s ease;
+                border: 3px solid transparent;
+            }
+            
+            .thumbnail-container-modal .thumbnail:hover,
+            .thumbnail-container-modal .thumbnail.active {
+                opacity: 1;
+                border-color: var(--secondary-color);
+                transform: scale(1.05);
+            }
+            
+            .property-details-sidebar {
+                background: #f8f9fa;
+                border-radius: 12px;
+                padding: 20px;
+                border-left: 4px solid var(--primary-color);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            }
+            
+            .details-list {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .detail-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 0;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .detail-item:last-child {
+                border-bottom: none;
+            }
+            
+            .detail-label {
+                color: #555;
+                font-size: 0.9rem;
+                display: flex;
+                align-items: center;
+            }
+            
+            .detail-value {
+                font-weight: 600;
+                color: var(--primary-color);
+                font-size: 0.95rem;
+            }
+            
+            .corretor-info {
+                background-color: var(--light-color);
+                border-radius: 10px;
+                padding: 20px;
+                margin-top: 20px;
+                border-left: 4px solid var(--secondary-color);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            }
+            
+            .corretor-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+            
+            .corretor-photo {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background-color: #e9ecef;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                color: var(--primary-color);
+                font-size: 20px;
+                margin-right: 15px;
+                border: 2px solid var(--secondary-color);
+            }
+            
+            .corretor-name {
+                font-weight: 600;
+                color: var(--primary-color);
+                margin-bottom: 5px;
+                font-size: 1.1rem;
+            }
+            
+            .corretor-whatsapp-btn {
+                background-color: #25D366;
+                color: white;
+                border: none;
+                padding: 12px 15px;
+                border-radius: 8px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                width: 100%;
+                cursor: pointer;
+                font-size: 0.95rem;
+                text-decoration: none;
+            }
+            
+            .corretor-whatsapp-btn:hover {
+                background-color: #128C7E;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+                color: white;
+                text-decoration: none;
+            }
+            
+            .unified-map {
+                height: 400px;
+                border-radius: 12px;
+                overflow: hidden;
+                margin: 20px 0;
+                border: 1px solid #dee2e6;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            
+            .map-actions {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+            
+            .btn-primary {
+                background-color: var(--primary-color);
+                border-color: var(--primary-color);
+            }
+            
+            .btn-primary:hover {
+                background-color: #0f3d20;
+                border-color: #0f3d20;
+            }
+            
+            .btn-secondary {
+                background-color: var(--secondary-color);
+                border-color: var(--secondary-color);
+            }
+            
+            .btn-secondary:hover {
+                background-color: #e55a25;
+                border-color: #e55a25;
+            }
+            
+            @media (max-width: 768px) {
+                .property-header {
+                    padding: 15px 20px;
+                    height: 100px;
+                }
+                
+                .logo-img {
+                    height: 300px;
+                    margin: -100px 0;
+                }
+                
+                .property-content {
+                    padding: 20px;
+                }
+                
+                .property-gallery-modal .main-image {
+                    height: 300px;
+                }
+                
+                .gallery-btn-modal {
+                    width: 40px;
+                    height: 40px;
+                    padding: 8px 12px;
+                    font-size: 1rem;
+                }
+                
+                .thumbnail-container-modal .thumbnail {
+                    width: 80px;
+                    height: 60px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="property-header">
+            <div class="logo-container">
+                <img src="${window.location.origin}/assets/logo.png" 
+                     alt="Novatte Imóveis - Portal Imobiliário" 
+                     class="logo-img">
+            </div>
+        </div>
+        
+        <div class="property-content">
+            ${PropertyTemplates.createPropertyDetail(property, corretor, true)}
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script>
+            // Inicializar mapa
+            setTimeout(() => {
+                const mapElement = document.getElementById('property-map-${property.id}');
+                if (mapElement) {
+                    const map = L.map(mapElement).setView([${property.lat}, ${property.lng}], 15);
+                    
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(map);
+                    
+                    L.marker([${property.lat}, ${property.lng}])
+                        .addTo(map)
+                        .bindPopup('<b>${property.title}</b><br>Localização do imóvel')
+                        .openPopup();
+                }
+            }, 100);
+            
+            // Funções da galeria
+            let currentImageIndex = 0;
+            const propertyImages = ${JSON.stringify(property.images || [])};
+            
+            function changeMainImage(index) {
+                if (propertyImages.length === 0) return;
+                currentImageIndex = index;
+                const mainImage = document.querySelector('.main-image');
+                const counter = document.querySelector('.image-counter-modal');
+                const thumbnails = document.querySelectorAll('.thumbnail');
+                
+                if (mainImage) mainImage.src = propertyImages[currentImageIndex];
+                if (counter) counter.textContent = \`\${currentImageIndex + 1}/\${propertyImages.length}\`;
+                
+                thumbnails.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === currentImageIndex);
+                });
+            }
+            
+            function nextImage() {
+                if (propertyImages.length === 0) return;
+                currentImageIndex = (currentImageIndex + 1) % propertyImages.length;
+                changeMainImage(currentImageIndex);
+            }
+            
+            function prevImage() {
+                if (propertyImages.length === 0) return;
+                currentImageIndex = (currentImageIndex - 1 + propertyImages.length) % propertyImages.length;
+                changeMainImage(currentImageIndex);
+            }
+            
+            function openInGoogleMaps(lat, lng) {
+                window.open(\`https://www.google.com/maps?q=\${lat},\${lng}\`, '_blank');
+            }
+            
+            function getDirections(lat, lng) {
+                window.open(\`https://www.google.com/maps/dir/?api=1&destination=\${lat},\${lng}\`, '_blank');
+            }
+            
+            function contactCorretor(whatsapp, propertyTitle, propertyPrice) {
+                const message = \`Olá! Tenho interesse no imóvel: \${propertyTitle} - \${propertyPrice}. Poderia me fornecer mais informações?\`;
+                const whatsappUrl = \`https://wa.me/\${whatsapp}?text=\${encodeURIComponent(message)}\`;
+                window.open(whatsappUrl, '_blank');
+            }
+        </script>
+    </body>
+    </html>`;
+    
+    const newWindow = window.open('', '_blank');
+    newWindow.document.write(propertyPageHTML);
     newWindow.document.close();
 }
 
@@ -528,3 +1014,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Exportar funções para uso global
+window.changeImage = changeImage;
+window.showImage = showImage;
+window.changeMainImage = changeMainImage;
+window.prevImage = prevImage;
+window.nextImage = nextImage;
+window.openGalleryModal = openGalleryModal;

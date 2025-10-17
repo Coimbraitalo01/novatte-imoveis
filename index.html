@@ -72,6 +72,7 @@
             <a href="#encontre-imovel" onclick="closeMenu()">ENCONTRE SEU IMÓVEL</a>
             <a href="#contact" onclick="closeMenu()">CONTATO</a>
         </nav>
+        <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
     </header>
 
     <!-- Hero Section -->
@@ -553,99 +554,6 @@
     <script src="js/templates.js"></script>
     <script src="js/api-mock.js"></script>
     <script src="js/filters.js"></script>
-    <script>
-        // Função para alternar o menu mobile
-        function toggleMenu() {
-            const navMenu = document.getElementById('navMenu');
-            const menuToggle = document.getElementById('menuToggle');
-            
-            navMenu.classList.toggle('show');
-            
-            // Alterna entre ícone de menu e X
-            if (navMenu.classList.contains('show')) {
-                menuToggle.innerHTML = '<i class="bi bi-x"></i>';
-            } else {
-                menuToggle.innerHTML = '<i class="bi bi-list"></i>';
-            }
-        }
-
-        // Função para fechar o menu quando um link for clicado
-        function closeMenu() {
-            const navMenu = document.getElementById('navMenu');
-            const menuToggle = document.getElementById('menuToggle');
-            
-            navMenu.classList.remove('show');
-            menuToggle.innerHTML = '<i class="bi bi-list"></i>';
-        }
-
-        // Fecha o menu ao clicar fora dele
-        document.addEventListener('click', function(event) {
-            const navMenu = document.getElementById('navMenu');
-            const menuToggle = document.getElementById('menuToggle');
-            
-            if (!event.target.closest('header') && navMenu.classList.contains('show')) {
-                navMenu.classList.remove('show');
-                menuToggle.innerHTML = '<i class="bi bi-list"></i>';
-            }
-        });
-
-        // Função para rolar para o topo
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        // Função para abrir gerenciamento de dados
-        function openDataManagement() {
-            alert('Para gerenciar seus dados, entre em contato conosco pelo email: novatteimoveis@gmail.com');
-        }
-
-        // Funções para galeria do modal de detalhes
-        function changeMainImage(propertyId, index) {
-            const property = window.properties.find(p => p.id === propertyId);
-            if (!property || !property.images) return;
-            
-            const modal = document.getElementById('propertyModal');
-            const mainImage = modal.querySelector('.main-image');
-            const counter = modal.querySelector('.image-counter');
-            const thumbnails = modal.querySelectorAll('.thumbnail');
-            
-            if (mainImage) mainImage.src = property.images[index];
-            if (counter) counter.textContent = `${index + 1}/${property.images.length}`;
-            
-            thumbnails.forEach((thumb, i) => {
-                thumb.classList.toggle('active', i === index);
-            });
-        }
-
-        function prevImage(propertyId) {
-            const property = window.properties.find(p => p.id === propertyId);
-            if (!property || !property.images) return;
-            
-            const modal = document.getElementById('propertyModal');
-            const counter = modal.querySelector('.image-counter');
-            if (!counter) return;
-            
-            let currentIndex = parseInt(counter.textContent.split('/')[0]) - 1;
-            let newIndex = (currentIndex - 1 + property.images.length) % property.images.length;
-            changeMainImage(propertyId, newIndex);
-        }
-
-        function nextImage(propertyId) {
-            const property = window.properties.find(p => p.id === propertyId);
-            if (!property || !property.images) return;
-            
-            const modal = document.getElementById('propertyModal');
-            const counter = modal.querySelector('.image-counter');
-            if (!counter) return;
-            
-            let currentIndex = parseInt(counter.textContent.split('/')[0]) - 1;
-            let newIndex = (currentIndex + 1) % property.images.length;
-            changeMainImage(propertyId, newIndex);
-        }
-    </script>
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -1098,41 +1098,60 @@ link[rel="icon"] {
     height: auto;
 }
 
-/* ===== MOBILE ===== */
+/* ===== HEADER MOBILE OTIMIZADO ===== */
 @media (max-width: 768px) {
     header {
         padding: 8px 15px;
-        height: auto;
-        min-height: 120px;
-        flex-wrap: wrap;
+        height: 80px; /* Altura fixa menor */
+        min-height: 80px;
+        flex-wrap: nowrap;
         justify-content: space-between;
         align-items: center;
         overflow: hidden;
+        position: relative;
     }
     
-    /* Logo Mobile - Aumentada proporcionalmente */
+    /* Logo Mobile - Ocupa todo o espaço disponível */
+    .logo-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        height: 100%;
+        margin-right: 10px;
+    }
+    
     .logo-img {
-        height: 200px;
+        height: 120px; /* Aumentada proporcionalmente */
         max-width: 280px;
-        margin: -40px 0;
+        margin: -20px 0; /* Ajuste para centralizar verticalmente */
+        object-fit: contain;
     }
     
     /* Botão Hamburguer - Visível apenas no Mobile */
     .navbar-toggler {
         display: flex;
+        background: none;
+        border: none;
+        padding: 8px;
+        cursor: pointer;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 25px;
+        z-index: 1001;
+        order: 2;
+        flex-shrink: 0;
+    }
+    
+    .navbar-toggler i {
+        color: white;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
     }
     
     /* Menu Hamburguer Ativo */
-    .navbar-toggler.active span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
-    }
-    
-    .navbar-toggler.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .navbar-toggler.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
+    .navbar-toggler.active i {
+        transform: rotate(90deg);
     }
     
     /* Navegação Mobile */
@@ -1146,7 +1165,7 @@ link[rel="icon"] {
         background-color: var(--primary-color);
         padding: 0;
         position: absolute;
-        top: 120px;
+        top: 80px;
         left: 0;
         right: 0;
         z-index: 999;
@@ -1176,6 +1195,11 @@ link[rel="icon"] {
         color: var(--secondary-color);
     }
     
+    /* Ajuste do hero section para compensar header menor */
+    .hero-section {
+        margin-top: 0;
+    }
+
     .hero-title {
         font-size: 24px;
         letter-spacing: 2px;
@@ -1296,29 +1320,23 @@ link[rel="icon"] {
 @media (max-width: 480px) {
     header {
         padding: 6px 12px;
-        min-height: 110px;
-        overflow: hidden;
+        height: 70px;
+        min-height: 70px;
     }
     
     .logo-img {
-        height: 180px;
-        max-width: 250px;
-        margin: -35px 0;
+        height: 100px;
+        max-width: 240px;
+        margin: -15px 0;
     }
     
     nav {
-        top: 110px;
+        top: 70px;
     }
     
     nav a {
         font-size: 15px;
         padding: 14px 20px;
-    }
-    
-    .hero-title {
-        font-size: 20px;
-        letter-spacing: 1px;
-        line-height: 1.4;
     }
 
     .whatsapp-btn-fixed {
@@ -1327,6 +1345,22 @@ link[rel="icon"] {
         padding: 10px 14px;
         font-size: 0.8rem;
     }
+}
+
+/* Overlay para fechar menu ao clicar fora */
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.menu-overlay.active {
+    display: block;
 }
 
 /* Modal Styles */
@@ -1408,4 +1442,172 @@ textarea:focus {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+/* ===== ESTILOS PARA O MODAL CORRIGIDO ===== */
+
+/* Galeria no modal com botões */
+.property-gallery-modal {
+    margin-bottom: 25px;
+}
+
+.main-gallery-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.property-gallery-modal .main-image {
+    height: 450px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.property-gallery-modal .main-image:hover {
+    transform: scale(1.01);
+}
+
+/* Botões de navegação no modal */
+.gallery-controls-modal {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    padding: 0 20px;
+    pointer-events: none;
+}
+
+.gallery-btn-modal {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+}
+
+.gallery-btn-modal:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.image-counter-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.thumbnail-container-modal {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.thumbnail-container-modal .thumbnail {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+}
+
+.thumbnail-container-modal .thumbnail:hover,
+.thumbnail-container-modal .thumbnail.active {
+    opacity: 1;
+    border-color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+/* Detalhes do imóvel na sidebar */
+.property-details-sidebar {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.property-details-sidebar h5 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: #555;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.95rem;
+}
+
+/* Ajustes mobile */
+@media (max-width: 768px) {
+    .property-gallery-modal .main-image {
+        height: 300px;
+    }
+    
+    .gallery-btn-modal {
+        width: 40px;
+        height: 40px;
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+    
+    .thumbnail-container-modal .thumbnail {
+        width: 80px;
+        height: 60px;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
 }
