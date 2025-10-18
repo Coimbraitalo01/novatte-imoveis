@@ -232,415 +232,429 @@ class PropertyTemplates {
         `;
     }
 
-    // Template da página completa (nova guia) - COM LOGO CORRIGIDA
+    // Template da página completa (nova guia) - COM LOGO CORRIGIDA PARA MESMO TAMANHO MOBILE
     static createPropertyPage(property, corretor) {
-        // CORREÇÃO: Usar caminho absoluto para a logo no GitHub Pages
+        // CORREÇÃO: Logo com tamanho igual ao mobile da página inicial
         const logoPath = window.location.origin + '/novatte-imoveis/assets/logo.png';
         
         return `
-            <!DOCTYPE html>
-            <html lang="pt-BR">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>${property.title} - Novatte Imóveis</title>
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-                <style>
-                    :root {
-                        --primary-color: #1a4d2e;
-                        --secondary-color: #ff6b35;
-                        --light-color: #f8f9fa;
-                        --dark-color: #333;
-                    }
-                    
-                    body {
-                        font-family: 'Arial', sans-serif;
-                        background-color: var(--light-color);
-                        color: var(--dark-color);
-                        line-height: 1.6;
-                        margin: 0;
-                        padding: 0;
-                    }
-                    
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>${property.title} - Novatte Imóveis</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+            <style>
+                :root {
+                    --primary-color: #1a4d2e;
+                    --secondary-color: #ff6b35;
+                    --light-color: #f8f9fa;
+                    --dark-color: #333;
+                }
+                
+                body {
+                    font-family: 'Arial', sans-serif;
+                    background-color: var(--light-color);
+                    color: var(--dark-color);
+                    line-height: 1.6;
+                    margin: 0;
+                    padding: 0;
+                }
+                
+                .property-header {
+                    background-color: var(--primary-color);
+                    padding: 15px 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    height: 100px;
+                }
+                
+                .logo-container {
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    flex: 0 0 auto;
+                }
+                
+                .logo-img {
+                    height: 300px;
+                    width: auto;
+                    object-fit: contain;
+                    max-width: 400px;
+                    margin: -100px 0;
+                }
+                
+                .unified-view {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 30px;
+                }
+                
+                .property-gallery-modal {
+                    margin-bottom: 25px;
+                }
+                
+                .main-gallery-container {
+                    position: relative;
+                    margin-bottom: 15px;
+                }
+                
+                .property-gallery-modal .main-image {
+                    height: 450px;
+                    object-fit: cover;
+                    width: 100%;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    transition: transform 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                }
+                
+                .gallery-controls-modal {
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    right: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    transform: translateY(-50%);
+                    padding: 0 20px;
+                    pointer-events: none;
+                }
+                
+                .gallery-btn-modal {
+                    background-color: rgba(0, 0, 0, 0.6);
+                    color: white;
+                    border: none;
+                    padding: 12px 16px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                    pointer-events: auto;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 50px;
+                    height: 50px;
+                    font-size: 1.2rem;
+                }
+                
+                .gallery-btn-modal:hover {
+                    background-color: rgba(0, 0, 0, 0.8);
+                }
+                
+                .image-counter-modal {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    background: rgba(0, 0, 0, 0.7);
+                    color: white;
+                    padding: 8px 15px;
+                    border-radius: 20px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                }
+                
+                .thumbnail-container-modal {
+                    display: flex;
+                    gap: 12px;
+                    margin-top: 15px;
+                    overflow-x: auto;
+                    padding: 10px 0;
+                }
+                
+                .thumbnail-container-modal .thumbnail {
+                    width: 100px;
+                    height: 80px;
+                    object-fit: cover;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    opacity: 0.7;
+                    transition: all 0.3s ease;
+                    border: 3px solid transparent;
+                }
+                
+                .thumbnail-container-modal .thumbnail:hover,
+                .thumbnail-container-modal .thumbnail.active {
+                    opacity: 1;
+                    border-color: var(--secondary-color);
+                    transform: scale(1.05);
+                }
+                
+                .property-details-sidebar {
+                    background: #f8f9fa;
+                    border-radius: 12px;
+                    padding: 20px;
+                    border-left: 4px solid var(--primary-color);
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+                }
+                
+                .details-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+                
+                .detail-item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 8px 0;
+                    border-bottom: 1px solid #e9ecef;
+                }
+                
+                .detail-item:last-child {
+                    border-bottom: none;
+                }
+                
+                .detail-label {
+                    color: #555;
+                    font-size: 0.9rem;
+                    display: flex;
+                    align-items: center;
+                }
+                
+                .detail-value {
+                    font-weight: 600;
+                    color: var(--primary-color);
+                    font-size: 0.95rem;
+                }
+                
+                .corretor-info {
+                    background-color: var(--light-color);
+                    border-radius: 10px;
+                    padding: 20px;
+                    margin-top: 20px;
+                    border-left: 4px solid var(--secondary-color);
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                }
+                
+                .corretor-header {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 15px;
+                }
+                
+                .corretor-photo {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    background-color: #e9ecef;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                    color: var(--primary-color);
+                    font-size: 20px;
+                    margin-right: 15px;
+                    border: 2px solid var(--secondary-color);
+                }
+                
+                .corretor-name {
+                    font-weight: 600;
+                    color: var(--primary-color);
+                    margin-bottom: 5px;
+                    font-size: 1.1rem;
+                }
+                
+                .corretor-whatsapp-btn {
+                    background-color: #25D366;
+                    color: white;
+                    border: none;
+                    padding: 12px 15px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    width: 100%;
+                    cursor: pointer;
+                    font-size: 0.95rem;
+                    text-decoration: none;
+                }
+                
+                .corretor-whatsapp-btn:hover {
+                    background-color: #128C7E;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+                    color: white;
+                    text-decoration: none;
+                }
+                
+                .unified-map {
+                    height: 400px;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    margin: 20px 0;
+                    border: 1px solid #dee2e6;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+                
+                .map-actions {
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                }
+                
+                .btn-primary {
+                    background-color: var(--primary-color);
+                    border-color: var(--primary-color);
+                }
+                
+                .btn-primary:hover {
+                    background-color: #0f3d20;
+                    border-color: #0f3d20;
+                }
+                
+                .btn-secondary {
+                    background-color: var(--secondary-color);
+                    border-color: var(--secondary-color);
+                }
+                
+                .btn-secondary:hover {
+                    background-color: #e55a25;
+                    border-color: #e55a25;
+                }
+                
+                @media (max-width: 768px) {
                     .property-header {
-                        background-color: var(--primary-color);
-                        padding: 15px 60px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                        height: 120px;
-                    }
-                    
-                    .logo-container {
-                        display: flex;
-                        align-items: center;
-                        height: 100%;
-                        flex: 0 0 auto;
+                        padding: 8px 15px;
+                        height: 100px;
                     }
                     
                     .logo-img {
-                        height: 400px;
-                        width: auto;
-                        object-fit: contain;
-                        max-width: 500px;
-                        margin: -140px 0;
+                        height: 300px !important;
+                        max-width: 400px !important;
+                        margin: -100px 0 !important;
                     }
                     
                     .unified-view {
-                        max-width: 1200px;
-                        margin: 0 auto;
-                        padding: 30px;
-                    }
-                    
-                    .property-gallery-modal {
-                        margin-bottom: 25px;
-                    }
-                    
-                    .main-gallery-container {
-                        position: relative;
-                        margin-bottom: 15px;
+                        padding: 20px;
                     }
                     
                     .property-gallery-modal .main-image {
-                        height: 450px;
-                        object-fit: cover;
-                        width: 100%;
-                        border-radius: 12px;
-                        cursor: pointer;
-                        transition: transform 0.3s ease;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                    }
-                    
-                    .gallery-controls-modal {
-                        position: absolute;
-                        top: 50%;
-                        left: 0;
-                        right: 0;
-                        display: flex;
-                        justify-content: space-between;
-                        transform: translateY(-50%);
-                        padding: 0 20px;
-                        pointer-events: none;
+                        height: 300px;
                     }
                     
                     .gallery-btn-modal {
-                        background-color: rgba(0, 0, 0, 0.6);
-                        color: white;
-                        border: none;
-                        padding: 12px 16px;
-                        border-radius: 50%;
-                        cursor: pointer;
-                        transition: background-color 0.3s ease;
-                        pointer-events: auto;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        width: 50px;
-                        height: 50px;
-                        font-size: 1.2rem;
-                    }
-                    
-                    .gallery-btn-modal:hover {
-                        background-color: rgba(0, 0, 0, 0.8);
-                    }
-                    
-                    .image-counter-modal {
-                        position: absolute;
-                        top: 20px;
-                        right: 20px;
-                        background: rgba(0, 0, 0, 0.7);
-                        color: white;
-                        padding: 8px 15px;
-                        border-radius: 20px;
+                        width: 40px;
+                        height: 40px;
+                        padding: 8px 12px;
                         font-size: 1rem;
-                        font-weight: 600;
-                    }
-                    
-                    .thumbnail-container-modal {
-                        display: flex;
-                        gap: 12px;
-                        margin-top: 15px;
-                        overflow-x: auto;
-                        padding: 10px 0;
                     }
                     
                     .thumbnail-container-modal .thumbnail {
-                        width: 100px;
-                        height: 80px;
-                        object-fit: cover;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        opacity: 0.7;
-                        transition: all 0.3s ease;
-                        border: 3px solid transparent;
-                    }
-                    
-                    .thumbnail-container-modal .thumbnail:hover,
-                    .thumbnail-container-modal .thumbnail.active {
-                        opacity: 1;
-                        border-color: var(--secondary-color);
-                        transform: scale(1.05);
-                    }
-                    
-                    .property-details-sidebar {
-                        background: #f8f9fa;
-                        border-radius: 12px;
-                        padding: 20px;
-                        border-left: 4px solid var(--primary-color);
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-                    }
-                    
-                    .details-list {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 12px;
-                    }
-                    
-                    .detail-item {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding: 8px 0;
-                        border-bottom: 1px solid #e9ecef;
-                    }
-                    
-                    .detail-item:last-child {
-                        border-bottom: none;
-                    }
-                    
-                    .detail-label {
-                        color: #555;
-                        font-size: 0.9rem;
-                        display: flex;
-                        align-items: center;
-                    }
-                    
-                    .detail-value {
-                        font-weight: 600;
-                        color: var(--primary-color);
-                        font-size: 0.95rem;
-                    }
-                    
-                    .corretor-info {
-                        background-color: var(--light-color);
-                        border-radius: 10px;
-                        padding: 20px;
-                        margin-top: 20px;
-                        border-left: 4px solid var(--secondary-color);
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-                    }
-                    
-                    .corretor-header {
-                        display: flex;
-                        align-items: center;
-                        margin-bottom: 15px;
-                    }
-                    
-                    .corretor-photo {
-                        width: 60px;
+                        width: 80px;
                         height: 60px;
-                        border-radius: 50%;
-                        background-color: #e9ecef;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-weight: bold;
-                        color: var(--primary-color);
-                        font-size: 20px;
-                        margin-right: 15px;
-                        border: 2px solid var(--secondary-color);
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    .property-header {
+                        padding: 6px 12px;
+                        height: 90px;
                     }
                     
-                    .corretor-name {
-                        font-weight: 600;
-                        color: var(--primary-color);
-                        margin-bottom: 5px;
-                        font-size: 1.1rem;
+                    .logo-img {
+                        height: 250px !important;
+                        max-width: 350px !important;
+                        margin: -80px 0 !important;
                     }
-                    
-                    .corretor-whatsapp-btn {
-                        background-color: #25D366;
-                        color: white;
-                        border: none;
-                        padding: 12px 15px;
-                        border-radius: 8px;
-                        font-weight: 600;
-                        transition: all 0.3s ease;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 8px;
-                        width: 100%;
-                        cursor: pointer;
-                        font-size: 0.95rem;
-                        text-decoration: none;
-                    }
-                    
-                    .corretor-whatsapp-btn:hover {
-                        background-color: #128C7E;
-                        transform: translateY(-2px);
-                        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-                        color: white;
-                        text-decoration: none;
-                    }
-                    
-                    .unified-map {
-                        height: 400px;
-                        border-radius: 12px;
-                        overflow: hidden;
-                        margin: 20px 0;
-                        border: 1px solid #dee2e6;
-                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                    }
-                    
-                    .map-actions {
-                        display: flex;
-                        gap: 12px;
-                        flex-wrap: wrap;
-                    }
-                    
-                    .btn-primary {
-                        background-color: var(--primary-color);
-                        border-color: var(--primary-color);
-                    }
-                    
-                    .btn-primary:hover {
-                        background-color: #0f3d20;
-                        border-color: #0f3d20;
-                    }
-                    
-                    .btn-secondary {
-                        background-color: var(--secondary-color);
-                        border-color: var(--secondary-color);
-                    }
-                    
-                    .btn-secondary:hover {
-                        background-color: #e55a25;
-                        border-color: #e55a25;
-                    }
-                    
-                    @media (max-width: 768px) {
-                        .property-header {
-                            padding: 15px 20px;
-                            height: 100px;
-                        }
-                        
-                        .logo-img {
-                            height: 300px;
-                            margin: -100px 0;
-                        }
-                        
-                        .unified-view {
-                            padding: 20px;
-                        }
-                        
-                        .property-gallery-modal .main-image {
-                            height: 300px;
-                        }
-                        
-                        .gallery-btn-modal {
-                            width: 40px;
-                            height: 40px;
-                            padding: 8px 12px;
-                            font-size: 1rem;
-                        }
-                        
-                        .thumbnail-container-modal .thumbnail {
-                            width: 80px;
-                            height: 60px;
-                        }
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="property-header">
-                    <div class="logo-container">
-                        <img src="${logoPath}" 
-                             alt="Novatte Imóveis - Portal Imobiliário" 
-                             class="logo-img"
-                             onerror="this.src='https://via.placeholder.com/500x400/1a4d2e/ffffff?text=Novatte+Imóveis'; this.style.margin='0'; this.style.height='auto';">
-                    </div>
+                }
+            </style>
+        </head>
+        <body>
+            <div class="property-header">
+                <div class="logo-container">
+                    <img src="${logoPath}" 
+                         alt="Novatte Imóveis - Portal Imobiliário" 
+                         class="logo-img"
+                         onerror="this.src='https://via.placeholder.com/400x300/1a4d2e/ffffff?text=Novatte+Imóveis'; this.style.margin='0'; this.style.height='auto';">
                 </div>
-                
-                <div class="unified-view">
-                    ${this.createPropertyDetail(property, corretor, true)}
-                </div>
-                
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-                <script>
-                    // Inicializar mapa
-                    setTimeout(() => {
-                        const mapElement = document.getElementById('property-map-${property.id}');
-                        if (mapElement) {
-                            const map = L.map(mapElement).setView([${property.lat}, ${property.lng}], 15);
-                            
-                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                attribution: '© OpenStreetMap contributors'
-                            }).addTo(map);
-                            
-                            L.marker([${property.lat}, ${property.lng}])
-                                .addTo(map)
-                                .bindPopup('<b>${property.title}</b><br>Localização do imóvel')
-                                .openPopup();
-                        }
-                    }, 100);
-                    
-                    // Funções da galeria
-                    let currentImageIndex = 0;
-                    const propertyImages = ${JSON.stringify(property.images || [])};
-                    
-                    function changeMainImage(index) {
-                        if (propertyImages.length === 0) return;
-                        currentImageIndex = index;
-                        const mainImage = document.querySelector('.main-image');
-                        const counter = document.querySelector('.image-counter-modal');
-                        const thumbnails = document.querySelectorAll('.thumbnail');
+            </div>
+            
+            <div class="unified-view">
+                ${this.createPropertyDetail(property, corretor, true)}
+            </div>
+            
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+            <script>
+                // Inicializar mapa
+                setTimeout(() => {
+                    const mapElement = document.getElementById('property-map-${property.id}');
+                    if (mapElement) {
+                        const map = L.map(mapElement).setView([${property.lat}, ${property.lng}], 15);
                         
-                        if (mainImage) mainImage.src = propertyImages[currentImageIndex];
-                        if (counter) counter.textContent = \`\${currentImageIndex + 1}/\${propertyImages.length}\`;
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '© OpenStreetMap contributors'
+                        }).addTo(map);
                         
-                        thumbnails.forEach((thumb, i) => {
-                            thumb.classList.toggle('active', i === currentImageIndex);
-                        });
+                        L.marker([${property.lat}, ${property.lng}])
+                            .addTo(map)
+                            .bindPopup('<b>${property.title}</b><br>Localização do imóvel')
+                            .openPopup();
                     }
+                }, 100);
+                
+                // Funções da galeria
+                let currentImageIndex = 0;
+                const propertyImages = ${JSON.stringify(property.images || [])};
+                
+                function changeMainImage(index) {
+                    if (propertyImages.length === 0) return;
+                    currentImageIndex = index;
+                    const mainImage = document.querySelector('.main-image');
+                    const counter = document.querySelector('.image-counter-modal');
+                    const thumbnails = document.querySelectorAll('.thumbnail');
                     
-                    function nextImage() {
-                        if (propertyImages.length === 0) return;
-                        currentImageIndex = (currentImageIndex + 1) % propertyImages.length;
-                        changeMainImage(currentImageIndex);
-                    }
+                    if (mainImage) mainImage.src = propertyImages[currentImageIndex];
+                    if (counter) counter.textContent = \`\${currentImageIndex + 1}/\${propertyImages.length}\`;
                     
-                    function prevImage() {
-                        if (propertyImages.length === 0) return;
-                        currentImageIndex = (currentImageIndex - 1 + propertyImages.length) % propertyImages.length;
-                        changeMainImage(currentImageIndex);
-                    }
-                    
-                    function openInGoogleMaps(lat, lng) {
-                        window.open(\`https://www.google.com/maps?q=\${lat},\${lng}\`, '_blank');
-                    }
-                    
-                    function getDirections(lat, lng) {
-                        window.open(\`https://www.google.com/maps/dir/?api=1&destination=\${lat},\${lng}\`, '_blank');
-                    }
-                    
-                    function contactCorretor(whatsapp, propertyTitle, propertyPrice) {
-                        const message = \`Olá! Tenho interesse no imóvel: \${propertyTitle} - \${propertyPrice}. Poderia me fornecer mais informações?\`;
-                        const whatsappUrl = \`https://wa.me/\${whatsapp}?text=\${encodeURIComponent(message)}\`;
-                        window.open(whatsappUrl, '_blank');
-                    }
-                    
-                    function openGalleryModal(startIndex) {
-                        // Simples implementação para nova guia
-                        changeMainImage(startIndex);
-                    }
-                </script>
-            </body>
-            </html>`;
+                    thumbnails.forEach((thumb, i) => {
+                        thumb.classList.toggle('active', i === currentImageIndex);
+                    });
+                }
+                
+                function nextImage() {
+                    if (propertyImages.length === 0) return;
+                    currentImageIndex = (currentImageIndex + 1) % propertyImages.length;
+                    changeMainImage(currentImageIndex);
+                }
+                
+                function prevImage() {
+                    if (propertyImages.length === 0) return;
+                    currentImageIndex = (currentImageIndex - 1 + propertyImages.length) % propertyImages.length;
+                    changeMainImage(currentImageIndex);
+                }
+                
+                function openInGoogleMaps(lat, lng) {
+                    window.open(\`https://www.google.com/maps?q=\${lat},\${lng}\`, '_blank');
+                }
+                
+                function getDirections(lat, lng) {
+                    window.open(\`https://www.google.com/maps/dir/?api=1&destination=\${lat},\${lng}\`, '_blank');
+                }
+                
+                function contactCorretor(whatsapp, propertyTitle, propertyPrice) {
+                    const message = \`Olá! Tenho interesse no imóvel: \${propertyTitle} - \${propertyPrice}. Poderia me fornecer mais informações?\`;
+                    const whatsappUrl = \`https://wa.me/\${whatsapp}?text=\${encodeURIComponent(message)}\`;
+                    window.open(whatsappUrl, '_blank');
+                }
+                
+                function openGalleryModal(startIndex) {
+                    // Simples implementação para nova guia
+                    changeMainImage(startIndex);
+                }
+            </script>
+        </body>
+        </html>`;
     }
 
     // Galeria para página completa - COM BOTÕES DE NAVEGAÇÃO

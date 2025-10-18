@@ -3,24 +3,30 @@ function checkLGPD() {
     const lgpdAccepted = localStorage.getItem('lgpdAccepted');
     const lgpdBanner = document.getElementById('lgpdBanner');
     
+    console.log('checkLGPD executado - Status:', lgpdAccepted);
+    
     if (!lgpdBanner) {
-        console.log('Banner LGPD não encontrado');
+        console.error('Banner LGPD não encontrado no DOM');
         return;
     }
     
-    console.log('LGPD Status:', lgpdAccepted);
+    // FORÇAR EXIBIÇÃO PARA TESTE - REMOVA ESTE BLOCO DEPOIS DE TESTAR
+    console.log('FORÇANDO exibição do banner para teste');
+    lgpdBanner.style.display = 'block';
+    lgpdBanner.classList.add('show');
     
+    // Código original (comentado para teste)
+    /*
     if (lgpdAccepted === null) {
-        // Não foi aceito nem rejeitado - MOSTRAR BANNER
-        console.log('Mostrando banner LGPD');
+        console.log('Mostrando banner LGPD - primeira visita');
         lgpdBanner.style.display = 'block';
         lgpdBanner.classList.add('show');
     } else {
-        // Já foi decidido - ESCONDER BANNER
-        console.log('Escondendo banner LGPD - já foi decidido');
+        console.log('Escondendo banner LGPD - já foi decidido:', lgpdAccepted);
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
     }
+    */
 }
 
 function acceptCookies() {
@@ -31,6 +37,8 @@ function acceptCookies() {
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
     }
+    // Recarregar a página para aplicar as mudanças
+    location.reload();
 }
 
 function rejectCookies() {
@@ -41,6 +49,8 @@ function rejectCookies() {
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
     }
+    // Recarregar a página para aplicar as mudanças
+    location.reload();
 }
 
 // Função para rolar para o topo ao clicar na logo
@@ -51,32 +61,36 @@ function scrollToTop() {
     });
 }
 
-// Menu toggle para mobile - FUNÇÃO CORRIGIDA
+// Menu toggle para mobile - FUNÇÃO SIMPLIFICADA E CORRIGIDA
 function toggleMenu() {
     const nav = document.getElementById('navMenu');
     const menuToggle = document.getElementById('menuToggle');
     const menuOverlay = document.getElementById('menuOverlay');
+    
+    console.log('toggleMenu chamado');
     
     if (!nav || !menuToggle || !menuOverlay) {
         console.error('Elementos do menu não encontrados');
         return;
     }
     
-    // Alterna a classe show
-    nav.classList.toggle('show');
-    menuOverlay.classList.toggle('active');
-    
-    // Alterna entre ícone de menu e X
+    // Alterna a classe show - FORÇANDO COM style.display
     if (nav.classList.contains('show')) {
-        menuToggle.innerHTML = '<i class="bi bi-x"></i>';
-        menuToggle.classList.add('active');
-        // Previne scroll do body quando menu está aberto
-        document.body.style.overflow = 'hidden';
-    } else {
+        nav.classList.remove('show');
+        nav.style.display = 'none';
+        menuOverlay.classList.remove('active');
+        menuOverlay.style.display = 'none';
         menuToggle.innerHTML = '<i class="bi bi-list"></i>';
         menuToggle.classList.remove('active');
-        // Restaura scroll do body
         document.body.style.overflow = '';
+    } else {
+        nav.classList.add('show');
+        nav.style.display = 'flex';
+        menuOverlay.classList.add('active');
+        menuOverlay.style.display = 'block';
+        menuToggle.innerHTML = '<i class="bi bi-x"></i>';
+        menuToggle.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -86,13 +100,17 @@ function closeMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const menuOverlay = document.getElementById('menuOverlay');
     
+    console.log('closeMenu chamado');
+    
     if (!nav || !menuToggle || !menuOverlay) return;
     
     nav.classList.remove('show');
+    nav.style.display = 'none';
     menuOverlay.classList.remove('active');
+    menuOverlay.style.display = 'none';
     menuToggle.innerHTML = '<i class="bi bi-list"></i>';
     menuToggle.classList.remove('active');
-    document.body.style.overflow = ''; // Restaura scroll
+    document.body.style.overflow = '';
 }
 
 // Função para gerenciar dados do usuário
@@ -534,20 +552,20 @@ function openPropertyInNewTab(propertyId) {
             
             .property-header {
                 background-color: var(--primary-color);
-                padding: 15px 60px;
+                padding: 15px 20px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                height: 120px;
+                height: 100px;
             }
             
             .logo-img {
-                height: 400px;
+                height: 300px;
                 width: auto;
                 object-fit: contain;
-                max-width: 500px;
-                margin: -140px 0;
+                max-width: 400px;
+                margin: -100px 0;
             }
             
             .property-content {
@@ -785,13 +803,14 @@ function openPropertyInNewTab(propertyId) {
             
             @media (max-width: 768px) {
                 .property-header {
-                    padding: 15px 20px;
+                    padding: 8px 15px;
                     height: 100px;
                 }
                 
                 .logo-img {
-                    height: 300px;
-                    margin: -100px 0;
+                    height: 300px !important;
+                    max-width: 400px !important;
+                    margin: -100px 0 !important;
                 }
                 
                 .property-content {
@@ -814,6 +833,19 @@ function openPropertyInNewTab(propertyId) {
                     height: 60px;
                 }
             }
+
+            @media (max-width: 480px) {
+                .property-header {
+                    padding: 6px 12px;
+                    height: 90px;
+                }
+                
+                .logo-img {
+                    height: 250px !important;
+                    max-width: 350px !important;
+                    margin: -80px 0 !important;
+                }
+            }
         </style>
     </head>
     <body>
@@ -822,7 +854,7 @@ function openPropertyInNewTab(propertyId) {
                 <img src="${logoPath}" 
                      alt="Novatte Imóveis - Portal Imobiliário" 
                      class="logo-img"
-                     onerror="this.src='https://via.placeholder.com/500x400/1a4d2e/ffffff?text=Novatte+Imóveis'; this.style.margin='0'; this.style.height='auto';">
+                     onerror="this.src='https://via.placeholder.com/400x300/1a4d2e/ffffff?text=Novatte+Imóveis'; this.style.margin='0'; this.style.height='auto';">
             </div>
         </div>
         
@@ -942,53 +974,97 @@ function getDirections(lat, lng) {
 
 // ===== INICIALIZAÇÃO CORRIGIDA =====
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Carregado - Iniciando configurações...');
+    console.log('=== DOM CARREGADO - INICIANDO CONFIGURAÇÕES ===');
     
-    // 1. Verificar LGPD - DEVE SER A PRIMEIRA COISA
+    // 1. Verificar LGPD - PRIMEIRO
+    console.log('1. Iniciando checkLGPD...');
     setTimeout(() => {
         checkLGPD();
-    }, 500);
+    }, 100);
 
     // 2. Botões LGPD
-    document.getElementById('acceptCookies')?.addEventListener('click', acceptCookies);
-    document.getElementById('rejectCookies')?.addEventListener('click', rejectCookies);
+    console.log('2. Configurando botões LGPD...');
+    const acceptBtn = document.getElementById('acceptCookies');
+    const rejectBtn = document.getElementById('rejectCookies');
+    
+    if (acceptBtn) {
+        acceptBtn.addEventListener('click', acceptCookies);
+        console.log('Botão Aceitar configurado');
+    } else {
+        console.error('Botão Aceitar não encontrado');
+    }
+    
+    if (rejectBtn) {
+        rejectBtn.addEventListener('click', rejectCookies);
+        console.log('Botão Rejeitar configurado');
+    } else {
+        console.error('Botão Rejeitar não encontrado');
+    }
 
-    // 3. Fechar menu ao clicar no overlay
-    document.getElementById('menuOverlay')?.addEventListener('click', closeMenu);
+    // 3. Menu Hamburguer
+    console.log('3. Configurando menu hamburguer...');
+    const menuToggle = document.getElementById('menuToggle');
+    const menuOverlay = document.getElementById('menuOverlay');
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', toggleMenu);
+        console.log('Botão menu configurado');
+    } else {
+        console.error('Botão menu não encontrado');
+    }
+    
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', closeMenu);
+        console.log('Overlay menu configurado');
+    }
 
-    // 4. Botão WhatsApp fixo
-    document.getElementById('whatsappFixedBtn')?.addEventListener('click', function() {
-        window.open('https://wa.me/5522992054592?text=Olá! Gostaria de mais informações sobre os imóveis.', '_blank');
+    // 4. Fechar menu ao clicar em links
+    console.log('4. Configurando links do menu...');
+    const menuLinks = document.querySelectorAll('nav a');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', closeMenu);
     });
+    console.log('Links do menu configurados:', menuLinks.length);
 
-    // 5. Inicializar carrossel
+    // 5. Botão WhatsApp
+    console.log('5. Configurando WhatsApp...');
+    const whatsappBtn = document.getElementById('whatsappFixedBtn');
+    if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', function() {
+            window.open('https://wa.me/5522992054592?text=Olá! Gostaria de mais informações sobre os imóveis.', '_blank');
+        });
+        console.log('WhatsApp configurado');
+    }
+
+    // 6. Inicializar carrossel
+    console.log('6. Inicializando carrossel...');
     initCarousel();
     
-    // 6. Eventos para carrossel
+    // 7. Eventos para carrossel
     document.getElementById('carouselPrev')?.addEventListener('click', prevSlide);
     document.getElementById('carouselNext')?.addEventListener('click', nextSlide);
     
-    // 7. Pausar autoplay ao interagir com o carrossel
+    // 8. Pausar autoplay ao interagir com o carrossel
     const carouselContainer = document.querySelector('.carousel-container');
     if (carouselContainer) {
         carouselContainer.addEventListener('mouseenter', pauseCarouselAutoPlay);
         carouselContainer.addEventListener('mouseleave', startCarouselAutoPlay);
     }
 
-    // 8. Eventos da galeria modal
+    // 9. Eventos da galeria modal
     document.getElementById('galleryModalNext')?.addEventListener('click', galleryModalNext);
     document.getElementById('galleryModalPrev')?.addEventListener('click', galleryModalPrev);
 
-    // 9. INICIALIZAR E RENDERIZAR IMÓVEIS
+    // 10. INICIALIZAR E RENDERIZAR IMÓVEIS
     setTimeout(() => {
-        console.log('Renderizando propriedades...');
+        console.log('10. Renderizando propriedades...');
         renderAllProperties();
         if (typeof initFilter === 'function') {
             initFilter();
         }
     }, 1000);
 
-    // 10. Scroll suave para links internos
+    // 11. Scroll suave para links internos
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -1000,7 +1076,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 11. Formatação do campo de preço
+    // 12. Formatação do campo de preço
     document.getElementById('max-price')?.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length > 0) {
@@ -1009,7 +1085,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 12. Formatação do campo de valor máximo na seção "Encontre seu imóvel"
+    // 13. Formatação do campo de valor máximo na seção "Encontre seu imóvel"
     document.getElementById('maxValue')?.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length > 0) {
@@ -1018,7 +1094,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 13. Form de busca de imóvel
+    // 14. Form de busca de imóvel
     document.getElementById('propertySearchForm')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const name = document.getElementById('fullName').value;
@@ -1027,54 +1103,12 @@ document.addEventListener('DOMContentLoaded', function() {
         this.reset();
     });
 
-    // 14. Filtros
-    document.getElementById('applyFiltersBtn')?.addEventListener('click', function() {
-        if (typeof propertyFilter !== 'undefined') {
-            const filtered = propertyFilter.applyFilters();
-            renderProperties(filtered, 'property-list');
-            document.getElementById('loadMoreBtn').style.display = 
-                propertyFilter.hasMoreProperties() ? 'block' : 'none';
-        } else {
-            alert('Sistema de filtros em desenvolvimento');
-        }
-    });
-
-    document.getElementById('clearFiltersBtn')?.addEventListener('click', function() {
-        if (typeof propertyFilter !== 'undefined') {
-            const allProperties = propertyFilter.clearFilters();
-            renderProperties(allProperties.slice(0, 6), 'property-list');
-            document.getElementById('loadMoreBtn').style.display = 'block';
-        } else {
-            document.getElementById('property-type').value = 'all';
-            document.getElementById('city').value = 'all';
-            document.getElementById('transaction-type').value = 'all';
-            document.getElementById('max-price').value = '';
-        }
-    });
-
-    document.getElementById('resetFiltersBtn')?.addEventListener('click', function() {
-        if (typeof propertyFilter !== 'undefined') {
-            const allProperties = propertyFilter.clearFilters();
-            renderProperties(allProperties.slice(0, 6), 'property-list');
-            document.getElementById('loadMoreBtn').style.display = 'block';
-        }
-    });
-
-    document.getElementById('loadMoreBtn')?.addEventListener('click', function() {
-        if (typeof propertyFilter !== 'undefined') {
-            const moreProperties = propertyFilter.loadMore();
-            renderProperties(moreProperties, 'property-list');
-            
-            if (!propertyFilter.hasMoreProperties()) {
-                this.style.display = 'none';
-            }
-        } else {
-            alert('Funcionalidade de carregar mais será implementada em breve');
-        }
-    });
+    console.log('=== CONFIGURAÇÃO COMPLETA ===');
 });
 
 // Exportar funções para uso global
+window.toggleMenu = toggleMenu;
+window.closeMenu = closeMenu;
 window.changeImage = changeImage;
 window.showImage = showImage;
 window.changeMainImage = changeMainImage;
