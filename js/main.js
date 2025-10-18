@@ -1,4 +1,4 @@
-// LGPD - Cookies - CORRIGIDO E TESTADO
+// LGPD - Cookies - CORRIGIDO DEFINITIVAMENTE
 function checkLGPD() {
     const lgpdAccepted = localStorage.getItem('lgpdAccepted');
     const lgpdBanner = document.getElementById('lgpdBanner');
@@ -11,7 +11,7 @@ function checkLGPD() {
         return;
     }
     
-    // Se NÃO foi aceito ainda (null), mostra o banner
+    // CORREÇÃO: Se NÃO foi aceito ainda (null), mostra o banner
     if (lgpdAccepted === null) {
         console.log('📢 Mostrando banner LGPD - primeira visita ou decisão pendente');
         lgpdBanner.style.display = 'block';
@@ -31,6 +31,8 @@ function acceptCookies() {
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
     }
+    // Limpar localStorage anterior se existir
+    localStorage.removeItem('cookiesAccepted');
 }
 
 function rejectCookies() {
@@ -41,6 +43,16 @@ function rejectCookies() {
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
     }
+    // Limpar localStorage anterior se existir
+    localStorage.removeItem('cookiesAccepted');
+}
+
+// Função para limpar decisão anterior e testar novamente
+function resetLGPD() {
+    localStorage.removeItem('lgpdAccepted');
+    localStorage.removeItem('cookiesAccepted');
+    console.log('🔄 LGPD resetado - banner deve aparecer na próxima visita');
+    checkLGPD();
 }
 
 // Função para rolar para o topo ao clicar na logo
@@ -228,6 +240,47 @@ function pauseCarouselAutoPlay() {
     clearInterval(carouselInterval);
 }
 
+// ===== FUNÇÕES PARA BOTÕES "VER MAIS" CONDICIONAIS =====
+
+// Função para verificar se deve mostrar o botão "Ver mais imóveis"
+function shouldShowLoadMore(containerId, maxItems = 6) {
+    const container = document.getElementById(containerId);
+    if (!container) return false;
+    
+    // Contar quantos imóveis estão sendo exibidos
+    const displayedProperties = container.querySelectorAll('.property-card-booking').length;
+    
+    // Verificar se há mais propriedades disponíveis
+    if (typeof properties !== 'undefined') {
+        const totalProperties = properties.length;
+        return displayedProperties < totalProperties && displayedProperties >= maxItems;
+    }
+    
+    return false;
+}
+
+// Função para atualizar a visibilidade dos botões "Ver mais"
+function updateLoadMoreButtons() {
+    const featuredLoadMore = document.getElementById('featuredLoadMore');
+    const allPropertiesLoadMore = document.getElementById('allPropertiesLoadMore');
+    
+    console.log('🔄 Atualizando botões "Ver mais"');
+    
+    // Botão "Imóveis em Destaque"
+    if (featuredLoadMore) {
+        const shouldShow = shouldShowLoadMore('property-list');
+        featuredLoadMore.style.display = shouldShow ? 'block' : 'none';
+        console.log(`📊 Botão destaque: ${shouldShow ? 'VISÍVEL' : 'OCULTO'}`);
+    }
+    
+    // Botão "Todos os Imóveis"
+    if (allPropertiesLoadMore) {
+        const shouldShow = shouldShowLoadMore('all-properties-list', 12);
+        allPropertiesLoadMore.style.display = shouldShow ? 'block' : 'none';
+        console.log(`📊 Botão todos: ${shouldShow ? 'VISÍVEL' : 'OCULTO'}`);
+    }
+}
+
 // Função para renderizar a lista de imóveis
 function renderProperties(properties, containerId) {
     const container = document.getElementById(containerId);
@@ -241,21 +294,68 @@ function renderProperties(properties, containerId) {
                 <p class="text-muted">Tente ajustar os filtros para ver mais resultados</p>
             </div>
         `;
+        // Atualizar botões após renderizar
+        setTimeout(updateLoadMoreButtons, 100);
         return;
     }
     
     container.innerHTML = properties.map(property => 
         PropertyTemplates.createPropertyCard(property)
     ).join('');
+    
+    // Atualizar botões após renderizar
+    setTimeout(updateLoadMoreButtons, 100);
 }
 
 // Função para renderizar todos os imóveis
 function renderAllProperties() {
     if (typeof properties !== 'undefined') {
-        renderProperties(properties, 'all-properties-list');
+        // Imóveis em destaque (primeiros 6)
         renderProperties(properties.slice(0, 6), 'property-list');
+        
+        // Todos os imóveis (todos ou limitado para paginação)
+        const initialAllProperties = properties.slice(0, 12); // Mostra 12 inicialmente
+        renderProperties(initialAllProperties, 'all-properties-list');
+        
+        console.log(`🏠 Total de imóveis: ${properties.length}`);
+        console.log(`📱 Imóveis em destaque: 6`);
+        console.log(`📊 Todos os imóveis: ${Math.min(12, properties.length)}`);
     } else {
         console.error('Properties não definido');
+    }
+}
+
+// Função para carregar mais imóveis na seção de destaque
+function loadMoreFeatured() {
+    if (typeof properties === 'undefined') return;
+    
+    const currentCount = document.querySelectorAll('#property-list .property-card-booking').length;
+    const newProperties = properties.slice(currentCount, currentCount + 3);
+    
+    if (newProperties.length > 0) {
+        const container = document.getElementById('property-list');
+        newProperties.forEach(property => {
+            container.innerHTML += PropertyTemplates.createPropertyCard(property);
+        });
+        updateLoadMoreButtons();
+        console.log(`➕ Carregados mais ${newProperties.length} imóveis em destaque`);
+    }
+}
+
+// Função para carregar mais imóveis na seção "Todos os Imóveis"
+function loadMoreAllProperties() {
+    if (typeof properties === 'undefined') return;
+    
+    const currentCount = document.querySelectorAll('#all-properties-list .property-card-booking').length;
+    const newProperties = properties.slice(currentCount, currentCount + 6);
+    
+    if (newProperties.length > 0) {
+        const container = document.getElementById('all-properties-list');
+        newProperties.forEach(property => {
+            container.innerHTML += PropertyTemplates.createPropertyCard(property);
+        });
+        updateLoadMoreButtons();
+        console.log(`➕ Carregados mais ${newProperties.length} imóveis em "Todos os Imóveis"`);
     }
 }
 
@@ -817,18 +917,20 @@ function openPropertyInNewTab(propertyId) {
                     height: 60px;
                 }
                 
-                /* CORREÇÃO: Layout mobile para cards acima do mapa */
-                .unified-view .row {
-                    flex-direction: column-reverse; /* Inverte a ordem para mobile */
-                }
-                
-                .unified-view .col-lg-8 {
-                    order: 2; /* Mapa fica embaixo */
+                /* CORREÇÃO: Layout mobile para nova ordem */
+                .mobile-property-detail .corretor-card {
+                    order: 2;
                     margin-top: 20px;
                 }
                 
-                .unified-view .col-lg-4 {
-                    order: 1; /* Cards ficam acima */
+                .mobile-property-detail .property-details-sidebar {
+                    order: 3;
+                    margin-top: 20px;
+                }
+                
+                .mobile-property-detail .property-location {
+                    order: 4;
+                    margin-top: 20px;
                 }
             }
 
@@ -1099,6 +1201,12 @@ document.addEventListener('DOMContentLoaded', function() {
         this.reset();
     });
 
+    // 15. Atualizar botões "Ver mais" após carregamento completo
+    setTimeout(() => {
+        updateLoadMoreButtons();
+        console.log('✅ Botões "Ver mais" atualizados');
+    }, 2000);
+
     console.log('=== ✅ CONFIGURAÇÃO COMPLETA ===');
 });
 
@@ -1111,3 +1219,7 @@ window.changeMainImage = changeMainImage;
 window.prevImage = prevImage;
 window.nextImage = nextImage;
 window.openGalleryModal = openGalleryModal;
+window.loadMoreFeatured = loadMoreFeatured;
+window.loadMoreAllProperties = loadMoreAllProperties;
+window.updateLoadMoreButtons = updateLoadMoreButtons;
+window.resetLGPD = resetLGPD; // Para testes

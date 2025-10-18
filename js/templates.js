@@ -80,6 +80,17 @@ class PropertyTemplates {
         `;
     }
 
+    // Template para o botão "Ver mais imóveis"
+    static createLoadMoreButton(sectionId, onClickFunction) {
+        return `
+            <div class="load-more-container" id="${sectionId}LoadMore">
+                <button class="btn-load-more" onclick="${onClickFunction}">
+                    <i class="bi bi-arrow-down-circle me-2"></i>Ver Mais Imóveis
+                </button>
+            </div>
+        `;
+    }
+
     // Template da página de detalhes (modal) - COM LAYOUT CORRETO E BOTÕES FUNCIONAIS
     static createPropertyDetail(property, corretor, isNewTab = false) {
         const whatsappFunction = isNewTab ? 
@@ -91,15 +102,16 @@ class PropertyTemplates {
             galleryHtml = this.createModalGallery(property, isNewTab);
         }
 
-        return `
-            <div class="unified-view">
+        // Estrutura para desktop (mantém layout original)
+        const desktopLayout = `
+            <div class="unified-view desktop-layout">
                 <div class="row">
                     <div class="col-lg-8">
                         <h2>${property.title}</h2>
                         <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location}</p>
                         <h3 class="price-tag text-primary mb-4">${property.price}</h3>
                         
-                        <!-- Galeria de Fotos COM BOTÕES FUNCIONAIS -->
+                        <!-- Galeria de Fotos -->
                         ${galleryHtml}
                         
                         <!-- Descrição -->
@@ -144,7 +156,7 @@ class PropertyTemplates {
                             </div>
                         </div>
                         
-                        <!-- DETALHES DO IMÓVEL AGORA ABAIXO DO CORRETOR NA LATERAL -->
+                        <!-- DETALHES DO IMÓVEL -->
                         <div class="property-details-sidebar mt-4">
                             <h5>Detalhes do Imóvel</h5>
                             <div class="details-list">
@@ -184,6 +196,119 @@ class PropertyTemplates {
                 </div>
             </div>
         `;
+
+        // Estrutura para mobile (nova ordem)
+        const mobileLayout = `
+            <div class="unified-view mobile-property-detail mobile-layout">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>${property.title}</h2>
+                        <p class="text-muted"><i class="bi bi-geo-alt"></i> ${property.location}</p>
+                        <h3 class="price-tag text-primary mb-4">${property.price}</h3>
+                        
+                        <!-- Galeria de Fotos -->
+                        ${galleryHtml}
+                        
+                        <!-- Descrição -->
+                        <div class="property-description mt-4">
+                            <h5>Descrição</h5>
+                            <p class="mb-0">${property.description}</p>
+                        </div>
+
+                        <!-- CORRETOR - MOVIDO PARA DEPOIS DA DESCRIÇÃO NO MOBILE -->
+                        <div class="corretor-card mt-4">
+                            <h5 class="mb-3">Entre em Contato</h5>
+                            <div class="corretor-info">
+                                <div class="corretor-header">
+                                    <div class="corretor-photo">${corretor.nome ? corretor.nome.charAt(0).toUpperCase() : 'C'}</div>
+                                    <div class="corretor-details">
+                                        <div class="corretor-name">${corretor.nome || 'Corretor'}</div>
+                                        <div class="corretor-type">${corretor.tipo || 'Corretor de Imóveis'}</div>
+                                        ${corretor.creci ? `<div class="corretor-creci"><small>CRECI: ${corretor.creci}</small></div>` : ''}
+                                        <div class="corretor-phone"><i class="bi bi-telephone me-2"></i>${corretor.telefone || '(22) 99205-4592'}</div>
+                                    </div>
+                                </div>
+                                <button class="corretor-whatsapp-btn w-100 mt-3" onclick="${whatsappFunction}">
+                                    <i class="bi bi-whatsapp"></i> Entrar em Contato via WhatsApp
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- DETALHES DO IMÓVEL - MOVIDO PARA DEPOIS DO CORRETOR NO MOBILE -->
+                        <div class="property-details-sidebar mt-4">
+                            <h5>Detalhes do Imóvel</h5>
+                            <div class="details-list">
+                                <div class="detail-item">
+                                    <span class="detail-label"><i class="bi bi-house-door me-2"></i>Área útil</span>
+                                    <span class="detail-value">${property.size}</span>
+                                </div>
+                                ${property.bedrooms > 0 ? `
+                                <div class="detail-item">
+                                    <span class="detail-label"><i class="bi bi-door-closed me-2"></i>Quartos</span>
+                                    <span class="detail-value">${property.bedrooms}</span>
+                                </div>
+                                ` : ''}
+                                ${property.bathrooms > 0 ? `
+                                <div class="detail-item">
+                                    <span class="detail-label"><i class="bi bi-droplet me-2"></i>Banheiros</span>
+                                    <span class="detail-value">${property.bathrooms}</span>
+                                </div>
+                                ` : ''}
+                                ${property.parking > 0 ? `
+                                <div class="detail-item">
+                                    <span class="detail-label"><i class="bi bi-car-front me-2"></i>Vagas</span>
+                                    <span class="detail-value">${property.parking}</span>
+                                </div>
+                                ` : ''}
+                                <div class="detail-item">
+                                    <span class="detail-label"><i class="bi bi-building me-2"></i>Tipo</span>
+                                    <span class="detail-value">${property.propertyType || 'Não informado'}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label"><i class="bi bi-arrow-left-right me-2"></i>Transação</span>
+                                    <span class="detail-value">${property.type}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- LOCALIZAÇÃO - MOVIDA PARA O FINAL NO MOBILE -->
+                        <div class="property-location mt-4">
+                            <h5>Localização</h5>
+                            <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> ${property.address}</p>
+                            <div id="property-map-${property.id}" class="unified-map"></div>
+                            <div class="map-actions mt-2">
+                                <button class="btn btn-primary btn-sm me-2" onclick="openInGoogleMaps(${property.lat}, ${property.lng})">
+                                    <i class="bi bi-arrow-up-right-square"></i> Abrir no Google Maps
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="getDirections(${property.lat}, ${property.lng})">
+                                    <i class="bi bi-signpost"></i> Traçar Rota
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Retornar layout baseado no dispositivo
+        if (isNewTab) {
+            return `
+                ${desktopLayout}
+                <style>
+                    @media (max-width: 768px) {
+                        .desktop-layout { display: none; }
+                        .mobile-layout { display: block; }
+                    }
+                    @media (min-width: 769px) {
+                        .mobile-layout { display: none; }
+                    }
+                </style>
+                ${mobileLayout}
+            `;
+        }
+
+        // Para modal, retornar apenas desktop layout
+        return desktopLayout;
     }
 
     // Galeria para modal - COM BOTÕES DE NAVEGAÇÃO FUNCIONAIS
@@ -553,6 +678,29 @@ class PropertyTemplates {
                         width: 80px;
                         height: 60px;
                     }
+                    
+                    /* CORREÇÃO: Layout mobile para nova ordem */
+                    .mobile-property-detail .corretor-card {
+                        order: 2;
+                        margin-top: 20px;
+                    }
+                    
+                    .mobile-property-detail .property-details-sidebar {
+                        order: 3;
+                        margin-top: 20px;
+                    }
+                    
+                    .mobile-property-detail .property-location {
+                        order: 4;
+                        margin-top: 20px;
+                    }
+                    
+                    .desktop-layout { display: none; }
+                    .mobile-layout { display: block; }
+                }
+
+                @media (min-width: 769px) {
+                    .mobile-layout { display: none; }
                 }
 
                 @media (max-width: 480px) {

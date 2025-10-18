@@ -154,8 +154,9 @@
             <button class="btn-search mt-3" id="resetFiltersBtn">Limpar Filtros</button>
         </div>
 
-        <div class="load-more-container">
-            <button class="btn-load-more" id="loadMoreBtn">
+        <!-- BOTÃO "VER MAIS" CONDICIONAL PARA IMÓVEIS EM DESTAQUE -->
+        <div class="load-more-container" id="featuredLoadMore">
+            <button class="btn-load-more" onclick="loadMoreFeatured()">
                 <i class="bi bi-arrow-down-circle me-2"></i>Ver Mais Imóveis
             </button>
         </div>
@@ -167,6 +168,13 @@
         <p class="text-center text-muted mb-4">Confira todos os imóveis disponíveis em nosso portal</p>
         
         <div class="row" id="all-properties-list"></div>
+
+        <!-- BOTÃO "VER MAIS" CONDICIONAL PARA TODOS OS IMÓVEIS -->
+        <div class="load-more-container" id="allPropertiesLoadMore">
+            <button class="btn-load-more" onclick="loadMoreAllProperties()">
+                <i class="bi bi-arrow-down-circle me-2"></i>Ver Mais Imóveis
+            </button>
+        </div>
     </div>
 
     <!-- Encontre seu Imóvel -->

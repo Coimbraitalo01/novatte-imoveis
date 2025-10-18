@@ -104,16 +104,22 @@ nav a:hover::after {
     padding: 8px;
     cursor: pointer;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     width: 40px;
     height: 40px;
     z-index: 1001;
+    order: 2;
 }
 
 .navbar-toggler i {
     color: white;
     font-size: 1.8rem;
     transition: all 0.3s ease;
+}
+
+.navbar-toggler.active i {
+    transform: rotate(90deg);
 }
 
 /* Header para páginas de imóveis */
@@ -301,7 +307,44 @@ nav a:hover::after {
     box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
 }
 
-/* Banner LGPD - CORRIGIDO */
+/* ===== ESTILOS PARA BOTÕES "VER MAIS" CONDICIONAIS ===== */
+.load-more-container {
+    text-align: center;
+    margin-top: 40px;
+    display: none; /* Inicialmente escondido */
+}
+
+.load-more-container.show {
+    display: block;
+}
+
+.btn-load-more {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-load-more:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+}
+
+.btn-load-more:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Banner LGPD - CORREÇÃO DEFINITIVA */
 .lgpd-banner {
     position: fixed;
     bottom: 0;
@@ -309,22 +352,32 @@ nav a:hover::after {
     right: 0;
     background: var(--primary-color);
     color: white;
-    padding: 12px 20px;
+    padding: 15px 20px;
     z-index: 9999;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    font-size: 0.85rem;
-    display: none;
+    box-shadow: 0 -2px 15px rgba(0,0,0,0.2);
+    font-size: 0.9rem;
+    /* REMOVER display: none - deixar o JavaScript controlar */
 }
 
 .lgpd-banner.show {
     display: block !important;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
 
 .lgpd-banner .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -332,6 +385,7 @@ nav a:hover::after {
 .lgpd-banner p {
     margin: 0;
     flex: 1;
+    line-height: 1.5;
 }
 
 .lgpd-banner a {
@@ -346,7 +400,16 @@ nav a:hover::after {
 
 .lgpd-banner .btn-group {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.lgpd-banner .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
 }
 
 /* Cards de Propriedades */
@@ -496,28 +559,6 @@ h2 {
     font-weight: 600;
     margin-bottom: 30px;
     text-align: center;
-}
-
-/* Botão Ver Mais */
-.load-more-container {
-    text-align: center;
-    margin-top: 40px;
-}
-
-.btn-load-more {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1.1rem;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.btn-load-more:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
 }
 
 /* Seção Encontre seu Imóvel */
@@ -787,6 +828,104 @@ h2 {
     transform: scale(1.05);
 }
 
+/* ===== ESTILOS PARA O MODAL CORRIGIDO ===== */
+
+/* Galeria no modal com botões */
+.property-gallery-modal {
+    margin-bottom: 25px;
+}
+
+.main-gallery-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.property-gallery-modal .main-image {
+    height: 450px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.property-gallery-modal .main-image:hover {
+    transform: scale(1.01);
+}
+
+/* Botões de navegação no modal */
+.gallery-controls-modal {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    padding: 0 20px;
+    pointer-events: none;
+}
+
+.gallery-btn-modal {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+}
+
+.gallery-btn-modal:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.image-counter-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.thumbnail-container-modal {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.thumbnail-container-modal .thumbnail {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+}
+
+.thumbnail-container-modal .thumbnail:hover,
+.thumbnail-container-modal .thumbnail.active {
+    opacity: 1;
+    border-color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
 /* Card do corretor MENOR no modal */
 .corretor-info {
     background-color: var(--light-color);
@@ -869,6 +1008,52 @@ h2 {
     background-color: #128C7E;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+/* Detalhes do imóvel na sidebar */
+.property-details-sidebar {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.property-details-sidebar h5 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: #555;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.95rem;
 }
 
 /* Mapa unificado */
@@ -1248,11 +1433,17 @@ link[rel="icon"] {
     .lgpd-banner .container {
         flex-direction: column;
         text-align: center;
+        gap: 15px;
     }
 
     .lgpd-banner .btn-group {
         width: 100%;
         justify-content: center;
+    }
+
+    .lgpd-banner .btn {
+        flex: 1;
+        max-width: 120px;
     }
 
     .whatsapp-btn-fixed {
@@ -1280,6 +1471,22 @@ link[rel="icon"] {
     }
     
     .property-gallery .thumbnail {
+        width: 80px;
+        height: 60px;
+    }
+    
+    .property-gallery-modal .main-image {
+        height: 300px;
+    }
+    
+    .gallery-btn-modal {
+        width: 40px;
+        height: 40px;
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+    
+    .thumbnail-container-modal .thumbnail {
         width: 80px;
         height: 60px;
     }
@@ -1333,18 +1540,35 @@ link[rel="icon"] {
         font-size: 1rem;
     }
 
-    /* CORREÇÃO: Layout mobile para cards acima do mapa */
-    .unified-view .row {
-        flex-direction: column-reverse; /* Inverte a ordem para mobile */
-    }
-    
-    .unified-view .col-lg-8 {
-        order: 2; /* Mapa fica embaixo */
+    /* CORREÇÃO: Layout mobile para nova ordem na página de detalhes */
+    .mobile-property-detail .corretor-card {
+        order: 2;
         margin-top: 20px;
     }
     
-    .unified-view .col-lg-4 {
-        order: 1; /* Cards ficam acima */
+    .mobile-property-detail .property-details-sidebar {
+        order: 3;
+        margin-top: 20px;
+    }
+    
+    .mobile-property-detail .property-location {
+        order: 4;
+        margin-top: 20px;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    /* Esconder layout desktop no mobile */
+    .desktop-layout {
+        display: none;
+    }
+    
+    .mobile-layout {
+        display: block;
     }
 }
 
@@ -1381,6 +1605,12 @@ link[rel="icon"] {
         right: 10px;
         padding: 10px 14px;
         font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-layout {
+        display: none;
     }
 }
 
@@ -1439,6 +1669,22 @@ link[rel="icon"] {
     font-size: 1.1rem;
 }
 
+/* ===== CONTADOR DE IMÓVEIS ===== */
+.properties-count {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.properties-count .badge {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
 /* Correções adicionais */
 .row {
     display: flex;
@@ -1479,172 +1725,4 @@ textarea:focus {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
-}
-/* ===== ESTILOS PARA O MODAL CORRIGIDO ===== */
-
-/* Galeria no modal com botões */
-.property-gallery-modal {
-    margin-bottom: 25px;
-}
-
-.main-gallery-container {
-    position: relative;
-    margin-bottom: 15px;
-}
-
-.property-gallery-modal .main-image {
-    height: 450px;
-    object-fit: cover;
-    width: 100%;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.property-gallery-modal .main-image:hover {
-    transform: scale(1.01);
-}
-
-/* Botões de navegação no modal */
-.gallery-controls-modal {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    transform: translateY(-50%);
-    padding: 0 20px;
-    pointer-events: none;
-}
-
-.gallery-btn-modal {
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: none;
-    padding: 12px 16px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    pointer-events: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
-}
-
-.gallery-btn-modal:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.image-counter-modal {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.thumbnail-container-modal {
-    display: flex;
-    gap: 12px;
-    margin-top: 15px;
-    overflow-x: auto;
-    padding: 10px 0;
-}
-
-.thumbnail-container-modal .thumbnail {
-    width: 100px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 8px;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: all 0.3s ease;
-    border: 3px solid transparent;
-}
-
-.thumbnail-container-modal .thumbnail:hover,
-.thumbnail-container-modal .thumbnail.active {
-    opacity: 1;
-    border-color: var(--secondary-color);
-    transform: scale(1.05);
-}
-
-/* Detalhes do imóvel na sidebar */
-.property-details-sidebar {
-    background: #f8f9fa;
-    border-radius: 12px;
-    padding: 20px;
-    border-left: 4px solid var(--primary-color);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-}
-
-.property-details-sidebar h5 {
-    color: var(--primary-color);
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-.details-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.detail-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.detail-item:last-child {
-    border-bottom: none;
-}
-
-.detail-label {
-    color: #555;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-}
-
-.detail-value {
-    font-weight: 600;
-    color: var(--primary-color);
-    font-size: 0.95rem;
-}
-
-/* Ajustes mobile */
-@media (max-width: 768px) {
-    .property-gallery-modal .main-image {
-        height: 300px;
-    }
-    
-    .gallery-btn-modal {
-        width: 40px;
-        height: 40px;
-        padding: 8px 12px;
-        font-size: 1rem;
-    }
-    
-    .thumbnail-container-modal .thumbnail {
-        width: 80px;
-        height: 60px;
-    }
-    
-    .detail-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
 }
