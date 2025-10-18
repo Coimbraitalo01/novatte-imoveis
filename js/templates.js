@@ -234,6 +234,9 @@ class PropertyTemplates {
 
     // Template da página completa (nova guia) - COM LOGO CORRIGIDA
     static createPropertyPage(property, corretor) {
+        // CORREÇÃO: Usar caminho absoluto para a logo no GitHub Pages
+        const logoPath = window.location.origin + '/novatte-imoveis/assets/logo.png';
+        
         return `
             <!DOCTYPE html>
             <html lang="pt-BR">
@@ -555,9 +558,10 @@ class PropertyTemplates {
             <body>
                 <div class="property-header">
                     <div class="logo-container">
-                        <img src="https://coimbraitalo01.github.io/novatte-imoveis/assets/logo.png" 
+                        <img src="${logoPath}" 
                              alt="Novatte Imóveis - Portal Imobiliário" 
-                             class="logo-img">
+                             class="logo-img"
+                             onerror="this.src='https://via.placeholder.com/500x400/1a4d2e/ffffff?text=Novatte+Imóveis'; this.style.margin='0'; this.style.height='auto';">
                     </div>
                 </div>
                 

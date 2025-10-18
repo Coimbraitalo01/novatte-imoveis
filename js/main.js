@@ -1,20 +1,46 @@
 // LGPD - Cookies
 function checkLGPD() {
-    if (!localStorage.getItem('lgpdAccepted')) {
-        document.getElementById('lgpdBanner').style.display = 'block';
+    const lgpdAccepted = localStorage.getItem('lgpdAccepted');
+    const lgpdBanner = document.getElementById('lgpdBanner');
+    
+    if (!lgpdBanner) {
+        console.log('Banner LGPD não encontrado');
+        return;
+    }
+    
+    console.log('LGPD Status:', lgpdAccepted);
+    
+    if (lgpdAccepted === null) {
+        // Não foi aceito nem rejeitado - MOSTRAR BANNER
+        console.log('Mostrando banner LGPD');
+        lgpdBanner.style.display = 'block';
+        lgpdBanner.classList.add('show');
     } else {
-        document.getElementById('lgpdBanner').style.display = 'none';
+        // Já foi decidido - ESCONDER BANNER
+        console.log('Escondendo banner LGPD - já foi decidido');
+        lgpdBanner.style.display = 'none';
+        lgpdBanner.classList.remove('show');
     }
 }
 
 function acceptCookies() {
+    console.log('Aceitando cookies');
     localStorage.setItem('lgpdAccepted', 'true');
-    document.getElementById('lgpdBanner').style.display = 'none';
+    const lgpdBanner = document.getElementById('lgpdBanner');
+    if (lgpdBanner) {
+        lgpdBanner.style.display = 'none';
+        lgpdBanner.classList.remove('show');
+    }
 }
 
 function rejectCookies() {
+    console.log('Rejeitando cookies');
     localStorage.setItem('lgpdAccepted', 'false');
-    document.getElementById('lgpdBanner').style.display = 'none';
+    const lgpdBanner = document.getElementById('lgpdBanner');
+    if (lgpdBanner) {
+        lgpdBanner.style.display = 'none';
+        lgpdBanner.classList.remove('show');
+    }
 }
 
 // Função para rolar para o topo ao clicar na logo
@@ -31,6 +57,11 @@ function toggleMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const menuOverlay = document.getElementById('menuOverlay');
     
+    if (!nav || !menuToggle || !menuOverlay) {
+        console.error('Elementos do menu não encontrados');
+        return;
+    }
+    
     // Alterna a classe show
     nav.classList.toggle('show');
     menuOverlay.classList.toggle('active');
@@ -39,9 +70,13 @@ function toggleMenu() {
     if (nav.classList.contains('show')) {
         menuToggle.innerHTML = '<i class="bi bi-x"></i>';
         menuToggle.classList.add('active');
+        // Previne scroll do body quando menu está aberto
+        document.body.style.overflow = 'hidden';
     } else {
         menuToggle.innerHTML = '<i class="bi bi-list"></i>';
         menuToggle.classList.remove('active');
+        // Restaura scroll do body
+        document.body.style.overflow = '';
     }
 }
 
@@ -51,10 +86,13 @@ function closeMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const menuOverlay = document.getElementById('menuOverlay');
     
+    if (!nav || !menuToggle || !menuOverlay) return;
+    
     nav.classList.remove('show');
     menuOverlay.classList.remove('active');
     menuToggle.innerHTML = '<i class="bi bi-list"></i>';
     menuToggle.classList.remove('active');
+    document.body.style.overflow = ''; // Restaura scroll
 }
 
 // Função para gerenciar dados do usuário
@@ -463,6 +501,9 @@ function openPropertyInNewTab(propertyId) {
     
     const corretor = corretores[property.corretor];
     
+    // CORREÇÃO: Usar caminho absoluto para a logo no GitHub Pages
+    const logoPath = window.location.origin + '/novatte-imoveis/assets/logo.png';
+    
     // Criar HTML completo para a nova guia
     const propertyPageHTML = `
     <!DOCTYPE html>
@@ -778,9 +819,10 @@ function openPropertyInNewTab(propertyId) {
     <body>
         <div class="property-header">
             <div class="logo-container">
-                <img src="${window.location.origin}/assets/logo.png" 
+                <img src="${logoPath}" 
                      alt="Novatte Imóveis - Portal Imobiliário" 
-                     class="logo-img">
+                     class="logo-img"
+                     onerror="this.src='https://via.placeholder.com/500x400/1a4d2e/ffffff?text=Novatte+Imóveis'; this.style.margin='0'; this.style.height='auto';">
             </div>
         </div>
         
@@ -862,8 +904,10 @@ function openPropertyInNewTab(propertyId) {
     </html>`;
     
     const newWindow = window.open('', '_blank');
-    newWindow.document.write(propertyPageHTML);
-    newWindow.document.close();
+    if (newWindow) {
+        newWindow.document.write(propertyPageHTML);
+        newWindow.document.close();
+    }
 }
 
 // Contatar corretor via WhatsApp
@@ -896,58 +940,67 @@ function getDirections(lat, lng) {
     window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
 }
 
-// Event listeners
+// ===== INICIALIZAÇÃO CORRIGIDA =====
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar LGPD
-    checkLGPD();
+    console.log('DOM Carregado - Iniciando configurações...');
+    
+    // 1. Verificar LGPD - DEVE SER A PRIMEIRA COISA
+    setTimeout(() => {
+        checkLGPD();
+    }, 500);
 
-    // Botões LGPD
+    // 2. Botões LGPD
     document.getElementById('acceptCookies')?.addEventListener('click', acceptCookies);
     document.getElementById('rejectCookies')?.addEventListener('click', rejectCookies);
 
-    // Botão WhatsApp fixo
+    // 3. Fechar menu ao clicar no overlay
+    document.getElementById('menuOverlay')?.addEventListener('click', closeMenu);
+
+    // 4. Botão WhatsApp fixo
     document.getElementById('whatsappFixedBtn')?.addEventListener('click', function() {
         window.open('https://wa.me/5522992054592?text=Olá! Gostaria de mais informações sobre os imóveis.', '_blank');
     });
 
-    // Inicializar carrossel
+    // 5. Inicializar carrossel
     initCarousel();
     
-    // Eventos para carrossel
+    // 6. Eventos para carrossel
     document.getElementById('carouselPrev')?.addEventListener('click', prevSlide);
     document.getElementById('carouselNext')?.addEventListener('click', nextSlide);
     
-    // Pausar autoplay ao interagir com o carrossel
+    // 7. Pausar autoplay ao interagir com o carrossel
     const carouselContainer = document.querySelector('.carousel-container');
     if (carouselContainer) {
         carouselContainer.addEventListener('mouseenter', pauseCarouselAutoPlay);
         carouselContainer.addEventListener('mouseleave', startCarouselAutoPlay);
     }
 
-    // Eventos da galeria modal
+    // 8. Eventos da galeria modal
     document.getElementById('galleryModalNext')?.addEventListener('click', galleryModalNext);
     document.getElementById('galleryModalPrev')?.addEventListener('click', galleryModalPrev);
 
-    // INICIALIZAR E RENDERIZAR IMÓVEIS
+    // 9. INICIALIZAR E RENDERIZAR IMÓVEIS
     setTimeout(() => {
+        console.log('Renderizando propriedades...');
         renderAllProperties();
         if (typeof initFilter === 'function') {
             initFilter();
         }
-    }, 100);
+    }, 1000);
 
-    // Scroll suave
+    // 10. Scroll suave para links internos
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
+                closeMenu(); // Fecha menu mobile ao clicar em link
             }
         });
     });
 
-    // Formatação do campo de preço
+    // 11. Formatação do campo de preço
     document.getElementById('max-price')?.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length > 0) {
@@ -956,7 +1009,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Formatação do campo de valor máximo na seção "Encontre seu imóvel"
+    // 12. Formatação do campo de valor máximo na seção "Encontre seu imóvel"
     document.getElementById('maxValue')?.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length > 0) {
@@ -965,7 +1018,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Form de busca de imóvel
+    // 13. Form de busca de imóvel
     document.getElementById('propertySearchForm')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const name = document.getElementById('fullName').value;
@@ -974,7 +1027,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.reset();
     });
 
-    // Filtros
+    // 14. Filtros
     document.getElementById('applyFiltersBtn')?.addEventListener('click', function() {
         if (typeof propertyFilter !== 'undefined') {
             const filtered = propertyFilter.applyFilters();
