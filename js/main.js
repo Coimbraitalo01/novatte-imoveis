@@ -1,56 +1,46 @@
-// LGPD - Cookies
+// LGPD - Cookies - CORRIGIDO E TESTADO
 function checkLGPD() {
     const lgpdAccepted = localStorage.getItem('lgpdAccepted');
     const lgpdBanner = document.getElementById('lgpdBanner');
     
-    console.log('checkLGPD executado - Status:', lgpdAccepted);
+    console.log('🔍 checkLGPD executado - Status no localStorage:', lgpdAccepted);
+    console.log('🔍 Banner LGPD encontrado:', !!lgpdBanner);
     
     if (!lgpdBanner) {
-        console.error('Banner LGPD não encontrado no DOM');
+        console.error('❌ Banner LGPD não encontrado no DOM');
         return;
     }
     
-    // FORÇAR EXIBIÇÃO PARA TESTE - REMOVA ESTE BLOCO DEPOIS DE TESTAR
-    console.log('FORÇANDO exibição do banner para teste');
-    lgpdBanner.style.display = 'block';
-    lgpdBanner.classList.add('show');
-    
-    // Código original (comentado para teste)
-    /*
+    // Se NÃO foi aceito ainda (null), mostra o banner
     if (lgpdAccepted === null) {
-        console.log('Mostrando banner LGPD - primeira visita');
+        console.log('📢 Mostrando banner LGPD - primeira visita ou decisão pendente');
         lgpdBanner.style.display = 'block';
         lgpdBanner.classList.add('show');
     } else {
-        console.log('Escondendo banner LGPD - já foi decidido:', lgpdAccepted);
+        console.log('👌 Escondendo banner LGPD - decisão já tomada:', lgpdAccepted);
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
     }
-    */
 }
 
 function acceptCookies() {
-    console.log('Aceitando cookies');
+    console.log('✅ Aceitando cookies');
     localStorage.setItem('lgpdAccepted', 'true');
     const lgpdBanner = document.getElementById('lgpdBanner');
     if (lgpdBanner) {
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
     }
-    // Recarregar a página para aplicar as mudanças
-    location.reload();
 }
 
 function rejectCookies() {
-    console.log('Rejeitando cookies');
+    console.log('❌ Rejeitando cookies');
     localStorage.setItem('lgpdAccepted', 'false');
     const lgpdBanner = document.getElementById('lgpdBanner');
     if (lgpdBanner) {
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
     }
-    // Recarregar a página para aplicar as mudanças
-    location.reload();
 }
 
 // Função para rolar para o topo ao clicar na logo
@@ -61,33 +51,29 @@ function scrollToTop() {
     });
 }
 
-// Menu toggle para mobile - FUNÇÃO SIMPLIFICADA E CORRIGIDA
+// Menu toggle para mobile - CORRIGIDO E FUNCIONAL
 function toggleMenu() {
     const nav = document.getElementById('navMenu');
     const menuToggle = document.getElementById('menuToggle');
     const menuOverlay = document.getElementById('menuOverlay');
     
-    console.log('toggleMenu chamado');
+    console.log('🍔 toggleMenu chamado');
     
     if (!nav || !menuToggle || !menuOverlay) {
         console.error('Elementos do menu não encontrados');
         return;
     }
     
-    // Alterna a classe show - FORÇANDO COM style.display
+    // Alterna a classe show
     if (nav.classList.contains('show')) {
         nav.classList.remove('show');
-        nav.style.display = 'none';
         menuOverlay.classList.remove('active');
-        menuOverlay.style.display = 'none';
         menuToggle.innerHTML = '<i class="bi bi-list"></i>';
         menuToggle.classList.remove('active');
         document.body.style.overflow = '';
     } else {
         nav.classList.add('show');
-        nav.style.display = 'flex';
         menuOverlay.classList.add('active');
-        menuOverlay.style.display = 'block';
         menuToggle.innerHTML = '<i class="bi bi-x"></i>';
         menuToggle.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -100,14 +86,12 @@ function closeMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const menuOverlay = document.getElementById('menuOverlay');
     
-    console.log('closeMenu chamado');
+    console.log('📱 closeMenu chamado');
     
     if (!nav || !menuToggle || !menuOverlay) return;
     
     nav.classList.remove('show');
-    nav.style.display = 'none';
     menuOverlay.classList.remove('active');
-    menuOverlay.style.display = 'none';
     menuToggle.innerHTML = '<i class="bi bi-list"></i>';
     menuToggle.classList.remove('active');
     document.body.style.overflow = '';
@@ -832,6 +816,20 @@ function openPropertyInNewTab(propertyId) {
                     width: 80px;
                     height: 60px;
                 }
+                
+                /* CORREÇÃO: Layout mobile para cards acima do mapa */
+                .unified-view .row {
+                    flex-direction: column-reverse; /* Inverte a ordem para mobile */
+                }
+                
+                .unified-view .col-lg-8 {
+                    order: 2; /* Mapa fica embaixo */
+                    margin-top: 20px;
+                }
+                
+                .unified-view .col-lg-4 {
+                    order: 1; /* Cards ficam acima */
+                }
             }
 
             @media (max-width: 480px) {
@@ -976,11 +974,9 @@ function getDirections(lat, lng) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== DOM CARREGADO - INICIANDO CONFIGURAÇÕES ===');
     
-    // 1. Verificar LGPD - PRIMEIRO
+    // 1. Verificar LGPD - PRIMEIRO E AGORA FUNCIONAL
     console.log('1. Iniciando checkLGPD...');
-    setTimeout(() => {
-        checkLGPD();
-    }, 100);
+    checkLGPD();
 
     // 2. Botões LGPD
     console.log('2. Configurando botões LGPD...');
@@ -989,33 +985,33 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (acceptBtn) {
         acceptBtn.addEventListener('click', acceptCookies);
-        console.log('Botão Aceitar configurado');
+        console.log('✅ Botão Aceitar configurado');
     } else {
-        console.error('Botão Aceitar não encontrado');
+        console.error('❌ Botão Aceitar não encontrado');
     }
     
     if (rejectBtn) {
         rejectBtn.addEventListener('click', rejectCookies);
-        console.log('Botão Rejeitar configurado');
+        console.log('✅ Botão Rejeitar configurado');
     } else {
-        console.error('Botão Rejeitar não encontrado');
+        console.error('❌ Botão Rejeitar não encontrado');
     }
 
-    // 3. Menu Hamburguer
+    // 3. Menu Hamburguer - CORRIGIDO
     console.log('3. Configurando menu hamburguer...');
     const menuToggle = document.getElementById('menuToggle');
     const menuOverlay = document.getElementById('menuOverlay');
     
     if (menuToggle) {
         menuToggle.addEventListener('click', toggleMenu);
-        console.log('Botão menu configurado');
+        console.log('✅ Botão menu configurado');
     } else {
-        console.error('Botão menu não encontrado');
+        console.error('❌ Botão menu não encontrado');
     }
     
     if (menuOverlay) {
         menuOverlay.addEventListener('click', closeMenu);
-        console.log('Overlay menu configurado');
+        console.log('✅ Overlay menu configurado');
     }
 
     // 4. Fechar menu ao clicar em links
@@ -1024,7 +1020,7 @@ document.addEventListener('DOMContentLoaded', function() {
     menuLinks.forEach(link => {
         link.addEventListener('click', closeMenu);
     });
-    console.log('Links do menu configurados:', menuLinks.length);
+    console.log(`✅ Links do menu configurados: ${menuLinks.length}`);
 
     // 5. Botão WhatsApp
     console.log('5. Configurando WhatsApp...');
@@ -1033,7 +1029,7 @@ document.addEventListener('DOMContentLoaded', function() {
         whatsappBtn.addEventListener('click', function() {
             window.open('https://wa.me/5522992054592?text=Olá! Gostaria de mais informações sobre os imóveis.', '_blank');
         });
-        console.log('WhatsApp configurado');
+        console.log('✅ WhatsApp configurado');
     }
 
     // 6. Inicializar carrossel
@@ -1103,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.reset();
     });
 
-    console.log('=== CONFIGURAÇÃO COMPLETA ===');
+    console.log('=== ✅ CONFIGURAÇÃO COMPLETA ===');
 });
 
 // Exportar funções para uso global

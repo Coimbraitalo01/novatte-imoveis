@@ -301,7 +301,7 @@ nav a:hover::after {
     box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
 }
 
-/* Banner LGPD */
+/* Banner LGPD - CORRIGIDO */
 .lgpd-banner {
     position: fixed;
     bottom: 0;
@@ -1158,7 +1158,7 @@ link[rel="icon"] {
         transform: rotate(90deg);
     }
     
-    /* Navegação Mobile */
+    /* Navegação Mobile - CORRIGIDO */
     nav {
         display: none !important;
         flex-direction: column;
@@ -1331,6 +1331,20 @@ link[rel="icon"] {
     
     .corretor-name {
         font-size: 1rem;
+    }
+
+    /* CORREÇÃO: Layout mobile para cards acima do mapa */
+    .unified-view .row {
+        flex-direction: column-reverse; /* Inverte a ordem para mobile */
+    }
+    
+    .unified-view .col-lg-8 {
+        order: 2; /* Mapa fica embaixo */
+        margin-top: 20px;
+    }
+    
+    .unified-view .col-lg-4 {
+        order: 1; /* Cards ficam acima */
     }
 }
 
