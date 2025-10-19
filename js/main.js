@@ -1,9 +1,9 @@
-// LGPD - Cookies - CORRIGIDO DEFINITIVAMENTE
+// LGPD - Cookies - CORREÇÃO DEFINITIVA E TESTADA
 function checkLGPD() {
     const lgpdAccepted = localStorage.getItem('lgpdAccepted');
     const lgpdBanner = document.getElementById('lgpdBanner');
     
-    console.log('🔍 checkLGPD executado - Status no localStorage:', lgpdAccepted);
+    console.log('🔍 checkLGPD executado - Status:', lgpdAccepted);
     console.log('🔍 Banner LGPD encontrado:', !!lgpdBanner);
     
     if (!lgpdBanner) {
@@ -11,15 +11,19 @@ function checkLGPD() {
         return;
     }
     
-    // CORREÇÃO: Se NÃO foi aceito ainda (null), mostra o banner
-    if (lgpdAccepted === null) {
-        console.log('📢 Mostrando banner LGPD - primeira visita ou decisão pendente');
+    // CORREÇÃO: Mostrar banner apenas se NÃO foi aceito (null) ou foi rejeitado (false)
+    if (lgpdAccepted === null || lgpdAccepted === 'false') {
+        console.log('📢 Mostrando banner LGPD');
         lgpdBanner.style.display = 'block';
         lgpdBanner.classList.add('show');
+        // Garantir que está visível e no topo
+        lgpdBanner.style.zIndex = '9999';
+        document.body.style.marginBottom = lgpdBanner.offsetHeight + 'px';
     } else {
-        console.log('👌 Escondendo banner LGPD - decisão já tomada:', lgpdAccepted);
+        console.log('👌 Escondendo banner LGPD - aceito');
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
+        document.body.style.marginBottom = '0';
     }
 }
 
@@ -30,9 +34,10 @@ function acceptCookies() {
     if (lgpdBanner) {
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
+        document.body.style.marginBottom = '0';
     }
-    // Limpar localStorage anterior se existir
-    localStorage.removeItem('cookiesAccepted');
+    // Mostrar confirmação
+    alert('Obrigado por aceitar nossa política de cookies!');
 }
 
 function rejectCookies() {
@@ -42,9 +47,59 @@ function rejectCookies() {
     if (lgpdBanner) {
         lgpdBanner.style.display = 'none';
         lgpdBanner.classList.remove('show');
+        document.body.style.marginBottom = '0';
     }
-    // Limpar localStorage anterior se existir
-    localStorage.removeItem('cookiesAccepted');
+    alert('Você rejeitou os cookies. Algumas funcionalidades podem não estar disponíveis.');
+}
+
+// CORREÇÃO: Menu Hamburguer - Funções simplificadas e funcionais
+function toggleMenu() {
+    const nav = document.getElementById('navMenu');
+    const menuToggle = document.getElementById('menuToggle');
+    const menuOverlay = document.getElementById('menuOverlay');
+    
+    console.log('🍔 toggleMenu chamado - Estado atual:', nav?.classList.contains('show'));
+    
+    if (!nav || !menuToggle || !menuOverlay) {
+        console.error('❌ Elementos do menu não encontrados');
+        return;
+    }
+    
+    const isOpen = nav.classList.contains('show');
+    
+    if (isOpen) {
+        // Fechar menu
+        nav.classList.remove('show');
+        menuOverlay.classList.remove('active');
+        menuToggle.classList.remove('active');
+        menuToggle.innerHTML = '<i class="bi bi-list"></i>';
+        document.body.style.overflow = '';
+        console.log('📱 Menu fechado');
+    } else {
+        // Abrir menu
+        nav.classList.add('show');
+        menuOverlay.classList.add('active');
+        menuToggle.classList.add('active');
+        menuToggle.innerHTML = '<i class="bi bi-x"></i>';
+        document.body.style.overflow = 'hidden';
+        console.log('📱 Menu aberto');
+    }
+}
+
+function closeMenu() {
+    const nav = document.getElementById('navMenu');
+    const menuToggle = document.getElementById('menuToggle');
+    const menuOverlay = document.getElementById('menuOverlay');
+    
+    console.log('📱 closeMenu chamado');
+    
+    if (!nav || !menuToggle || !menuOverlay) return;
+    
+    nav.classList.remove('show');
+    menuOverlay.classList.remove('active');
+    menuToggle.classList.remove('active');
+    menuToggle.innerHTML = '<i class="bi bi-list"></i>';
+    document.body.style.overflow = '';
 }
 
 // Função para limpar decisão anterior e testar novamente
@@ -61,52 +116,6 @@ function scrollToTop() {
         top: 0,
         behavior: 'smooth'
     });
-}
-
-// Menu toggle para mobile - CORRIGIDO E FUNCIONAL
-function toggleMenu() {
-    const nav = document.getElementById('navMenu');
-    const menuToggle = document.getElementById('menuToggle');
-    const menuOverlay = document.getElementById('menuOverlay');
-    
-    console.log('🍔 toggleMenu chamado');
-    
-    if (!nav || !menuToggle || !menuOverlay) {
-        console.error('Elementos do menu não encontrados');
-        return;
-    }
-    
-    // Alterna a classe show
-    if (nav.classList.contains('show')) {
-        nav.classList.remove('show');
-        menuOverlay.classList.remove('active');
-        menuToggle.innerHTML = '<i class="bi bi-list"></i>';
-        menuToggle.classList.remove('active');
-        document.body.style.overflow = '';
-    } else {
-        nav.classList.add('show');
-        menuOverlay.classList.add('active');
-        menuToggle.innerHTML = '<i class="bi bi-x"></i>';
-        menuToggle.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-// Função para fechar o menu quando um link for clicado
-function closeMenu() {
-    const nav = document.getElementById('navMenu');
-    const menuToggle = document.getElementById('menuToggle');
-    const menuOverlay = document.getElementById('menuOverlay');
-    
-    console.log('📱 closeMenu chamado');
-    
-    if (!nav || !menuToggle || !menuOverlay) return;
-    
-    nav.classList.remove('show');
-    menuOverlay.classList.remove('active');
-    menuToggle.innerHTML = '<i class="bi bi-list"></i>';
-    menuToggle.classList.remove('active');
-    document.body.style.overflow = '';
 }
 
 // Função para gerenciar dados do usuário
@@ -1076,7 +1085,7 @@ function getDirections(lat, lng) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== DOM CARREGADO - INICIANDO CONFIGURAÇÕES ===');
     
-    // 1. Verificar LGPD - PRIMEIRO E AGORA FUNCIONAL
+    // 1. LGPD - PRIMEIRO E AGORA FUNCIONAL
     console.log('1. Iniciando checkLGPD...');
     checkLGPD();
 
@@ -1099,7 +1108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('❌ Botão Rejeitar não encontrado');
     }
 
-    // 3. Menu Hamburguer - CORRIGIDO
+    // 3. Menu Hamburguer - CORREÇÃO DEFINITIVA
     console.log('3. Configurando menu hamburguer...');
     const menuToggle = document.getElementById('menuToggle');
     const menuOverlay = document.getElementById('menuOverlay');
@@ -1222,4 +1231,4 @@ window.openGalleryModal = openGalleryModal;
 window.loadMoreFeatured = loadMoreFeatured;
 window.loadMoreAllProperties = loadMoreAllProperties;
 window.updateLoadMoreButtons = updateLoadMoreButtons;
-window.resetLGPD = resetLGPD; // Para testes
+window.resetLGPD = resetLGPD;

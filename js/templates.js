@@ -313,6 +313,8 @@ class PropertyTemplates {
 
     // Galeria para modal - COM BOTÕES DE NAVEGAÇÃO FUNCIONAIS
     static createModalGallery(property, isNewTab = false) {
+        if (!property.images || property.images.length === 0) return '';
+        
         let thumbnailsHtml = '';
         
         property.images.forEach((img, index) => {
@@ -323,6 +325,7 @@ class PropertyTemplates {
             `;
         });
 
+        // CORREÇÃO: Funções diferentes para nova guia vs modal
         const prevFunction = isNewTab ? 'prevImage()' : `prevImage(${property.id})`;
         const nextFunction = isNewTab ? 'nextImage()' : `nextImage(${property.id})`;
         const galleryClick = isNewTab ? 'openGalleryModal(0)' : `openGalleryModal(${property.id}, 0)`;
@@ -334,13 +337,13 @@ class PropertyTemplates {
                          onclick="${galleryClick}" 
                          alt="${property.title}">
                     
-                    <!-- BOTÕES DE NAVEGAÇÃO NO MODAL - AGORA FUNCIONAIS -->
+                    <!-- BOTÕES DE NAVEGAÇÃO - CORREÇÃO DEFINITIVA -->
                     ${property.images.length > 1 ? `
                     <div class="gallery-controls-modal">
-                        <button class="gallery-btn-modal gallery-prev-modal" onclick="${prevFunction}">
+                        <button class="gallery-btn-modal gallery-prev-modal" onclick="event.stopPropagation(); ${prevFunction}">
                             <i class="bi bi-chevron-left"></i>
                         </button>
-                        <button class="gallery-btn-modal gallery-next-modal" onclick="${nextFunction}">
+                        <button class="gallery-btn-modal gallery-next-modal" onclick="event.stopPropagation(); ${nextFunction}">
                             <i class="bi bi-chevron-right"></i>
                         </button>
                     </div>

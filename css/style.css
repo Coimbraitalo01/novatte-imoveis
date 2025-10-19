@@ -120,6 +120,7 @@ nav a:hover::after {
 
 .navbar-toggler.active i {
     transform: rotate(90deg);
+    color: var(--secondary-color);
 }
 
 /* Header para páginas de imóveis */
@@ -311,7 +312,7 @@ nav a:hover::after {
 .load-more-container {
     text-align: center;
     margin-top: 40px;
-    display: none; /* Inicialmente escondido */
+    display: none;
 }
 
 .load-more-container.show {
@@ -346,17 +347,17 @@ nav a:hover::after {
 
 /* Banner LGPD - CORREÇÃO DEFINITIVA */
 .lgpd-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
     background: var(--primary-color);
     color: white;
     padding: 15px 20px;
-    z-index: 9999;
+    z-index: 9999 !important;
     box-shadow: 0 -2px 15px rgba(0,0,0,0.2);
     font-size: 0.9rem;
-    /* REMOVER display: none - deixar o JavaScript controlar */
+    display: none;
 }
 
 .lgpd-banner.show {
@@ -435,6 +436,8 @@ nav a:hover::after {
     height: 220px;
     object-fit: cover;
     width: 100%;
+    background: #f8f9fa;
+    min-height: 200px;
 }
 
 .property-badge-booking {
@@ -765,7 +768,7 @@ h2 {
     padding: 30px;
 }
 
-/* Galeria no modal de detalhes - SEM BOTÕES DUPLICADOS */
+/* Galeria no modal de detalhes */
 .property-gallery {
     position: relative;
     margin-bottom: 25px;
@@ -783,11 +786,6 @@ h2 {
 
 .property-gallery .main-image:hover {
     transform: scale(1.01);
-}
-
-/* REMOVIDOS OS BOTÕES DE CONTROLE DUPLICADOS */
-.property-gallery .gallery-controls {
-    display: none; /* Remove os botões duplicados */
 }
 
 .property-gallery .image-counter {
@@ -882,6 +880,8 @@ h2 {
     width: 50px;
     height: 50px;
     font-size: 1.2rem;
+    z-index: 10;
+    position: relative;
 }
 
 .gallery-btn-modal:hover {
@@ -1285,20 +1285,20 @@ link[rel="icon"] {
     height: auto;
 }
 
-/* ===== HEADER MOBILE OTIMIZADO - LOGO MESMO TAMANHO NOVA GUIA ===== */
+/* ===== HEADER MOBILE OTIMIZADO - CORREÇÕES DEFINITIVAS ===== */
 @media (max-width: 768px) {
     header {
         padding: 8px 15px;
-        height: 100px; /* Altura para logo maior */
+        height: 100px;
         min-height: 100px;
         flex-wrap: nowrap;
         justify-content: space-between;
         align-items: center;
-        overflow: hidden;
         position: relative;
+        z-index: 1000;
     }
     
-    /* Logo Mobile - MESMO TAMANHO DA NOVA GUIA */
+    /* Logo Mobile - CORREÇÃO DEFINITIVA */
     .logo-container {
         flex: 1;
         display: flex;
@@ -1309,13 +1309,13 @@ link[rel="icon"] {
     }
     
     .logo-img {
-        height: 300px !important; /* MESMO TAMANHO DA NOVA GUIA */
+        height: 300px !important;
         max-width: 400px !important;
-        margin: -100px 0 !important; /* Ajuste para centralizar verticalmente */
+        margin: -100px 0 !important;
         object-fit: contain;
     }
     
-    /* Botão Hamburguer - Visível apenas no Mobile */
+    /* Botão Hamburguer - CORREÇÃO DEFINITIVA */
     .navbar-toggler {
         display: flex !important;
         background: none;
@@ -1330,6 +1330,7 @@ link[rel="icon"] {
         z-index: 1001;
         order: 2;
         flex-shrink: 0;
+        position: relative;
     }
     
     .navbar-toggler i {
@@ -1338,31 +1339,42 @@ link[rel="icon"] {
         transition: all 0.3s ease;
     }
     
-    /* Menu Hamburguer Ativo */
     .navbar-toggler.active i {
         transform: rotate(90deg);
+        color: var(--secondary-color);
     }
     
-    /* Navegação Mobile - CORRIGIDO */
+    /* Navegação Mobile - CORREÇÃO DEFINITIVA */
     nav {
         display: none !important;
         flex-direction: column;
         width: 100%;
         gap: 0;
-        margin-top: 0;
-        margin-left: 0;
         background-color: var(--primary-color);
         padding: 0;
         position: absolute;
-        top: 100px; /* Ajustado para nova altura do header */
+        top: 100%;
         left: 0;
         right: 0;
         z-index: 999;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-top: 1px solid rgba(255,255,255,0.1);
     }
     
     nav.show {
         display: flex !important;
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
     
     nav a {
@@ -1373,6 +1385,7 @@ link[rel="icon"] {
         font-weight: 500;
         width: 100%;
         display: block;
+        transition: all 0.3s ease;
     }
     
     nav a:last-child {
@@ -1382,6 +1395,24 @@ link[rel="icon"] {
     nav a:hover {
         background-color: rgba(255,255,255,0.1);
         color: var(--secondary-color);
+        padding-left: 25px;
+    }
+    
+    /* Overlay do menu - CORREÇÃO */
+    .menu-overlay {
+        display: none;
+        position: fixed;
+        top: 100px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+    }
+    
+    .menu-overlay.active {
+        display: block;
+        animation: fadeIn 0.3s ease-out;
     }
     
     /* Header para páginas de imóveis - MOBILE */
@@ -1600,6 +1631,15 @@ link[rel="icon"] {
         padding: 14px 20px;
     }
 
+    .navbar-toggler {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .navbar-toggler i {
+        font-size: 1.5rem;
+    }
+
     .whatsapp-btn-fixed {
         bottom: 15px;
         right: 10px;
@@ -1725,4 +1765,25 @@ textarea:focus {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CORREÇÕES ADICIONAIS ===== */
+
+/* Prevenir scroll horizontal */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Melhorar responsividade do menu */
+.navbar-toggler:focus {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+/* Garantir que o header fique no topo */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
