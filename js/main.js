@@ -6,6 +6,7 @@
 let currentLightboxImages = [];
 let currentLightboxIndex = 0;
 let lightboxElement = null;
+let isOpeningDetails = false;
 
 // Criar lightbox no DOM
 function createLightbox() {
@@ -545,18 +546,41 @@ function showPropertyDetails(propertyId) {
     if (!property) return;
     
     const corretor = corretores[property.corretor];
+    const modalEl = document.getElementById('propertyModal');
     const modalContent = document.getElementById('property-detail-content');
     
-    if (modalContent) {
-        modalContent.innerHTML = PropertyTemplates.createPropertyDetail(property, corretor);
-        // Garantir que nenhum overlay/overflow do menu fique ativo no mobile
+    if (modalEl && modalContent) {
+        console.debug('[Details] open', { propertyId });
+        if (isOpeningDetails) return;
+        isOpeningDetails = true;
+        let html = '';
+        try {
+            html = PropertyTemplates.createPropertyDetail(property, corretor) || '';
+        } catch (err) {
+            console.error('Erro ao montar detalhes do imóvel:', err);
+            html = '';
+        }
+        modalContent.innerHTML = String(html);
+        console.debug('[Details] content set length', modalContent.innerHTML.length);
         try { closeMenu(); } catch (e) {}
         document.body.style.overflow = '';
-
-        const modal = new bootstrap.Modal(document.getElementById('propertyModal'));
-        modal.show();
         
-        // Configurar lightbox para as imagens do modal
+        try {
+            if (window.bootstrap?.Modal) {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            } else {
+                modalEl.classList.add('show');
+                modalEl.style.display = 'block';
+                modalEl.removeAttribute('aria-hidden');
+                document.body.classList.add('modal-open');
+            }
+        } catch (err) {
+            console.error('Erro ao abrir modal:', err);
+        } finally {
+            setTimeout(() => { isOpeningDetails = false; }, 400);
+        }
+        
         setTimeout(() => {
             setupModalLightbox(propertyId);
         }, 500);
@@ -770,6 +794,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Removido listener em CAPTURA que bloqueava a delegação de eventos da galeria
 
+    // Delegação (captura) para bloquear propagação antes do onclick do card (iOS/Safari)
+    document.addEventListener('click', function(e){
+        const detailsBtn = e.target.closest && e.target.closest('.btn-booking-secondary');
+        if (detailsBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }, true);
+
     // Delegação de eventos apenas para o botão "Mais Detalhes" (galeria tratada inline no template)
     document.addEventListener('click', function(e) {
         // Botão "Mais Detalhes" (garantia mobile/desktop)
@@ -781,6 +814,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 e.stopPropagation();
                 if (!isNaN(propertyId)) {
+                    console.debug('[Details] click handler', { propertyId });
                     showPropertyDetails(propertyId);
                 }
                 return;
@@ -790,6 +824,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Delegação extra para toque no mobile (iOS/Safari): garante bloqueio de propagação
     document.addEventListener('touchstart', function(e) {
+        const detailsBtn = e.target.closest && e.target.closest('.btn-booking-secondary');
+        if (detailsBtn) {
+            const card = detailsBtn.closest('.property-card-booking');
+            if (card) {
+                const propertyId = parseInt(card.getAttribute('data-property-id'));
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isNaN(propertyId)) {
+                    showPropertyDetails(propertyId);
+                }
+            }
+        }
+    }, { passive: false });
+
+    document.addEventListener('touchend', function(e) {
         const detailsBtn = e.target.closest && e.target.closest('.btn-booking-secondary');
         if (detailsBtn) {
             const card = detailsBtn.closest('.property-card-booking');
