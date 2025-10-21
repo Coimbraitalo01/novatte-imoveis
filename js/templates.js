@@ -7,7 +7,7 @@ class PropertyTemplates {
     static createPropertyCard(property) {
         return `
             <div class="col-lg-4 col-md-6 mb-4" data-property-id="${property.id}">
-                <div class="property-card-booking" data-property-id="${property.id}" onclick="openPropertyInNewTab(${property.id})">
+                <div class="property-card-booking" data-property-id="${property.id}" data-current-image="0" onclick="openPropertyInNewTab(${property.id})">
                     <div class="position-relative property-card-gallery image-zoom-container" 
                          onclick="event.stopPropagation(); openPropertyLightbox(${property.id})">
                         <img src="${property.images ? property.images[0] : property.image}" 
@@ -338,7 +338,7 @@ class PropertyTemplates {
         const nextFunction = isNewTab ? 'nextImage()' : `nextImage(${property.id})`;
 
         return `
-            <div class="property-gallery-modal">
+            <div class="property-gallery-modal" data-current-image="0">
                 <div class="main-gallery-container position-relative image-zoom-container" 
                      onclick="${lightboxFunction}">
                     <img src="${property.images[0]}" class="main-image" 

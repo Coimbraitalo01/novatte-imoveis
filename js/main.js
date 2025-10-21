@@ -22,61 +22,6 @@ function createLightbox() {
         };
         return;
     }
-
-// ===== NAVEGAÇÃO DA GALERIA NO MODAL =====
-function updateModalGallery(propertyId, newIndex) {
-    const property = properties.find(p => p.id === propertyId);
-    if (!property || !property.images || property.images.length === 0) return;
-
-    const modal = document.getElementById('propertyModal');
-    if (!modal) return;
-
-    const container = modal.querySelector('.property-gallery-modal');
-    const mainImg = modal.querySelector('.property-gallery-modal .main-image');
-    const counter = modal.querySelector('.property-gallery-modal .image-counter-modal');
-    const thumbs = modal.querySelectorAll('.thumbnail-container-modal .thumbnail');
-
-    if (!container || !mainImg) return;
-
-    const bounded = Math.max(0, Math.min(newIndex, property.images.length - 1));
-    container.setAttribute('data-current-image', String(bounded));
-
-    mainImg.src = property.images[bounded];
-    if (counter) counter.textContent = `${bounded + 1}/${property.images.length}`;
-    if (thumbs && thumbs.length) {
-        thumbs.forEach((t, i) => t.classList.toggle('active', i === bounded));
-    }
-}
-
-function changeMainImage(propertyId, index) {
-    updateModalGallery(propertyId, index);
-}
-
-function prevImage(propertyId) {
-    const modal = document.getElementById('propertyModal');
-    if (!modal) return;
-    const container = modal.querySelector('.property-gallery-modal');
-    if (!container) return;
-    const property = properties.find(p => p.id === propertyId);
-    if (!property || !property.images || property.images.length === 0) return;
-    const total = property.images.length;
-    const current = parseInt(container.getAttribute('data-current-image') || '0', 10);
-    const next = (current - 1 + total) % total;
-    updateModalGallery(propertyId, next);
-}
-
-function nextImage(propertyId) {
-    const modal = document.getElementById('propertyModal');
-    if (!modal) return;
-    const container = modal.querySelector('.property-gallery-modal');
-    if (!container) return;
-    const property = properties.find(p => p.id === propertyId);
-    if (!property || !property.images || property.images.length === 0) return;
-    const total = property.images.length;
-    const current = parseInt(container.getAttribute('data-current-image') || '0', 10);
-    const next = (current + 1) % total;
-    updateModalGallery(propertyId, next);
-}
     
     const lightboxHTML = `
         <div id="image-lightbox" class="image-lightbox-overlay">
@@ -259,23 +204,10 @@ function setupLightboxImages() {
         if (card) {
             const propertyId = parseInt(card.getAttribute('data-property-id'));
             
-            // Adicionar container clicável
+            // Container clicável somente por imagem (sem ícone de lupa)
             const container = img.parentElement;
             container.classList.add('image-clickable');
-            
-            // Adicionar ícone de lupa
-            if (!container.querySelector('.image-zoom-indicator')) {
-                const zoomIndicator = document.createElement('button');
-                zoomIndicator.className = 'image-zoom-indicator';
-                zoomIndicator.innerHTML = '<i class="bi bi-zoom-in"></i>';
-                zoomIndicator.onclick = (e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    openPropertyLightbox(propertyId);
-                };
-                container.appendChild(zoomIndicator);
-            }
-            
+
             // Configurar clique na imagem
             img.style.cursor = 'pointer';
             img.onclick = (e) => {
@@ -298,23 +230,10 @@ function setupLightboxImages() {
                 if (propertyTitle) {
                     const property = properties.find(p => p.title === propertyTitle.textContent);
                     if (property) {
-                        // Adicionar container clicável
+                        // Container clicável (sem ícone de lupa)
                         const container = img.parentElement;
                         container.classList.add('image-clickable');
-                        
-                        // Adicionar ícone de lupa
-                        if (!container.querySelector('.image-zoom-indicator')) {
-                            const zoomIndicator = document.createElement('button');
-                            zoomIndicator.className = 'image-zoom-indicator';
-                            zoomIndicator.innerHTML = '<i class="bi bi-zoom-in"></i>';
-                            zoomIndicator.onclick = (e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                openPropertyLightbox(property.id);
-                            };
-                            container.appendChild(zoomIndicator);
-                        }
-                        
+
                         // Configurar clique na imagem
                         img.style.cursor = 'pointer';
                         img.onclick = (e) => {
@@ -391,6 +310,7 @@ function acceptCookies() {
     localStorage.setItem('lgpdAccepted', 'true');
     const lgpdBanner = document.getElementById('lgpdBanner');
     if (lgpdBanner) {
+        lgpdBanner.classList.remove('show');
         lgpdBanner.style.display = 'none';
         document.body.style.marginBottom = '0';
     }
@@ -400,6 +320,7 @@ function rejectCookies() {
     localStorage.setItem('lgpdAccepted', 'false');
     const lgpdBanner = document.getElementById('lgpdBanner');
     if (lgpdBanner) {
+        lgpdBanner.classList.remove('show');
         lgpdBanner.style.display = 'none';
         document.body.style.marginBottom = '0';
     }
@@ -617,19 +538,6 @@ function setupModalLightbox(propertyId) {
         const container = img.parentElement;
         container.classList.add('image-clickable');
         
-        // Adicionar ícone de lupa se não existir
-        if (!container.querySelector('.image-zoom-indicator')) {
-            const zoomIndicator = document.createElement('button');
-            zoomIndicator.className = 'image-zoom-indicator';
-            zoomIndicator.innerHTML = '<i class="bi bi-zoom-in"></i>';
-            zoomIndicator.onclick = (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                openPropertyLightbox(propertyId);
-            };
-            container.appendChild(zoomIndicator);
-        }
-        
         img.style.cursor = 'pointer';
         img.onclick = (e) => {
             e.stopPropagation();
@@ -637,6 +545,61 @@ function setupModalLightbox(propertyId) {
             openPropertyLightbox(propertyId);
         };
     });
+}
+
+// ===== NAVEGAÇÃO DA GALERIA NO MODAL =====
+function updateModalGallery(propertyId, newIndex) {
+    const property = properties.find(p => p.id === propertyId);
+    if (!property || !property.images || property.images.length === 0) return;
+
+    const modal = document.getElementById('propertyModal');
+    if (!modal) return;
+
+    const container = modal.querySelector('.property-gallery-modal');
+    const mainImg = modal.querySelector('.property-gallery-modal .main-image');
+    const counter = modal.querySelector('.property-gallery-modal .image-counter-modal');
+    const thumbs = modal.querySelectorAll('.thumbnail-container-modal .thumbnail');
+
+    if (!container || !mainImg) return;
+
+    const bounded = Math.max(0, Math.min(newIndex, property.images.length - 1));
+    container.setAttribute('data-current-image', String(bounded));
+
+    mainImg.src = property.images[bounded];
+    if (counter) counter.textContent = `${bounded + 1}/${property.images.length}`;
+    if (thumbs && thumbs.length) {
+        thumbs.forEach((t, i) => t.classList.toggle('active', i === bounded));
+    }
+}
+
+function changeMainImage(propertyId, index) {
+    updateModalGallery(propertyId, index);
+}
+
+function prevImage(propertyId) {
+    const modal = document.getElementById('propertyModal');
+    if (!modal) return;
+    const container = modal.querySelector('.property-gallery-modal');
+    if (!container) return;
+    const property = properties.find(p => p.id === propertyId);
+    if (!property || !property.images || property.images.length === 0) return;
+    const total = property.images.length;
+    const current = parseInt(container.getAttribute('data-current-image') || '0', 10);
+    const next = (current - 1 + total) % total;
+    updateModalGallery(propertyId, next);
+}
+
+function nextImage(propertyId) {
+    const modal = document.getElementById('propertyModal');
+    if (!modal) return;
+    const container = modal.querySelector('.property-gallery-modal');
+    if (!container) return;
+    const property = properties.find(p => p.id === propertyId);
+    if (!property || !property.images || property.images.length === 0) return;
+    const total = property.images.length;
+    const current = parseInt(container.getAttribute('data-current-image') || '0', 10);
+    const next = (current + 1) % total;
+    updateModalGallery(propertyId, next);
 }
 
 // ===== FUNÇÕES PRINCIPAIS =====
@@ -682,8 +645,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 1. LGPD
     checkLGPD();
-    document.getElementById('acceptCookies')?.addEventListener('click', acceptCookies);
-    document.getElementById('rejectCookies')?.addEventListener('click', rejectCookies);
+    const acceptBtn = document.getElementById('acceptCookies');
+    const rejectBtn = document.getElementById('rejectCookies');
+    if (acceptBtn) acceptBtn.addEventListener('click', function(e){ e.preventDefault(); acceptCookies(); });
+    if (rejectBtn) rejectBtn.addEventListener('click', function(e){ e.preventDefault(); rejectCookies(); });
+    // Delegação como fallback para cenários de cache/incógnito
+    document.addEventListener('click', function(e){
+        const target = e.target;
+        if (!target) return;
+        if (target.id === 'acceptCookies' || target.closest?.('#acceptCookies')) {
+            e.preventDefault();
+            acceptCookies();
+        } else if (target.id === 'rejectCookies' || target.closest?.('#rejectCookies')) {
+            e.preventDefault();
+            rejectCookies();
+        }
+    });
 
     // 2. Menu Hamburguer
     const menuToggle = document.getElementById('menuToggle');
