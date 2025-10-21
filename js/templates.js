@@ -26,7 +26,7 @@ class PropertyTemplates {
                         <div class="property-footer-booking">
                             <div class="property-price-booking">${property.price}</div>
                             <div class="property-actions-booking">
-                                <button class="btn-booking-secondary" onclick="event.stopPropagation(); showPropertyDetails(${property.id})">Mais Detalhes</button>
+                                <button class="btn-booking-secondary" onclick="event.preventDefault(); event.stopPropagation(); showPropertyDetails(${property.id})">Mais Detalhes</button>
                                 <button class="btn-booking-whatsapp" onclick="event.stopPropagation(); contactCorretor('${property.corretor}', ${property.id})">
                                     <i class="bi bi-whatsapp"></i> Contato
                                 </button>
@@ -42,10 +42,10 @@ class PropertyTemplates {
     static createGalleryControls(property) {
         return `
             <div class="gallery-controls">
-                <button class="gallery-btn" onclick="event.stopPropagation(); changeImage(${property.id}, -1)">
+                <button class="gallery-btn" onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, -1)">
                     <i class="bi bi-chevron-left"></i>
                 </button>
-                <button class="gallery-btn" onclick="event.stopPropagation(); changeImage(${property.id}, 1)">
+                <button class="gallery-btn" onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, 1)">
                     <i class="bi bi-chevron-right"></i>
                 </button>
             </div>
@@ -53,7 +53,7 @@ class PropertyTemplates {
             <div class="thumbnail-container">
                 ${property.images.map((img, index) => `
                     <img src="${img}" class="thumbnail ${index === 0 ? 'active' : ''}" 
-                         onclick="event.stopPropagation(); showImage(${property.id}, ${index})" 
+                         onclick="event.preventDefault(); event.stopPropagation(); showImage(${property.id}, ${index})" 
                          alt="Thumbnail ${index + 1}">
                 `).join('')}
             </div>

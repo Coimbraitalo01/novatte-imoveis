@@ -47,8 +47,8 @@ body {
 
 .image-lightbox-content {
     position: relative;
-    max-width: 90%;
-    max-height: 90vh;
+    max-width: 96%;
+    max-height: 94vh;
     width: auto;
     height: auto;
     margin: 0 auto;
@@ -67,7 +67,7 @@ body {
 
 .image-lightbox-img {
     max-width: 100%;
-    max-height: 80vh;
+    max-height: 92vh;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -2116,6 +2116,7 @@ header {
     -ms-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .property-img-booking,

@@ -794,3 +794,6 @@ window.contactCorretor = contactCorretor;
 window.openPropertyInNewTab = openPropertyInNewTab;
 window.changeImage = changeImage;
 window.showImage = showImage;
+window.changeMainImage = changeMainImage;
+window.prevImage = prevImage;
+window.nextImage = nextImage;
