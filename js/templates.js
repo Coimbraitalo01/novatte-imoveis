@@ -8,10 +8,9 @@ class PropertyTemplates {
         return `
             <div class="col-lg-4 col-md-6 mb-4" data-property-id="${property.id}">
                 <div class="property-card-booking" data-property-id="${property.id}" data-current-image="0" onclick="openPropertyInNewTab(${property.id})">
-                    <div class="position-relative property-card-gallery image-zoom-container" 
-                         onclick="event.stopPropagation(); openPropertyLightbox(${property.id})">
+                    <div class="position-relative property-card-gallery image-zoom-container">
                         <img src="${property.images ? property.images[0] : property.image}" 
-                             class="property-img-booking" 
+                             class="property-img-booking" onclick="event.stopPropagation();"
                              alt="${property.title}">
                         <span class="badge ${property.type === 'Venda' ? 'bg-primary' : 'bg-secondary'} property-badge-booking">${property.type}</span>
                         ${property.images && property.images.length > 1 ? this.createGalleryControls(property) : ''}
@@ -42,10 +41,12 @@ class PropertyTemplates {
     static createGalleryControls(property) {
         return `
             <div class="gallery-controls">
-                <button type="button" class="gallery-btn" data-direction="-1" onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, -1)">
+                <button type="button" class="gallery-btn" data-direction="-1"
+                        onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, -1, this)">
                     <i class="bi bi-chevron-left"></i>
                 </button>
-                <button type="button" class="gallery-btn" data-direction="1" onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, 1)">
+                <button type="button" class="gallery-btn" data-direction="1"
+                        onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, 1, this)">
                     <i class="bi bi-chevron-right"></i>
                 </button>
             </div>
@@ -53,7 +54,7 @@ class PropertyTemplates {
             <div class="thumbnail-container">
                 ${property.images.map((img, index) => `
                     <img src="${img}" class="thumbnail ${index === 0 ? 'active' : ''}" data-thumb-index="${index}"
-                         onclick="event.preventDefault(); event.stopPropagation(); showImage(${property.id}, ${index})" 
+                         onclick="event.preventDefault(); event.stopPropagation(); showImage(${property.id}, ${index}, this)"
                          alt="Thumbnail ${index + 1}">
                 `).join('')}
             </div>
@@ -140,28 +141,10 @@ class PropertyTemplates {
                         </div>
                     </div>
                     
-                    <!-- Sidebar - Corretor E Detalhes do Imóvel JUNTOS -->
+                    <!-- Sidebar - Detalhes do Imóvel acima e Corretor abaixo -->
                     <div class="col-lg-4">
-                        <div class="corretor-card">
-                            <h5 class="mb-3">Entre em Contato</h5>
-                            <div class="corretor-info">
-                                <div class="corretor-header">
-                                    <div class="corretor-photo">${corretor.nome ? corretor.nome.charAt(0).toUpperCase() : 'C'}</div>
-                                    <div class="corretor-details">
-                                        <div class="corretor-name">${corretor.nome || 'Corretor'}</div>
-                                        <div class="corretor-type">${corretor.tipo || 'Corretor de Imóveis'}</div>
-                                        ${corretor.creci ? `<div class="corretor-creci"><small>CRECI: ${corretor.creci}</small></div>` : ''}
-                                        <div class="corretor-phone"><i class="bi bi-telephone me-2"></i>${corretor.telefone || '(22) 99205-4592'}</div>
-                                    </div>
-                                </div>
-                                <button class="corretor-whatsapp-btn w-100 mt-3" onclick="${whatsappFunction}">
-                                    <i class="bi bi-whatsapp"></i> Entrar em Contato via WhatsApp
-                                </button>
-                            </div>
-                        </div>
-                        
                         <!-- DETALHES DO IMÓVEL -->
-                        <div class="property-details-sidebar mt-4">
+                        <div class="property-details-sidebar">
                             <h5>Detalhes do Imóvel</h5>
                             <div class="details-list">
                                 <div class="detail-item">
@@ -194,6 +177,24 @@ class PropertyTemplates {
                                     <span class="detail-label"><i class="bi bi-arrow-left-right me-2"></i>Transação</span>
                                     <span class="detail-value">${property.type}</span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="corretor-card mt-4">
+                            <h5 class="mb-3">Entre em Contato</h5>
+                            <div class="corretor-info">
+                                <div class="corretor-header">
+                                    <div class="corretor-photo">${corretor.nome ? corretor.nome.charAt(0).toUpperCase() : 'C'}</div>
+                                    <div class="corretor-details">
+                                        <div class="corretor-name">${corretor.nome || 'Corretor'}</div>
+                                        <div class="corretor-type">${corretor.tipo || 'Corretor de Imóveis'}</div>
+                                        ${corretor.creci ? `<div class="corretor-creci"><small>CRECI: ${corretor.creci}</small></div>` : ''}
+                                        <div class="corretor-phone"><i class="bi bi-telephone me-2"></i>${corretor.telefone || '(22) 99205-4592'}</div>
+                                    </div>
+                                </div>
+                                <button class="corretor-whatsapp-btn w-100 mt-3" onclick="${whatsappFunction}">
+                                    <i class="bi bi-whatsapp"></i> Entrar em Contato via WhatsApp
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -219,25 +220,6 @@ class PropertyTemplates {
                             <p class="property-description-text">${property.description}</p>
                         </div>
 
-                        <!-- CORRETOR -->
-                        <div class="corretor-card mt-4">
-                            <h5 class="mb-3">Entre em Contato</h5>
-                            <div class="corretor-info">
-                                <div class="corretor-header">
-                                    <div class="corretor-photo">${corretor.nome ? corretor.nome.charAt(0).toUpperCase() : 'C'}</div>
-                                    <div class="corretor-details">
-                                        <div class="corretor-name">${corretor.nome || 'Corretor'}</div>
-                                        <div class="corretor-type">${corretor.tipo || 'Corretor de Imóveis'}</div>
-                                        ${corretor.creci ? `<div class="corretor-creci"><small>CRECI: ${corretor.creci}</small></div>` : ''}
-                                        <div class="corretor-phone"><i class="bi bi-telephone me-2"></i>${corretor.telefone || '(22) 99205-4592'}</div>
-                                    </div>
-                                </div>
-                                <button class="corretor-whatsapp-btn w-100 mt-3" onclick="${whatsappFunction}">
-                                    <i class="bi bi-whatsapp"></i> Entrar em Contato via WhatsApp
-                                </button>
-                            </div>
-                        </div>
-
                         <!-- DETALHES DO IMÓVEL -->
                         <div class="property-details-sidebar mt-4">
                             <h5>Detalhes do Imóvel</h5>
@@ -272,6 +254,25 @@ class PropertyTemplates {
                                     <span class="detail-label"><i class="bi bi-arrow-left-right me-2"></i>Transação</span>
                                     <span class="detail-value">${property.type}</span>
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <!-- CORRETOR -->
+                        <div class="corretor-card mt-4">
+                            <h5 class="mb-3">Entre em Contato</h5>
+                            <div class="corretor-info">
+                                <div class="corretor-header">
+                                    <div class="corretor-photo">${corretor.nome ? corretor.nome.charAt(0).toUpperCase() : 'C'}</div>
+                                    <div class="corretor-details">
+                                        <div class="corretor-name">${corretor.nome || 'Corretor'}</div>
+                                        <div class="corretor-type">${corretor.tipo || 'Corretor de Imóveis'}</div>
+                                        ${corretor.creci ? `<div class="corretor-creci"><small>CRECI: ${corretor.creci}</small></div>` : ''}
+                                        <div class="corretor-phone"><i class="bi bi-telephone me-2"></i>${corretor.telefone || '(22) 99205-4592'}</div>
+                                    </div>
+                                </div>
+                                <button class="corretor-whatsapp-btn w-100 mt-3" onclick="${whatsappFunction}">
+                                    <i class="bi bi-whatsapp"></i> Entrar em Contato via WhatsApp
+                                </button>
                             </div>
                         </div>
                         

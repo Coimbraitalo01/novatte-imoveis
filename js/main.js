@@ -22,7 +22,7 @@ function createLightbox() {
         };
         return;
     }
-    
+
     const lightboxHTML = `
         <div id="image-lightbox" class="image-lightbox-overlay">
             <div class="image-lightbox-content">
@@ -197,28 +197,20 @@ function openPropertyLightbox(propertyId, imageIndex = 0) {
 function setupLightboxImages() {
     console.log('🔧 Configurando imagens para lightbox...');
     
-    // Configurar imagens dos cards
+    // Desabilitar abertura de nova guia ao clicar na imagem grande do card (home)
     const cardImages = document.querySelectorAll('.property-img-booking');
-    cardImages.forEach((img, index) => {
+    cardImages.forEach((img) => {
         const card = img.closest('.property-card-booking');
-        if (card) {
-            const propertyId = parseInt(card.getAttribute('data-property-id'));
-            
-            // Container clicável somente por imagem (sem ícone de lupa)
-            const container = img.parentElement;
-            container.classList.add('image-clickable');
-
-            // Configurar clique na imagem
-            img.style.cursor = 'pointer';
-            img.onclick = (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                openPropertyLightbox(propertyId);
-            };
-        }
+        if (!card) return;
+        // Garantir que o clique na imagem não propague para o card
+        img.addEventListener('click', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+        }, { passive: false });
+        img.style.cursor = '';
     });
-    
-    console.log(`✅ ${cardImages.length} imagens de cards configuradas`);
+
+    console.log(`✅ ${cardImages.length} imagens de cards configuradas (sem lightbox na home)`);
     
     // Configurar imagens do modal de detalhes
     setTimeout(() => {
@@ -269,10 +261,10 @@ function updateCardGalleryView(card, images, newIndex) {
 }
 
 // Altera a imagem exibida no card em +/- 1
-function changeImage(propertyId, direction) {
+function changeImage(propertyId, direction, el = null) {
     console.debug('[Gallery] changeImage clicked', { propertyId, direction });
     const property = properties.find(p => p.id === propertyId);
-    const card = document.querySelector(`.property-card-booking[data-property-id="${propertyId}"]`);
+    const card = el?.closest ? el.closest('.property-card-booking') : document.querySelector(`.property-card-booking[data-property-id="${propertyId}"]`);
     if (!property || !property.images || property.images.length === 0 || !card) return;
     const total = property.images.length;
     let current = parseInt(card.getAttribute('data-current-image') || '0', 10);
@@ -282,52 +274,17 @@ function changeImage(propertyId, direction) {
 }
 
 // Mostra a imagem do índice específico no card
-function showImage(propertyId, index) {
+function showImage(propertyId, index, el = null) {
     console.debug('[Gallery] showImage clicked', { propertyId, index });
     const property = properties.find(p => p.id === propertyId);
-    const card = document.querySelector(`.property-card-booking[data-property-id="${propertyId}"]`);
+    const card = el?.closest ? el.closest('.property-card-booking') : document.querySelector(`.property-card-booking[data-property-id="${propertyId}"]`);
     if (!property || !property.images || property.images.length === 0 || !card) return;
     const bounded = Math.max(0, Math.min(index, property.images.length - 1));
     card.setAttribute('data-current-image', String(bounded));
     updateCardGalleryView(card, property.images, bounded);
 }
 
-// Fallback: binding direto pós-render para garantir cliques locais
-function setupCardGalleryEventBindings() {
-    document.querySelectorAll('.property-card-booking').forEach(card => {
-        const propertyId = parseInt(card.getAttribute('data-property-id'));
-        // Setas
-        card.querySelectorAll('.gallery-controls .gallery-btn').forEach(btn => {
-            if (btn.dataset.bound === '1') return;
-            btn.dataset.bound = '1';
-            btn.addEventListener('click', (e) => {
-                const dirAttr = btn.getAttribute('data-direction');
-                const direction = dirAttr ? parseInt(dirAttr) : NaN;
-                console.debug('[Gallery] direct btn click', { propertyId, direction });
-                e.preventDefault();
-                e.stopPropagation();
-                if (!isNaN(propertyId) && !isNaN(direction)) {
-                    changeImage(propertyId, direction);
-                }
-            }, { passive: false });
-        });
-        // Miniaturas
-        card.querySelectorAll('.thumbnail-container .thumbnail').forEach(thumb => {
-            if (thumb.dataset.bound === '1') return;
-            thumb.dataset.bound = '1';
-            thumb.addEventListener('click', (e) => {
-                const idxAttr = thumb.getAttribute('data-thumb-index');
-                const index = idxAttr ? parseInt(idxAttr) : NaN;
-                console.debug('[Gallery] direct thumb click', { propertyId, index });
-                e.preventDefault();
-                e.stopPropagation();
-                if (!isNaN(propertyId) && !isNaN(index)) {
-                    showImage(propertyId, index);
-                }
-            }, { passive: false });
-        });
-    });
-}
+// (Removido) setupCardGalleryEventBindings: os handlers agora são inline no template para evitar duplicidade
 
 // ===== LGPD - Cookies - CORREÇÃO DEFINITIVA E TESTADA =====
 function checkLGPD() {
@@ -415,6 +372,10 @@ function closeMenu() {
 let currentCarouselIndex = 0;
 let carouselInterval;
 
+// Limites dinâmicos para seções com "Ver mais"
+let featuredLimit = 6;
+let allLimit = 12;
+
 function initCarousel() {
     const carouselTrack = document.getElementById('carouselTrack');
     const carouselDots = document.getElementById('carouselDots');
@@ -430,7 +391,7 @@ function initCarousel() {
         <div class="carousel-slide">
             <div class="col-lg-8 mx-auto">
                 <div class="property-card-booking" data-property-id="${prop.id}" onclick="openPropertyInNewTab(${prop.id})">
-                    <div class="position-relative property-card-gallery image-zoom-container" onclick="event.stopPropagation(); openPropertyLightbox(${prop.id})">
+                    <div class="position-relative property-card-gallery image-zoom-container" onclick="event.stopPropagation();">
                         <img src="${prop.image || 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400'}" 
                              class="property-img-booking" alt="${prop.title}">
                         <span class="badge ${prop.type === 'Venda' ? 'bg-primary' : 'bg-secondary'} property-badge-booking">${prop.type}</span>
@@ -546,9 +507,36 @@ function renderProperties(properties, containerId) {
 
 function renderAllProperties() {
     if (typeof properties !== 'undefined') {
-        renderProperties(properties.slice(0, 6), 'property-list');
-        renderProperties(properties.slice(0, 12), 'all-properties-list');
+        renderProperties(properties.slice(0, featuredLimit), 'property-list');
+        renderProperties(properties.slice(0, allLimit), 'all-properties-list');
+        updateLoadMoreButtons();
     }
+}
+
+// Botões "Ver Mais"
+function updateLoadMoreButtons() {
+    const featuredLoadMore = document.getElementById('featuredLoadMore');
+    const allPropertiesLoadMore = document.getElementById('allPropertiesLoadMore');
+    if (featuredLoadMore) {
+        const show = typeof properties !== 'undefined' && properties.length > featuredLimit;
+        featuredLoadMore.style.display = show ? 'block' : 'none';
+    }
+    if (allPropertiesLoadMore) {
+        const show = typeof properties !== 'undefined' && properties.length > allLimit;
+        allPropertiesLoadMore.style.display = show ? 'block' : 'none';
+    }
+}
+
+function loadMoreFeatured() {
+    if (typeof properties === 'undefined') return;
+    featuredLimit = Math.min(properties.length, featuredLimit + 6);
+    renderAllProperties();
+}
+
+function loadMoreAllProperties() {
+    if (typeof properties === 'undefined') return;
+    allLimit = Math.min(properties.length, allLimit + 12);
+    renderAllProperties();
 }
 
 // ===== FUNÇÕES DO MODAL DE DETALHES =====
@@ -679,6 +667,34 @@ function contactCorretor(corretorId, propertyId = null) {
     window.open(whatsappUrl, '_blank');
 }
 
+// ===== UTILITÁRIOS GLOBAIS REFERENCIADOS EM HTML/TEMPLATES =====
+function openInGoogleMaps(lat, lng) {
+    if (lat == null || lng == null) return;
+    const url = `https://www.google.com/maps?q=${lat},${lng}`;
+    window.open(url, '_blank');
+}
+
+function getDirections(lat, lng) {
+    if (lat == null || lng == null) return;
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    window.open(url, '_blank');
+}
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openDataManagement() {
+    try {
+        const modalEl = document.getElementById('privacyModal');
+        if (modalEl && window.bootstrap?.Modal) {
+            new bootstrap.Modal(modalEl).show();
+            return;
+        }
+    } catch (e) {}
+    alert('Para gerenciar seus dados, entre em contato: novatteimoveis@gmail.com');
+}
+
 // ===== INICIALIZAÇÃO CORRIGIDA =====
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== DOM CARREGADO - INICIANDO CONFIGURAÇÕES ===');
@@ -749,7 +765,9 @@ document.addEventListener('DOMContentLoaded', function() {
         carouselContainer.addEventListener('mouseleave', startCarouselAutoPlay);
     }
 
-    // Delegação de eventos para navegação da galeria nos cards (registrado imediatamente)
+    // Removido listener em CAPTURA que bloqueava a delegação de eventos da galeria
+
+    // Delegação de eventos apenas para o botão "Mais Detalhes" (galeria tratada inline no template)
     document.addEventListener('click', function(e) {
         // Botão "Mais Detalhes" (garantia mobile/desktop)
         const detailsBtn = e.target.closest && e.target.closest('.btn-booking-secondary');
@@ -765,38 +783,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
         }
-
-        const btn = e.target.closest && e.target.closest('.gallery-controls .gallery-btn');
-        if (btn) {
-            const card = btn.closest('.property-card-booking');
-            if (card) {
-                const propertyId = parseInt(card.getAttribute('data-property-id'));
-                const direction = parseInt(btn.getAttribute('data-direction'));
-                console.debug('[Gallery] delegated btn click', { propertyId, direction });
-                e.preventDefault();
-                e.stopPropagation();
-                if (!isNaN(propertyId) && !isNaN(direction)) {
-                    changeImage(propertyId, direction);
-                }
-                return;
-            }
-        }
-
-        const thumb = e.target.closest && e.target.closest('.thumbnail-container .thumbnail');
-        if (thumb) {
-            const card = thumb.closest('.property-card-booking');
-            if (card) {
-                const propertyId = parseInt(card.getAttribute('data-property-id'));
-                const indexAttr = thumb.getAttribute('data-thumb-index');
-                const index = indexAttr ? parseInt(indexAttr) : NaN;
-                console.debug('[Gallery] delegated thumb click', { propertyId, index });
-                e.preventDefault();
-                e.stopPropagation();
-                if (!isNaN(propertyId) && !isNaN(index)) {
-                    showImage(propertyId, index);
-                }
-            }
-        }
     }, { passive: false });
 
     // 6. Renderizar propriedades
@@ -805,9 +791,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof initFilter === 'function') {
             initFilter();
         }
-        // Fallback de binding direto para garantir funcionamento local
-        setupCardGalleryEventBindings();
-        // (delegação já registrada anteriormente)
+        // A galeria é controlada por handlers inline no template; nenhum rebind adicional é necessário
     }, 1000);
 
     // 7. Fechar menu ao redimensionar
@@ -867,3 +851,10 @@ window.showImage = showImage;
 window.changeMainImage = changeMainImage;
 window.prevImage = prevImage;
 window.nextImage = nextImage;
+window.loadMoreFeatured = loadMoreFeatured;
+window.loadMoreAllProperties = loadMoreAllProperties;
+window.updateLoadMoreButtons = updateLoadMoreButtons;
+window.openInGoogleMaps = openInGoogleMaps;
+window.getDirections = getDirections;
+window.scrollToTop = scrollToTop;
+window.openDataManagement = openDataManagement;

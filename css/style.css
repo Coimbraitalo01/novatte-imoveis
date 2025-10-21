@@ -929,7 +929,8 @@ h2 {
     margin-top: 10px;
     overflow-x: auto;
     padding: 5px 0;
-    z-index: 1;
+    position: relative;
+    z-index: 6;
 }
 
 .property-card-gallery .thumbnail {
@@ -942,6 +943,7 @@ h2 {
     transition: all 0.3s ease;
     border: 2px solid transparent;
     flex-shrink: 0;
+    pointer-events: auto;
 }
 
 .property-card-gallery .thumbnail:hover,
@@ -1834,12 +1836,12 @@ link[rel="icon"] {
         order: 1;
     }
     
-    .mobile-property-detail .corretor-card {
+    .mobile-property-detail .property-details-sidebar {
         order: 2;
         margin-top: 15px;
     }
     
-    .mobile-property-detail .property-details-sidebar {
+    .mobile-property-detail .corretor-card {
         order: 3;
         margin-top: 15px;
     }
