@@ -794,12 +794,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Removido listener em CAPTURA que bloqueava a delegação de eventos da galeria
 
-    // Delegação (captura) para bloquear propagação antes do onclick do card (iOS/Safari)
+    // Delegação (captura) para garantir abertura antes do onclick do card (iOS/Safari)
     document.addEventListener('click', function(e){
         const detailsBtn = e.target.closest && e.target.closest('.btn-booking-secondary');
         if (detailsBtn) {
-            e.preventDefault();
-            e.stopPropagation();
+            const card = detailsBtn.closest('.property-card-booking');
+            if (card) {
+                const propertyId = parseInt(card.getAttribute('data-property-id'));
+                e.preventDefault();
+                if (!isNaN(propertyId)) {
+                    showPropertyDetails(propertyId);
+                }
+                e.stopPropagation();
+            }
         }
     }, true);
 
