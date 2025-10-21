@@ -697,7 +697,6 @@ nav a:hover::after {
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 4;
-    line-clamp: 4;
     -webkit-box-orient: vertical;
 }
 
@@ -886,7 +885,7 @@ h2 {
     transform: translateY(-50%);
     padding: 0 10px;
     pointer-events: none;
-    z-index: 2;
+    z-index: 5;
 }
 
 .property-card-gallery .gallery-btn {
@@ -2124,9 +2123,3 @@ header {
 .image-lightbox-img {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
-}
-
-.image-lightbox-img {
-    width: auto;
-    height: auto;
-}

@@ -138,8 +138,8 @@ function updateLightbox() {
     };
     
     img.onerror = function() {
-        lightboxImg.src = 'https://via.placeholder.com/800x600/1a4d2e/ffffff?text=Imagem+Não+Disponível';
-        lightboxImg.alt = 'Imagem não disponível';
+        lightboxImg.src = 'https://placehold.co/1200x800/1a4d2e/ffffff?text=Imagem%20nao%20disponivel';
+        lightboxImg.alt = 'Imagem nao disponivel';
         lightboxImg.style.opacity = '1';
         if (lightboxLoading) lightboxLoading.style.display = 'none';
     };
@@ -256,6 +256,7 @@ function updateCardGalleryView(card, images, newIndex) {
     const imgEl = card.querySelector('.property-img-booking');
     const counterEl = card.querySelector('.image-counter');
     const thumbs = card.querySelectorAll('.thumbnail');
+    console.debug('[Gallery] updateCardGalleryView', { cardId: card.getAttribute('data-property-id'), newIndex, img: images[newIndex] });
     if (imgEl && images[newIndex]) {
         imgEl.src = images[newIndex];
     }
@@ -269,6 +270,7 @@ function updateCardGalleryView(card, images, newIndex) {
 
 // Altera a imagem exibida no card em +/- 1
 function changeImage(propertyId, direction) {
+    console.debug('[Gallery] changeImage clicked', { propertyId, direction });
     const property = properties.find(p => p.id === propertyId);
     const card = document.querySelector(`.property-card-booking[data-property-id="${propertyId}"]`);
     if (!property || !property.images || property.images.length === 0 || !card) return;
@@ -281,12 +283,50 @@ function changeImage(propertyId, direction) {
 
 // Mostra a imagem do índice específico no card
 function showImage(propertyId, index) {
+    console.debug('[Gallery] showImage clicked', { propertyId, index });
     const property = properties.find(p => p.id === propertyId);
     const card = document.querySelector(`.property-card-booking[data-property-id="${propertyId}"]`);
     if (!property || !property.images || property.images.length === 0 || !card) return;
     const bounded = Math.max(0, Math.min(index, property.images.length - 1));
     card.setAttribute('data-current-image', String(bounded));
     updateCardGalleryView(card, property.images, bounded);
+}
+
+// Fallback: binding direto pós-render para garantir cliques locais
+function setupCardGalleryEventBindings() {
+    document.querySelectorAll('.property-card-booking').forEach(card => {
+        const propertyId = parseInt(card.getAttribute('data-property-id'));
+        // Setas
+        card.querySelectorAll('.gallery-controls .gallery-btn').forEach(btn => {
+            if (btn.dataset.bound === '1') return;
+            btn.dataset.bound = '1';
+            btn.addEventListener('click', (e) => {
+                const dirAttr = btn.getAttribute('data-direction');
+                const direction = dirAttr ? parseInt(dirAttr) : NaN;
+                console.debug('[Gallery] direct btn click', { propertyId, direction });
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isNaN(propertyId) && !isNaN(direction)) {
+                    changeImage(propertyId, direction);
+                }
+            }, { passive: false });
+        });
+        // Miniaturas
+        card.querySelectorAll('.thumbnail-container .thumbnail').forEach(thumb => {
+            if (thumb.dataset.bound === '1') return;
+            thumb.dataset.bound = '1';
+            thumb.addEventListener('click', (e) => {
+                const idxAttr = thumb.getAttribute('data-thumb-index');
+                const index = idxAttr ? parseInt(idxAttr) : NaN;
+                console.debug('[Gallery] direct thumb click', { propertyId, index });
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isNaN(propertyId) && !isNaN(index)) {
+                    showImage(propertyId, index);
+                }
+            }, { passive: false });
+        });
+    });
 }
 
 // ===== LGPD - Cookies - CORREÇÃO DEFINITIVA E TESTADA =====
@@ -709,12 +749,50 @@ document.addEventListener('DOMContentLoaded', function() {
         carouselContainer.addEventListener('mouseleave', startCarouselAutoPlay);
     }
 
+    // Delegação de eventos para navegação da galeria nos cards (registrado imediatamente)
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest && e.target.closest('.gallery-controls .gallery-btn');
+        if (btn) {
+            const card = btn.closest('.property-card-booking');
+            if (card) {
+                const propertyId = parseInt(card.getAttribute('data-property-id'));
+                const direction = parseInt(btn.getAttribute('data-direction'));
+                console.debug('[Gallery] delegated btn click', { propertyId, direction });
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isNaN(propertyId) && !isNaN(direction)) {
+                    changeImage(propertyId, direction);
+                }
+                return;
+            }
+        }
+
+        const thumb = e.target.closest && e.target.closest('.thumbnail-container .thumbnail');
+        if (thumb) {
+            const card = thumb.closest('.property-card-booking');
+            if (card) {
+                const propertyId = parseInt(card.getAttribute('data-property-id'));
+                const indexAttr = thumb.getAttribute('data-thumb-index');
+                const index = indexAttr ? parseInt(indexAttr) : NaN;
+                console.debug('[Gallery] delegated thumb click', { propertyId, index });
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isNaN(propertyId) && !isNaN(index)) {
+                    showImage(propertyId, index);
+                }
+            }
+        }
+    }, { passive: false });
+
     // 6. Renderizar propriedades
     setTimeout(() => {
         renderAllProperties();
         if (typeof initFilter === 'function') {
             initFilter();
         }
+        // Fallback de binding direto para garantir funcionamento local
+        setupCardGalleryEventBindings();
+        // (delegação já registrada anteriormente)
     }, 1000);
 
     // 7. Fechar menu ao redimensionar

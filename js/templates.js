@@ -26,7 +26,7 @@ class PropertyTemplates {
                         <div class="property-footer-booking">
                             <div class="property-price-booking">${property.price}</div>
                             <div class="property-actions-booking">
-                                <button class="btn-booking-secondary" onclick="event.preventDefault(); event.stopPropagation(); showPropertyDetails(${property.id})">Mais Detalhes</button>
+                                <button type="button" class="btn-booking-secondary" onclick="event.preventDefault(); event.stopPropagation(); showPropertyDetails(${property.id})">Mais Detalhes</button>
                                 <button class="btn-booking-whatsapp" onclick="event.stopPropagation(); contactCorretor('${property.corretor}', ${property.id})">
                                     <i class="bi bi-whatsapp"></i> Contato
                                 </button>
@@ -42,17 +42,17 @@ class PropertyTemplates {
     static createGalleryControls(property) {
         return `
             <div class="gallery-controls">
-                <button class="gallery-btn" onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, -1)">
+                <button type="button" class="gallery-btn" data-direction="-1" onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, -1)">
                     <i class="bi bi-chevron-left"></i>
                 </button>
-                <button class="gallery-btn" onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, 1)">
+                <button type="button" class="gallery-btn" data-direction="1" onclick="event.preventDefault(); event.stopPropagation(); changeImage(${property.id}, 1)">
                     <i class="bi bi-chevron-right"></i>
                 </button>
             </div>
             <div class="image-counter">1/${property.images.length}</div>
             <div class="thumbnail-container">
                 ${property.images.map((img, index) => `
-                    <img src="${img}" class="thumbnail ${index === 0 ? 'active' : ''}" 
+                    <img src="${img}" class="thumbnail ${index === 0 ? 'active' : ''}" data-thumb-index="${index}"
                          onclick="event.preventDefault(); event.stopPropagation(); showImage(${property.id}, ${index})" 
                          alt="Thumbnail ${index + 1}">
                 `).join('')}
