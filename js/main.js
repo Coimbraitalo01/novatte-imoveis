@@ -423,7 +423,7 @@ function initCarousel() {
                         <div class="property-footer-booking">
                             <div class="property-price-booking">${prop.price}</div>
                             <div class="property-actions-booking">
-                                <button class="btn-booking-secondary" onclick="event.stopPropagation(); showPropertyDetails(${prop.id})">Mais Detalhes</button>
+                                <button type="button" class="btn-booking-secondary" onclick="event.preventDefault(); event.stopPropagation(); showPropertyDetails(${prop.id})">Mais Detalhes</button>
                                 <button class="btn-booking-whatsapp" onclick="event.stopPropagation(); contactCorretor('${prop.corretor}', ${prop.id})">
                                     <i class="bi bi-whatsapp"></i> Contato
                                 </button>
