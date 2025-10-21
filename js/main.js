@@ -751,6 +751,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Delegação de eventos para navegação da galeria nos cards (registrado imediatamente)
     document.addEventListener('click', function(e) {
+        // Botão "Mais Detalhes" (garantia mobile/desktop)
+        const detailsBtn = e.target.closest && e.target.closest('.btn-booking-secondary');
+        if (detailsBtn) {
+            const card = detailsBtn.closest('.property-card-booking');
+            if (card) {
+                const propertyId = parseInt(card.getAttribute('data-property-id'));
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isNaN(propertyId)) {
+                    showPropertyDetails(propertyId);
+                }
+                return;
+            }
+        }
+
         const btn = e.target.closest && e.target.closest('.gallery-controls .gallery-btn');
         if (btn) {
             const card = btn.closest('.property-card-booking');
