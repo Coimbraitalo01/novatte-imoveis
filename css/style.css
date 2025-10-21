@@ -1060,7 +1060,8 @@ h2 {
     justify-content: space-between;
     transform: translateY(-50%);
     padding: 0 20px;
-    pointer-events: none;
+    pointer-events: auto;
+    z-index: 1057;
 }
 
 .gallery-btn-modal {

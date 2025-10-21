@@ -276,6 +276,45 @@ function setupLightboxImages() {
     }, 500);
 }
 
+// ===== CONTROLES DE GALERIA NOS CARDS (SUPORTE MOBILE) =====
+// Atualiza a imagem principal, contador e miniaturas do card
+function updateCardGalleryView(card, images, newIndex) {
+    const imgEl = card.querySelector('.property-img-booking');
+    const counterEl = card.querySelector('.image-counter');
+    const thumbs = card.querySelectorAll('.thumbnail');
+    if (imgEl && images[newIndex]) {
+        imgEl.src = images[newIndex];
+    }
+    if (counterEl) {
+        counterEl.textContent = `${newIndex + 1}/${images.length}`;
+    }
+    if (thumbs && thumbs.length) {
+        thumbs.forEach((t, i) => t.classList.toggle('active', i === newIndex));
+    }
+}
+
+// Altera a imagem exibida no card em +/- 1
+function changeImage(propertyId, direction) {
+    const property = properties.find(p => p.id === propertyId);
+    const card = document.querySelector(`.property-card-booking[data-property-id="${propertyId}"]`);
+    if (!property || !property.images || property.images.length === 0 || !card) return;
+    const total = property.images.length;
+    let current = parseInt(card.getAttribute('data-current-image') || '0', 10);
+    const next = (current + (direction > 0 ? 1 : -1) + total) % total;
+    card.setAttribute('data-current-image', String(next));
+    updateCardGalleryView(card, property.images, next);
+}
+
+// Mostra a imagem do índice específico no card
+function showImage(propertyId, index) {
+    const property = properties.find(p => p.id === propertyId);
+    const card = document.querySelector(`.property-card-booking[data-property-id="${propertyId}"]`);
+    if (!property || !property.images || property.images.length === 0 || !card) return;
+    const bounded = Math.max(0, Math.min(index, property.images.length - 1));
+    card.setAttribute('data-current-image', String(bounded));
+    updateCardGalleryView(card, property.images, bounded);
+}
+
 // ===== LGPD - Cookies - CORREÇÃO DEFINITIVA E TESTADA =====
 function checkLGPD() {
     const lgpdAccepted = localStorage.getItem('lgpdAccepted');
@@ -698,3 +737,5 @@ window.openPropertyLightbox = openPropertyLightbox;
 window.showPropertyDetails = showPropertyDetails;
 window.contactCorretor = contactCorretor;
 window.openPropertyInNewTab = openPropertyInNewTab;
+window.changeImage = changeImage;
+window.showImage = showImage;
