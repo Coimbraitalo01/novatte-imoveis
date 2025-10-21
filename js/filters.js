@@ -1,135 +1,155 @@
 // js/filters.js
 
-class PropertyFilter {
-    constructor(properties) {
-        this.properties = properties;
-        this.filters = {
-            propertyType: 'all',
-            city: 'all',
-            transaction: 'all',
-            maxPrice: null
-        };
-        this.filteredProperties = [...properties];
-        this.displayedCount = 6;
-    }
-
-    applyFilters() {
-        const type = document.getElementById('property-type').value;
-        const city = document.getElementById('city').value;
-        const transaction = document.getElementById('transaction-type').value;
-        const maxPrice = document.getElementById('max-price').value;
-
-        this.filteredProperties = this.properties.filter(prop => {
-            if (type !== 'all' && prop.propertyType !== type) return false;
-            if (city !== 'all' && prop.city !== city) return false;
-            if (transaction !== 'all' && prop.type !== transaction) return false;
-            if (maxPrice) {
-                const priceNum = this.extractPriceNumber(prop.price);
-                const maxPriceNum = parseInt(maxPrice.replace(/\D/g, ''));
-                if (priceNum > maxPriceNum) return false;
-            }
-            return true;
-        });
-
-        this.displayedCount = 6;
-        return this.filteredProperties.slice(0, this.displayedCount);
-    }
-
-    extractPriceNumber(priceString) {
-        return parseInt(priceString.replace(/\D/g, ''));
-    }
-
-    clearFilters() {
-        document.getElementById('property-type').value = 'all';
-        document.getElementById('city').value = 'all';
-        document.getElementById('transaction-type').value = 'all';
-        document.getElementById('max-price').value = '';
-        
-        this.filteredProperties = [...this.properties];
-        this.displayedCount = 6;
-        return this.filteredProperties.slice(0, this.displayedCount);
-    }
-
-    loadMore() {
-        this.displayedCount += 3;
-        return this.filteredProperties.slice(0, this.displayedCount);
-    }
-
-    hasMoreProperties() {
-        return this.displayedCount < this.filteredProperties.length;
-    }
-
-    getDisplayedCount() {
-        return this.displayedCount;
-    }
-
-    getTotalFiltered() {
-        return this.filteredProperties.length;
-    }
-}
-
-// Função para atualizar contador de imóveis
-function updatePropertiesCount() {
-    const featuredCount = document.querySelectorAll('#property-list .property-card-booking').length;
-    const allCount = document.querySelectorAll('#all-properties-list .property-card-booking').length;
-    const totalProperties = properties ? properties.length : 0;
-    
-    console.log(`🏠 Contador de imóveis - Destaque: ${featuredCount}, Todos: ${allCount}, Total: ${totalProperties}`);
-    
-    // Atualizar botões "Ver mais" após contar
-    if (typeof updateLoadMoreButtons === 'function') {
-        setTimeout(updateLoadMoreButtons, 100);
-    }
-}
-
-// Instância global do filtro
-let propertyFilter;
-
-// Inicializa o filtro
+// Sistema de Filtros
 function initFilter() {
-    if (typeof properties !== 'undefined') {
-        propertyFilter = new PropertyFilter(properties);
-        console.log('✅ Filtro de propriedades inicializado');
+    console.log('🎛️ Inicializando sistema de filtros...');
+    
+    const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+    
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener('click', applyFilters);
+    }
+    
+    if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', clearFilters);
+    }
+    
+    if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', clearFilters);
+    }
+    
+    // Aplicar filtros ao carregar a página se houver parâmetros na URL
+    setTimeout(() => {
+        applyURLFilters();
+    }, 500);
+}
+
+function applyFilters() {
+    console.log('🔍 Aplicando filtros...');
+    
+    const propertyType = document.getElementById('property-type').value;
+    const city = document.getElementById('city').value;
+    const transactionType = document.getElementById('transaction-type').value;
+    const maxPrice = document.getElementById('max-price').value;
+    
+    let filteredProperties = properties;
+    
+    // Aplicar filtros
+    if (propertyType !== 'all') {
+        filteredProperties = filteredProperties.filter(prop => prop.propertyType === propertyType);
+    }
+    
+    if (city !== 'all') {
+        filteredProperties = filteredProperties.filter(prop => prop.city === city);
+    }
+    
+    if (transactionType !== 'all') {
+        filteredProperties = filteredProperties.filter(prop => prop.type === transactionType);
+    }
+    
+    if (maxPrice) {
+        const maxPriceValue = parseFloat(maxPrice.replace(/\D/g, ''));
+        filteredProperties = filteredProperties.filter(prop => {
+            const propPrice = parseFloat(prop.price.replace(/\D/g, ''));
+            return propPrice <= maxPriceValue;
+        });
+    }
+    
+    // Atualizar URL com os filtros
+    updateURLFilters(propertyType, city, transactionType, maxPrice);
+    
+    // Renderizar propriedades filtradas
+    renderFilteredProperties(filteredProperties);
+}
+
+function clearFilters() {
+    console.log('🧹 Limpando filtros...');
+    
+    document.getElementById('property-type').value = 'all';
+    document.getElementById('city').value = 'all';
+    document.getElementById('transaction-type').value = 'all';
+    document.getElementById('max-price').value = '';
+    
+    // Limpar URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+    
+    // Renderizar todas as propriedades
+    renderAllProperties();
+}
+
+function renderFilteredProperties(filteredProperties) {
+    const propertyList = document.getElementById('property-list');
+    const allPropertiesList = document.getElementById('all-properties-list');
+    const noResults = document.getElementById('no-results');
+    
+    if (filteredProperties.length === 0) {
+        if (propertyList) propertyList.innerHTML = '';
+        if (allPropertiesList) allPropertiesList.innerHTML = '';
+        if (noResults) noResults.style.display = 'block';
         
-        // Atualizar contador após inicialização
-        setTimeout(updatePropertiesCount, 500);
+        // Ocultar botões "Ver mais"
+        const featuredLoadMore = document.getElementById('featuredLoadMore');
+        const allPropertiesLoadMore = document.getElementById('allPropertiesLoadMore');
+        if (featuredLoadMore) featuredLoadMore.style.display = 'none';
+        if (allPropertiesLoadMore) allPropertiesLoadMore.style.display = 'none';
     } else {
-        console.error('❌ Properties não definido para inicializar filtro');
+        if (noResults) noResults.style.display = 'none';
+        
+        // Renderizar propriedades em destaque (primeiros 6)
+        if (propertyList) {
+            renderProperties(filteredProperties.slice(0, 6), 'property-list');
+        }
+        
+        // Renderizar todas as propriedades
+        if (allPropertiesList) {
+            renderProperties(filteredProperties.slice(0, 12), 'all-properties-list');
+        }
+        
+        // Atualizar botões "Ver mais"
+        updateLoadMoreButtons();
     }
 }
 
-// Event listeners para filtros
+function updateURLFilters(propertyType, city, transactionType, maxPrice) {
+    const params = new URLSearchParams();
+    
+    if (propertyType !== 'all') params.set('tipo', propertyType);
+    if (city !== 'all') params.set('cidade', city);
+    if (transactionType !== 'all') params.set('transacao', transactionType);
+    if (maxPrice) params.set('preco_max', maxPrice);
+    
+    const newURL = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+    window.history.replaceState({}, document.title, newURL);
+}
+
+function applyURLFilters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.toString()) {
+        const propertyType = urlParams.get('tipo') || 'all';
+        const city = urlParams.get('cidade') || 'all';
+        const transactionType = urlParams.get('transacao') || 'all';
+        const maxPrice = urlParams.get('preco_max') || '';
+        
+        // Aplicar valores aos filtros
+        document.getElementById('property-type').value = propertyType;
+        document.getElementById('city').value = city;
+        document.getElementById('transaction-type').value = transactionType;
+        document.getElementById('max-price').value = maxPrice;
+        
+        // Aplicar filtros
+        applyFilters();
+    }
+}
+
+// Inicializar filtros quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
-    // Aplicar filtros
-    document.getElementById('applyFiltersBtn')?.addEventListener('click', function() {
-        if (propertyFilter) {
-            const filtered = propertyFilter.applyFilters();
-            renderProperties(filtered, 'property-list');
-            updatePropertiesCount();
-        }
-    });
-
-    // Limpar filtros
-    document.getElementById('clearFiltersBtn')?.addEventListener('click', function() {
-        if (propertyFilter) {
-            const allProperties = propertyFilter.clearFilters();
-            renderProperties(allProperties, 'property-list');
-            updatePropertiesCount();
-        }
-    });
-
-    // Resetar filtros
-    document.getElementById('resetFiltersBtn')?.addEventListener('click', function() {
-        if (propertyFilter) {
-            const allProperties = propertyFilter.clearFilters();
-            renderProperties(allProperties, 'property-list');
-            updatePropertiesCount();
-        }
-    });
+    setTimeout(initFilter, 1000);
 });
 
-// Exporta para uso global
-window.PropertyFilter = PropertyFilter;
-window.propertyFilter = propertyFilter;
+// Exportar funções para uso global
 window.initFilter = initFilter;
-window.updatePropertiesCount = updatePropertiesCount;
+window.applyFilters = applyFilters;
+window.clearFilters = clearFilters;

@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Banner LGPD RESTAURADO -->
+    <!-- Banner LGPD -->
     <div id="lgpdBanner" class="lgpd-banner">
         <div class="container">
             <p>
@@ -55,16 +55,20 @@
         <i class="bi bi-whatsapp"></i> Fale Conosco
     </button>
 
-    <!-- Header -->
+    <!-- Header Corrigido -->
     <header>
         <div class="logo-container" onclick="scrollToTop()">
             <img src="assets/logo.png" 
                  alt="Novatte Imóveis - Portal Imobiliário" 
                  class="logo-img">
         </div>
-        <button class="navbar-toggler" onclick="toggleMenu()" id="menuToggle">
+        
+        <!-- Botão Hamburguer Corrigido -->
+        <button class="navbar-toggler" id="menuToggle" aria-label="Menu">
             <i class="bi bi-list"></i>
         </button>
+        
+        <!-- Navegação Corrigida -->
         <nav id="navMenu">
             <a href="#inicio" onclick="closeMenu()">INÍCIO</a>
             <a href="#destaques" onclick="closeMenu()">IMÓVEIS EM DESTAQUE</a>
@@ -72,6 +76,8 @@
             <a href="#encontre-imovel" onclick="closeMenu()">ENCONTRE SEU IMÓVEL</a>
             <a href="#contact" onclick="closeMenu()">CONTATO</a>
         </nav>
+        
+        <!-- Overlay para fechar menu -->
         <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
     </header>
 
@@ -391,6 +397,31 @@
                     <button id="galleryModalNext" class="gallery-modal-nav gallery-modal-next">&gt;</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- ===== LIGHTBOX MODERNO - ADICIONADO AO FINAL DO BODY ===== -->
+    <div id="image-lightbox" class="image-lightbox-overlay">
+        <div class="image-lightbox-content">
+            <button class="image-lightbox-close" onclick="closeLightbox()" aria-label="Fechar lightbox">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <button class="image-lightbox-nav image-lightbox-prev" onclick="navigateLightbox(-1)" aria-label="Imagem anterior">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="image-lightbox-nav image-lightbox-next" onclick="navigateLightbox(1)" aria-label="Próxima imagem">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+            <div class="image-lightbox-counter" id="lightboxCounter"></div>
+            <div class="image-lightbox-image-container">
+                <img id="lightboxImage" class="image-lightbox-img" src="" alt="">
+                <div class="image-lightbox-loading" id="lightboxLoading">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="image-lightbox-caption" id="lightboxCaption"></div>
         </div>
     </div>
 
