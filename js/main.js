@@ -549,7 +549,10 @@ function showPropertyDetails(propertyId) {
     
     if (modalContent) {
         modalContent.innerHTML = PropertyTemplates.createPropertyDetail(property, corretor);
-        
+        // Garantir que nenhum overlay/overflow do menu fique ativo no mobile
+        try { closeMenu(); } catch (e) {}
+        document.body.style.overflow = '';
+
         const modal = new bootstrap.Modal(document.getElementById('propertyModal'));
         modal.show();
         
@@ -781,6 +784,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     showPropertyDetails(propertyId);
                 }
                 return;
+            }
+        }
+    }, { passive: false });
+
+    // Delegação extra para toque no mobile (iOS/Safari): garante bloqueio de propagação
+    document.addEventListener('touchstart', function(e) {
+        const detailsBtn = e.target.closest && e.target.closest('.btn-booking-secondary');
+        if (detailsBtn) {
+            const card = detailsBtn.closest('.property-card-booking');
+            if (card) {
+                const propertyId = parseInt(card.getAttribute('data-property-id'));
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isNaN(propertyId)) {
+                    showPropertyDetails(propertyId);
+                }
             }
         }
     }, { passive: false });
