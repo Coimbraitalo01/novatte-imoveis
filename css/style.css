@@ -274,15 +274,18 @@ nav {
 
 /* ===== Mobile Header & Nav (restauração do hambúrguer) ===== */
 @media (max-width: 991.98px) {
-    /* Garante um âncora para posicionamento absoluto do botão */
-    header { position: relative; }
+    /* Garante um âncora para posicionamento absoluto do botão e espaço visual */
+    header {
+        position: relative;
+        padding: 12px 16px; /* reduz para abrir espaço no topo/direita */
+    }
 
     .navbar-toggler {
         display: flex !important; /* garante visibilidade mesmo se houver regra posterior */
-        z-index: 1101; /* acima do header e overlay */
+        z-index: 2000; /* acima de qualquer conteúdo do header */
         position: absolute; /* fixa no canto direito do header */
         right: 16px;
-        top: 16px;
+        top: 8px;
         visibility: visible !important;
         opacity: 1 !important;
         pointer-events: auto !important;
