@@ -383,7 +383,7 @@ class PropertyTemplates {
 
     // Template da página completa (nova guia) - COM LIGHTBOX INTEGRADO
     static createPropertyPage(property, corretor) {
-        const logoPath = window.location.origin + '/novatte-imoveis/assets/logo.png';
+        const logoPath = new URL('assets/logo.png', window.location.href).toString();
         
         return `
 <!DOCTYPE html>
@@ -999,7 +999,7 @@ class PropertyTemplates {
             if (mapElement) {
                 const map = L.map(mapElement).setView([${property.lat}, ${property.lng}], 15);
                 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}/.png', {
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap contributors'
                 }).addTo(map);
                 
