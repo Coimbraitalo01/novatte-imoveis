@@ -603,8 +603,20 @@ function showPropertyDetails(propertyId) {
             setTimeout(() => { isOpeningDetails = false; }, 400);
         }
         
+        // Guardar ID atual para navegação dos botões
+        window.__currentPropertyId = propertyId;
+
+        // Bind dos botões de navegação no modal (desktop)
         setTimeout(() => {
             setupModalLightbox(propertyId);
+            const prevBtn = modalEl.querySelector('.gallery-modal-prev, #galleryModalPrev');
+            const nextBtn = modalEl.querySelector('.gallery-modal-next, #galleryModalNext');
+            if (prevBtn) {
+                prevBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); prevImage(window.__currentPropertyId); };
+            }
+            if (nextBtn) {
+                nextBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); nextImage(window.__currentPropertyId); };
+            }
         }, 500);
     }
 }
@@ -695,7 +707,40 @@ function openPropertyInNewTab(propertyId) {
     const corretor = corretores[property.corretor];
     const logoPath = window.location.origin + '/novatte-imoveis/assets/logo.png';
     
-    const propertyPageHTML = PropertyTemplates.createPropertyPage(property, corretor);
+    let propertyPageHTML = PropertyTemplates.createPropertyPage(property, corretor);
+    // Injeta script para garantir navegação de imagens no contexto da nova guia (mobile)
+    const injectedScript = `
+      <script>(function(){
+        try {
+          var images = ${JSON.stringify(property.images || [])};
+          var currentIndex = 0;
+          function updateView(i){
+            var img = document.querySelector('.main-image') || document.querySelector('img.main-image');
+            if (!img || !images.length) return;
+            var bounded = Math.max(0, Math.min(i, images.length-1));
+            currentIndex = bounded;
+            img.src = images[bounded];
+            var counter = document.querySelector('.image-counter-modal') || document.getElementById('galleryModalCounter');
+            if (counter) counter.textContent = (bounded+1) + '/' + images.length;
+            var thumbs = document.querySelectorAll('.thumbnail, .thumbnail-modal');
+            if (thumbs && thumbs.length){ thumbs.forEach(function(t,idx){ t.classList.toggle('active', idx===bounded); }); }
+          }
+          function next(){ if(!images.length) return; updateView((currentIndex+1)%images.length); }
+          function prev(){ if(!images.length) return; updateView((currentIndex-1+images.length)%images.length); }
+          // Bind em diversos seletores comuns
+          function bind(){
+            var prevBtns = Array.from(document.querySelectorAll('#galleryModalPrev, .gallery-modal-prev, .gallery-btn.prev, .gallery-prev, .image-lightbox-prev, #pagePrev'));
+            var nextBtns = Array.from(document.querySelectorAll('#galleryModalNext, .gallery-modal-next, .gallery-btn.next, .gallery-next, .image-lightbox-next, #pageNext'));
+            prevBtns.forEach(function(b){ b.onclick = function(e){ e.preventDefault(); e.stopPropagation(); prev(); }; });
+            nextBtns.forEach(function(b){ b.onclick = function(e){ e.preventDefault(); e.stopPropagation(); next(); }; });
+            var thumbBtns = Array.from(document.querySelectorAll('.thumbnail, .thumbnail-modal'));
+            thumbBtns.forEach(function(t, idx){ t.onclick = function(e){ e.preventDefault(); e.stopPropagation(); updateView(idx); }; });
+          }
+          document.addEventListener('DOMContentLoaded', function(){ updateView(0); bind(); });
+          window.addEventListener('load', function(){ updateView(0); bind(); });
+        } catch(e) { console.warn('Gallery injection failed:', e); }
+      })();<\/script>`;
+    propertyPageHTML += injectedScript;
     
     const newWindow = window.open('', '_blank');
     if (newWindow) {
