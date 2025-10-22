@@ -274,9 +274,15 @@ nav {
 
 /* ===== Mobile Header & Nav (restauração do hambúrguer) ===== */
 @media (max-width: 991.98px) {
+    /* Garante um âncora para posicionamento absoluto do botão */
+    header { position: relative; }
+
     .navbar-toggler {
         display: flex !important; /* garante visibilidade mesmo se houver regra posterior */
         z-index: 1101; /* acima do header e overlay */
+        position: absolute; /* fixa no canto direito do header */
+        right: 16px;
+        top: 40px;
     }
 
     header nav#navMenu {
@@ -365,7 +371,8 @@ nav a:hover::after {
     align-items: center;
     width: 40px;
     height: 40px;
-    z-index: 1001;
+    position: relative; /* necessário para o z-index funcionar */
+    z-index: 1101;
     order: 2;
 }
 
