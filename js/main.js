@@ -352,6 +352,8 @@ function openMenu() {
     menuOverlay.classList.add('active');
     menuToggle.classList.add('active');
     menuToggle.innerHTML = '<i class="bi bi-x"></i>';
+    menuToggle.setAttribute('aria-expanded', 'true');
+    nav.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 }
 
@@ -366,6 +368,8 @@ function closeMenu() {
     menuOverlay.classList.remove('active');
     menuToggle.classList.remove('active');
     menuToggle.innerHTML = '<i class="bi bi-list"></i>';
+    menuToggle.setAttribute('aria-expanded', 'false');
+    nav.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 }
 

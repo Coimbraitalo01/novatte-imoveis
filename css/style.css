@@ -270,6 +270,52 @@ nav {
     margin-left: 40px;
 }
 
+/* ===== Mobile Header & Nav (restauração do hambúrguer) ===== */
+@media (max-width: 991.98px) {
+    .navbar-toggler {
+        display: flex;
+        z-index: 1101; /* acima do header e overlay */
+    }
+
+    header nav#navMenu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 78%;
+        max-width: 340px;
+        height: 100vh;
+        background: var(--primary-color);
+        padding: 100px 24px 24px; /* espaço para header/logo */
+        box-shadow: -8px 0 24px rgba(0,0,0,0.3);
+        transform: translateX(100%);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        opacity: 0.98;
+        z-index: 1100; /* acima do overlay */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    header nav#navMenu.show {
+        transform: translateX(0);
+    }
+
+    header nav#navMenu a {
+        display: block;
+        width: 100%;
+        padding: 12px 6px;
+        font-size: 15px;
+        letter-spacing: 1.2px;
+    }
+
+    /* Garantir que o container da logo não cubra o botão */
+    header .logo-container {
+        pointer-events: none; /* evita capturar o clique do botão quando sobreposto */
+    }
+    #menuToggle { pointer-events: auto; }
+}
+
 nav a {
     color: white;
     text-decoration: none;
