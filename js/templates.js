@@ -1041,6 +1041,29 @@ class PropertyTemplates {
             changeMainImage(currentImageIndex);
         }
         
+        // ===== Vínculos dos controles da galeria (setas e miniaturas) =====
+        (function bindGalleryControls(){
+            // Executa após pintura do DOM
+            setTimeout(() => {
+                const prevBtn = document.querySelector('.gallery-modal-prev, .gallery-prev-modal');
+                const nextBtn = document.querySelector('.gallery-modal-next, .gallery-next-modal');
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); prevImage(); });
+                }
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); nextImage(); });
+                }
+
+                const thumbs = document.querySelectorAll('.thumbnail-container-modal .thumbnail');
+                thumbs.forEach((thumb, idx) => {
+                    thumb.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); changeMainImage(idx); });
+                });
+
+                // Inicializar estado visual
+                changeMainImage(currentImageIndex);
+            }, 0);
+        })();
+
         // ===== LIGHTBOX PARA NOVA GUIA =====
         let currentLightboxImages = [];
         let currentLightboxIndex = 0;
