@@ -314,6 +314,11 @@ nav {
         pointer-events: none; /* evita capturar o clique do botão quando sobreposto */
     }
     #menuToggle { pointer-events: auto; }
+
+    /* Ajuste sutil de alinhamento da logo no header (somente homepage header) */
+    header .logo-img {
+        transform: translateX(-8px);
+    }
 }
 
 nav a {

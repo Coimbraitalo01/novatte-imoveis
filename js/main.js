@@ -615,15 +615,19 @@ function updateModalGallery(propertyId, newIndex) {
     const modal = document.getElementById('propertyModal');
     if (!modal) return;
 
-    const container = modal.querySelector('.property-gallery-modal');
-    const mainImg = modal.querySelector('.property-gallery-modal .main-image');
-    const counter = modal.querySelector('.property-gallery-modal .image-counter-modal');
-    const thumbs = modal.querySelectorAll('.thumbnail-container-modal .thumbnail');
+    const visibleContainer = modal.querySelector('.mobile-layout .property-gallery-modal')
+        || modal.querySelector('.desktop-layout .property-gallery-modal')
+        || modal.querySelector('.property-gallery-modal');
+    if (!visibleContainer) return;
 
-    if (!container || !mainImg) return;
+    const mainImg = visibleContainer.querySelector('.main-image');
+    const counter = visibleContainer.querySelector('.image-counter-modal');
+    const thumbs = visibleContainer.querySelectorAll('.thumbnail-container-modal .thumbnail');
+
+    if (!visibleContainer || !mainImg) return;
 
     const bounded = Math.max(0, Math.min(newIndex, property.images.length - 1));
-    container.setAttribute('data-current-image', String(bounded));
+    visibleContainer.setAttribute('data-current-image', String(bounded));
 
     mainImg.src = property.images[bounded];
     if (counter) counter.textContent = `${bounded + 1}/${property.images.length}`;
@@ -639,7 +643,9 @@ function changeMainImage(propertyId, index) {
 function prevImage(propertyId) {
     const modal = document.getElementById('propertyModal');
     if (!modal) return;
-    const container = modal.querySelector('.property-gallery-modal');
+    const container = modal.querySelector('.mobile-layout .property-gallery-modal')
+        || modal.querySelector('.desktop-layout .property-gallery-modal')
+        || modal.querySelector('.property-gallery-modal');
     if (!container) return;
     const property = properties.find(p => p.id === propertyId);
     if (!property || !property.images || property.images.length === 0) return;
@@ -652,7 +658,9 @@ function prevImage(propertyId) {
 function nextImage(propertyId) {
     const modal = document.getElementById('propertyModal');
     if (!modal) return;
-    const container = modal.querySelector('.property-gallery-modal');
+    const container = modal.querySelector('.mobile-layout .property-gallery-modal')
+        || modal.querySelector('.desktop-layout .property-gallery-modal')
+        || modal.querySelector('.property-gallery-modal');
     if (!container) return;
     const property = properties.find(p => p.id === propertyId);
     if (!property || !property.images || property.images.length === 0) return;
