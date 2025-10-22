@@ -1028,9 +1028,28 @@ function formatPrice(e) {
     }
 }
 
+// ===== Inicialização do Menu Hamburguer =====
+document.addEventListener('DOMContentLoaded', function(){
+  const hamburger = document.getElementById('hamburger');
+  const nav = document.getElementById('navMenu');
+  const overlay = document.getElementById('menuOverlay');
+  if (hamburger) {
+    hamburger.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); toggleMenu(); });
+  }
+  if (overlay) {
+    overlay.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); closeMenu(); });
+  }
+  if (nav) {
+    nav.addEventListener('click', function(e){
+      const link = e.target.closest('a');
+      if (link) { closeMenu(); }
+    });
+  }
+});
+
 // ===== EXPORTAR FUNÇÕES PARA USO GLOBAL =====
-window.toggleMenu  // Exporte funções globais para HTML inline
-window.closeMenu = () => window.__menu__?.closeMenu();
+window.toggleMenu = toggleMenu; // Exporte funções globais para HTML inline
+window.closeMenu = closeMenu;
 
 // ===== Fallback para botões de fechar modal quando Bootstrap JS não está disponível =====
 function closeModalElement(modalEl){
