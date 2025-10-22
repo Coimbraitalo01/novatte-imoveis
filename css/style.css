@@ -388,6 +388,26 @@ nav a:hover::after {
     transition: all 0.3s ease;
 }
 
+/* Fallback visual do ícone hambúrguer (3 linhas) */
+.navbar-toggler .burger-fallback {
+    width: 24px;
+    height: 18px;
+    position: relative;
+    display: inline-block;
+    margin-left: 6px;
+}
+.navbar-toggler .burger-fallback .burger-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+}
+.navbar-toggler .burger-fallback .burger-line:nth-child(1) { top: 0; }
+.navbar-toggler .burger-fallback .burger-line:nth-child(2) { top: 8px; }
+.navbar-toggler .burger-fallback .burger-line:nth-child(3) { top: 16px; }
+
 .navbar-toggler.active i {
     transform: rotate(90deg);
     color: var(--secondary-color);
