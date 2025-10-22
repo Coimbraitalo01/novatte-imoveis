@@ -2272,12 +2272,23 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
 #menuOverlay.active { display: block; opacity: 1; }
 
 /* ===== Close button for property modal ===== */
+.modal .modal-content { position: relative; }
 .modal-close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 10;
+  top: 8px;
+  right: 8px;
+  z-index: 1056; /* acima do conteúdo do modal */
   filter: invert(1);
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.2);
+}
+@media (hover:hover){
+  .modal-close-btn:hover { background: rgba(0,0,0,0.3); }
 }
 
 /* ===== Mobile ===== */
@@ -2342,7 +2353,7 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
     display: flex; align-items: center;
   }
   header .header-container .logo-img {
-    height: 320px; max-width: 420px; margin: -110px 0;
+    height: 64px; width: auto; max-width: 260px; margin: 0; object-fit: contain;
   }
   .nav-menu { display: flex !important; flex: 1 1 auto; align-items: center; justify-content: flex-end; margin-left: 40px; flex-direction: row !important; }
   .nav-list { display: flex !important; flex-direction: row !important; align-items: center; gap: 24px; margin: 0; padding: 0; }

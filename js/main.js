@@ -609,8 +609,9 @@ function showPropertyDetails(propertyId) {
         // Bind dos botões de navegação no modal (desktop)
         setTimeout(() => {
             setupModalLightbox(propertyId);
-            const prevBtn = modalEl.querySelector('.gallery-modal-prev, #galleryModalPrev');
-            const nextBtn = modalEl.querySelector('.gallery-modal-next, #galleryModalNext');
+            // Seletores compatíveis com os botões gerados em templates.js
+            const prevBtn = modalEl.querySelector('.gallery-prev-modal, .gallery-modal-prev, #galleryModalPrev');
+            const nextBtn = modalEl.querySelector('.gallery-next-modal, .gallery-modal-next, #galleryModalNext');
             if (prevBtn) {
                 prevBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); prevImage(window.__currentPropertyId); };
             }
@@ -633,6 +634,32 @@ function setupModalLightbox(propertyId) {
             e.preventDefault();
             openPropertyLightbox(propertyId);
         };
+
+        // Navegação por gesto (swipe) no mobile dentro do modal
+        let startX = null;
+        let startY = null;
+        const threshold = 40; // px
+        container.addEventListener('touchstart', (ev) => {
+            if (!ev.touches || ev.touches.length === 0) return;
+            startX = ev.touches[0].clientX;
+            startY = ev.touches[0].clientY;
+        }, { passive: true });
+        container.addEventListener('touchend', (ev) => {
+            if (startX === null) return;
+            const endX = ev.changedTouches && ev.changedTouches[0] ? ev.changedTouches[0].clientX : startX;
+            const endY = ev.changedTouches && ev.changedTouches[0] ? ev.changedTouches[0].clientY : startY;
+            const dx = endX - startX;
+            const dy = endY - startY;
+            // ignora gestos predominantemente verticais
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
+                if (dx < 0) {
+                    nextImage(propertyId);
+                } else {
+                    prevImage(propertyId);
+                }
+            }
+            startX = startY = null;
+        }, { passive: true });
     });
 }
 
@@ -735,6 +762,15 @@ function openPropertyInNewTab(propertyId) {
             nextBtns.forEach(function(b){ b.onclick = function(e){ e.preventDefault(); e.stopPropagation(); next(); }; });
             var thumbBtns = Array.from(document.querySelectorAll('.thumbnail, .thumbnail-modal'));
             thumbBtns.forEach(function(t, idx){ t.onclick = function(e){ e.preventDefault(); e.stopPropagation(); updateView(idx); }; });
+
+            // Swipe (mobile) na imagem principal
+            var container = (document.querySelector('.main-image')||{}).parentElement || document.querySelector('.main-gallery-container') || document.body;
+            var sx=null, sy=null; var threshold=40;
+            container.addEventListener('touchstart', function(ev){ if(!ev.touches||ev.touches.length===0) return; sx=ev.touches[0].clientX; sy=ev.touches[0].clientY; }, {passive:true});
+            container.addEventListener('touchend', function(ev){ if(sx===null) return; var ex=(ev.changedTouches&&ev.changedTouches[0]?ev.changedTouches[0].clientX:sx); var ey=(ev.changedTouches&&ev.changedTouches[0]?ev.changedTouches[0].clientY:sy); var dx=ex-sx; var dy=ey-sy; if(Math.abs(dx)>Math.abs(dy) && Math.abs(dx)>threshold){ if(dx<0){ next(); } else { prev(); } } sx=sy=null; }, {passive:true});
+
+            // Teclado
+            document.addEventListener('keydown', function(e){ if(e.key==='ArrowLeft'){ prev(); } else if(e.key==='ArrowRight'){ next(); } });
           }
           document.addEventListener('DOMContentLoaded', function(){ updateView(0); bind(); });
           window.addEventListener('load', function(){ updateView(0); bind(); });
@@ -993,8 +1029,36 @@ function formatPrice(e) {
 }
 
 // ===== EXPORTAR FUNÇÕES PARA USO GLOBAL =====
-window.toggleMenu = toggleMenu;
-window.closeMenu = closeMenu;
+window.toggleMenu  // Exporte funções globais para HTML inline
+window.closeMenu = () => window.__menu__?.closeMenu();
+
+// ===== Fallback para botões de fechar modal quando Bootstrap JS não está disponível =====
+function closeModalElement(modalEl){
+    if (!modalEl) return;
+    try {
+      if (window.bootstrap?.Modal) {
+        const inst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+        inst.hide();
+      } else {
+        modalEl.classList.remove('show');
+        modalEl.style.display = 'none';
+        modalEl.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+      }
+    } catch(e) { console.warn('Modal close fallback error:', e); }
+}
+
+document.addEventListener('click', function(e){
+    const target = e.target.closest('[data-bs-dismiss="modal"]');
+    if (!target) return;
+    const modalEl = target.closest('.modal');
+    if (modalEl) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeModalElement(modalEl);
+    }
+}, true);
+
 window.openMenu = openMenu;
 window.openLightbox = openLightbox;
 window.closeLightbox = closeLightbox;
@@ -1005,6 +1069,9 @@ window.contactCorretor = contactCorretor;
 window.openPropertyInNewTab = openPropertyInNewTab;
 window.changeImage = changeImage;
 window.showImage = showImage;
+window.changeMainImage = changeMainImage;
+window.prevImage = prevImage;
+window.nextImage = nextImage;
 window.changeMainImage = changeMainImage;
 window.prevImage = prevImage;
 window.nextImage = nextImage;
