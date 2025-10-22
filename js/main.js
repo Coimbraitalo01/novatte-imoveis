@@ -777,10 +777,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 2. Menu Hamburguer
     const menuToggle = document.getElementById('menuToggle');
+    const hamburger = document.getElementById('hamburger');
     const menuOverlay = document.getElementById('menuOverlay');
     
     if (menuToggle) {
         menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMenu();
+        });
+    }
+    if (hamburger) {
+        hamburger.addEventListener('click', function(e) {
             e.stopPropagation();
             toggleMenu();
         });
