@@ -312,8 +312,16 @@ nav {
     .hamburger.active .hamburger-line:nth-child(2){ opacity: 0; }
     .hamburger.active .hamburger-line:nth-child(3){ transform: translateY(-5px) rotate(-45deg); }
 
-    /* Garantir que a imagem da logo não fique acima do botão */
-    header .logo-img { position: relative; z-index: 1; height: 200px; max-width: 260px; margin: -70px 0; }
+    /* Garantir que a imagem da logo não fique acima do botão e ficar no lado oposto (esquerda) */
+    header .logo-container { pointer-events: none; margin-right: auto; }
+    header .logo-img {
+        position: relative;
+        z-index: 1;
+        height: 200px;
+        max-width: 240px;
+        margin: -70px 0;
+        transform: none; /* remove deslocamento anterior */
+    }
 
     header nav#navMenu {
         position: fixed;
@@ -351,9 +359,7 @@ nav {
     header .logo-container { pointer-events: none; }
 
     /* Ajuste sutil de alinhamento da logo no header (somente homepage header) */
-    header .logo-img {
-        transform: translateX(-16px);
-    }
+    header .logo-img { transform: translateX(-32px); }
 }
 
 nav a {
