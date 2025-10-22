@@ -328,11 +328,12 @@ function rejectCookies() {
 function toggleMenu() {
     const nav = document.getElementById('navMenu');
     const menuToggle = document.getElementById('menuToggle');
+    const hamburger = document.getElementById('hamburger');
     const menuOverlay = document.getElementById('menuOverlay');
     
-    if (!nav || !menuToggle || !menuOverlay) return;
+    if (!nav || !menuOverlay) return;
     
-    const isOpen = nav.classList.contains('show');
+    const isOpen = nav.classList.contains('show') || nav.classList.contains('active');
     
     if (isOpen) {
         closeMenu();
@@ -344,15 +345,23 @@ function toggleMenu() {
 function openMenu() {
     const nav = document.getElementById('navMenu');
     const menuToggle = document.getElementById('menuToggle');
+    const hamburger = document.getElementById('hamburger');
     const menuOverlay = document.getElementById('menuOverlay');
     
-    if (!nav || !menuToggle || !menuOverlay) return;
+    if (!nav || !menuOverlay) return;
     
     nav.classList.add('show');
+    nav.classList.add('active');
     menuOverlay.classList.add('active');
-    menuToggle.classList.add('active');
-    menuToggle.innerHTML = '<i class="bi bi-x"></i>';
-    menuToggle.setAttribute('aria-expanded', 'true');
+    if (menuToggle) {
+        menuToggle.classList.add('active');
+        menuToggle.innerHTML = '<i class="bi bi-x"></i>';
+        menuToggle.setAttribute('aria-expanded', 'true');
+    }
+    if (hamburger) {
+        hamburger.classList.add('active');
+        hamburger.setAttribute('aria-expanded', 'true');
+    }
     nav.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 }
@@ -360,15 +369,23 @@ function openMenu() {
 function closeMenu() {
     const nav = document.getElementById('navMenu');
     const menuToggle = document.getElementById('menuToggle');
+    const hamburger = document.getElementById('hamburger');
     const menuOverlay = document.getElementById('menuOverlay');
     
-    if (!nav || !menuToggle || !menuOverlay) return;
+    if (!nav || !menuOverlay) return;
     
     nav.classList.remove('show');
+    nav.classList.remove('active');
     menuOverlay.classList.remove('active');
-    menuToggle.classList.remove('active');
-    menuToggle.innerHTML = '<i class="bi bi-list"></i>';
-    menuToggle.setAttribute('aria-expanded', 'false');
+    if (menuToggle) {
+        menuToggle.classList.remove('active');
+        menuToggle.innerHTML = '<i class="bi bi-list"></i>';
+        menuToggle.setAttribute('aria-expanded', 'false');
+    }
+    if (hamburger) {
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+    }
     nav.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 }

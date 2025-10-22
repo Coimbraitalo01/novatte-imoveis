@@ -55,35 +55,36 @@
         <i class="bi bi-whatsapp"></i> Fale Conosco
     </button>
 
-    <!-- Header Corrigido -->
+    <!-- Header com Menu Hamburguer Moderno -->
     <header>
-        <div class="logo-container" onclick="scrollToTop()">
-            <img src="assets/logo.png" 
-                 alt="Novatte Imóveis - Portal Imobiliário" 
-                 class="logo-img">
+        <div class="header-container">
+            <div class="logo-container" onclick="scrollToTop()">
+                <img src="assets/logo.png" 
+                     alt="Novatte Imóveis - Portal Imobiliário" 
+                     class="logo-img">
+            </div>
+
+            <!-- Menu Hamburguer -->
+            <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <!-- Navegação -->
+            <nav class="nav-menu" id="navMenu" aria-hidden="true">
+                <ul class="nav-list">
+                    <li><a href="#inicio" onclick="closeMenu()">INÍCIO</a></li>
+                    <li><a href="#destaques" onclick="closeMenu()">IMÓVEIS EM DESTAQUE</a></li>
+                    <li><a href="#todos-imoveis" onclick="closeMenu()">TODOS OS IMÓVEIS</a></li>
+                    <li><a href="#encontre-imovel" onclick="closeMenu()">ENCONTRE SEU IMÓVEL</a></li>
+                    <li><a href="#contact" onclick="closeMenu()">CONTATO</a></li>
+                </ul>
+            </nav>
+
+            <!-- Overlay para fechar menu -->
+            <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
         </div>
-        
-        <!-- Botão Hamburguer Corrigido -->
-        <button class="navbar-toggler" id="menuToggle" aria-label="Menu" role="button" aria-controls="navMenu" aria-expanded="false">
-            <i class="bi bi-list" aria-hidden="true"></i>
-            <span class="burger-fallback" aria-hidden="true">
-                <span class="burger-line"></span>
-                <span class="burger-line"></span>
-                <span class="burger-line"></span>
-            </span>
-        </button>
-        
-        <!-- Navegação Corrigida -->
-        <nav id="navMenu">
-            <a href="#inicio" onclick="closeMenu()">INÍCIO</a>
-            <a href="#destaques" onclick="closeMenu()">IMÓVEIS EM DESTAQUE</a>
-            <a href="#todos-imoveis" onclick="closeMenu()">TODOS OS IMÓVEIS</a>
-            <a href="#encontre-imovel" onclick="closeMenu()">ENCONTRE SEU IMÓVEL</a>
-            <a href="#contact" onclick="closeMenu()">CONTATO</a>
-        </nav>
-        
-        <!-- Overlay para fechar menu -->
-        <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
     </header>
 
     <!-- Hero Section -->
