@@ -312,8 +312,20 @@ class PropertyTemplates {
             `;
         }
 
-        // Para modal, retornar apenas desktop layout
-        return desktopLayout;
+        // Para modal, retornar os dois layouts com as mesmas regras de exibição responsiva da nova guia
+        return `
+            ${desktopLayout}
+            <style>
+                @media (max-width: 768px) {
+                    .desktop-layout { display: none; }
+                    .mobile-layout { display: block; }
+                }
+                @media (min-width: 769px) {
+                    .mobile-layout { display: none; }
+                }
+            </style>
+            ${mobileLayout}
+        `;
     }
 
     // Galeria para modal - SEM ÍCONES DE ZOOM
@@ -412,8 +424,9 @@ class PropertyTemplates {
         .logo-container {
             display: flex;
             align-items: center;
+            justify-content: center;
             height: 100%;
-            flex: 0 0 auto;
+            flex: 1 1 auto;
         }
         
         .logo-img {
@@ -421,7 +434,8 @@ class PropertyTemplates {
             width: auto;
             object-fit: contain;
             max-width: 400px;
-            margin: -100px 0;
+            margin: -100px auto;
+            display: block;
         }
         
         .unified-view {

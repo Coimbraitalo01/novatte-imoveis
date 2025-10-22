@@ -542,7 +542,8 @@ function loadMoreAllProperties() {
 
 // ===== FUNÇÕES DO MODAL DE DETALHES =====
 function showPropertyDetails(propertyId) {
-    const property = properties.find(p => p.id === propertyId);
+    const pid = String(propertyId);
+    const property = properties.find(p => String(p.id) === pid);
     if (!property) return;
     
     const corretor = corretores[property.corretor];
@@ -817,7 +818,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (detailsBtn) {
             const card = detailsBtn.closest('.property-card-booking');
             if (card) {
-                const propertyId = parseInt(card.getAttribute('data-property-id'));
+                const propertyId = card.getAttribute('data-property-id');
                 e.preventDefault();
                 e.stopPropagation();
                 if (!isNaN(propertyId)) {
@@ -835,10 +836,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (detailsBtn) {
             const card = detailsBtn.closest('.property-card-booking');
             if (card) {
-                const propertyId = parseInt(card.getAttribute('data-property-id'));
+                const propertyId = card.getAttribute('data-property-id');
                 e.preventDefault();
                 e.stopPropagation();
-                if (!isNaN(propertyId)) {
+                if (propertyId) {
                     showPropertyDetails(propertyId);
                 }
             }
@@ -850,10 +851,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (detailsBtn) {
             const card = detailsBtn.closest('.property-card-booking');
             if (card) {
-                const propertyId = parseInt(card.getAttribute('data-property-id'));
+                const propertyId = card.getAttribute('data-property-id');
                 e.preventDefault();
                 e.stopPropagation();
-                if (!isNaN(propertyId)) {
+                if (propertyId) {
                     showPropertyDetails(propertyId);
                 }
             }
