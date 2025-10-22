@@ -337,18 +337,19 @@ class PropertyTemplates {
         property.images.forEach((img, index) => {
             thumbnailsHtml += `
                 <img src="${img}" class="thumbnail ${index === 0 ? 'active' : ''}" 
-                     onclick="${isNewTab ? `changeMainImage(${index})` : `changeMainImage(${property.id}, ${index})`}" 
+                     onclick="${isNewTab ? `event.preventDefault(); event.stopPropagation();` : `changeMainImage(${property.id}, ${index})`}" 
                      alt="${property.title} - Foto ${index + 1}">
             `;
         });
 
         // Funções para lightbox
+        // Em nova guia, evitamos chamar função inexistente e deixamos a navegação pelas setas/miniaturas (injetada via script)
         const lightboxFunction = isNewTab ? 
-            `openPropertyLightboxNewTab(${JSON.stringify(property.images)}, ${0})` : 
+            `event.stopPropagation();` : 
             `openPropertyLightbox(${property.id})`;
 
-        const prevFunction = isNewTab ? 'prevImage()' : `prevImage(${property.id})`;
-        const nextFunction = isNewTab ? 'nextImage()' : `nextImage(${property.id})`;
+        const prevFunction = isNewTab ? 'event.stopPropagation(); return false;' : `prevImage(${property.id})`;
+        const nextFunction = isNewTab ? 'event.stopPropagation(); return false;' : `nextImage(${property.id})`;
 
         return `
             <div class="property-gallery-modal" data-current-image="0">
@@ -360,10 +361,10 @@ class PropertyTemplates {
                     <!-- BOTÕES DE NAVEGAÇÃO -->
                     ${property.images.length > 1 ? `
                     <div class="gallery-controls-modal">
-                        <button class="gallery-btn-modal gallery-prev-modal" onclick="event.stopPropagation(); ${prevFunction}">
+                        <button class="gallery-btn-modal gallery-prev-modal gallery-modal-prev" onclick="event.stopPropagation(); ${prevFunction}">
                             <i class="bi bi-chevron-left"></i>
                         </button>
-                        <button class="gallery-btn-modal gallery-next-modal" onclick="event.stopPropagation(); ${nextFunction}">
+                        <button class="gallery-btn-modal gallery-next-modal gallery-modal-next" onclick="event.stopPropagation(); ${nextFunction}">
                             <i class="bi bi-chevron-right"></i>
                         </button>
                     </div>

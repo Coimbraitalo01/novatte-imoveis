@@ -664,6 +664,21 @@ function setupModalLightbox(propertyId) {
 }
 
 // ===== NAVEGAÇÃO DA GALERIA NO MODAL =====
+function getVisibleModalGalleryContainer(modal) {
+    if (!modal) return null;
+    const desktop = modal.querySelector('.desktop-layout .property-gallery-modal');
+    const mobile = modal.querySelector('.mobile-layout .property-gallery-modal');
+    // Preferir o que está visível de fato
+    const isVisible = (el) => !!(el && el.offsetParent !== null);
+    if (isVisible(desktop)) return desktop;
+    if (isVisible(mobile)) return mobile;
+    // Fallback por media query
+    if (window.matchMedia('(min-width: 769px)').matches && desktop) return desktop;
+    if (window.matchMedia('(max-width: 768px)').matches && mobile) return mobile;
+    // Último recurso: qualquer um existente
+    return desktop || mobile || modal.querySelector('.property-gallery-modal');
+}
+
 function updateModalGallery(propertyId, newIndex) {
     const property = properties.find(p => p.id === propertyId);
     if (!property || !property.images || property.images.length === 0) return;
@@ -671,9 +686,7 @@ function updateModalGallery(propertyId, newIndex) {
     const modal = document.getElementById('propertyModal');
     if (!modal) return;
 
-    const visibleContainer = modal.querySelector('.mobile-layout .property-gallery-modal')
-        || modal.querySelector('.desktop-layout .property-gallery-modal')
-        || modal.querySelector('.property-gallery-modal');
+    const visibleContainer = getVisibleModalGalleryContainer(modal);
     if (!visibleContainer) return;
 
     const mainImg = visibleContainer.querySelector('.main-image');
@@ -699,9 +712,7 @@ function changeMainImage(propertyId, index) {
 function prevImage(propertyId) {
     const modal = document.getElementById('propertyModal');
     if (!modal) return;
-    const container = modal.querySelector('.mobile-layout .property-gallery-modal')
-        || modal.querySelector('.desktop-layout .property-gallery-modal')
-        || modal.querySelector('.property-gallery-modal');
+    const container = getVisibleModalGalleryContainer(modal);
     if (!container) return;
     const property = properties.find(p => p.id === propertyId);
     if (!property || !property.images || property.images.length === 0) return;
@@ -714,9 +725,7 @@ function prevImage(propertyId) {
 function nextImage(propertyId) {
     const modal = document.getElementById('propertyModal');
     if (!modal) return;
-    const container = modal.querySelector('.mobile-layout .property-gallery-modal')
-        || modal.querySelector('.desktop-layout .property-gallery-modal')
-        || modal.querySelector('.property-gallery-modal');
+    const container = getVisibleModalGalleryContainer(modal);
     if (!container) return;
     const property = properties.find(p => p.id === propertyId);
     if (!property || !property.images || property.images.length === 0) return;

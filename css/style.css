@@ -248,9 +248,9 @@ header {
 /* Ajustes apenas para o header da página inicial em desktop */
 @media (min-width: 992px) {
     header .logo-img {
-        height: 320px;
-        max-width: 420px;
-        margin: -110px 0;
+        height: 360px;
+        max-width: 470px;
+        margin: -120px 0;
     }
     header .logo-container {
         margin-left: -10px;
@@ -280,21 +280,40 @@ nav {
         padding: 12px 16px; /* reduz para abrir espaço no topo/direita */
     }
 
-    .navbar-toggler {
+    /* Botão hamburger real do HTML */
+    .hamburger {
         display: flex !important;
         position: fixed; /* evita piscar ao depender do fluxo do header */
         right: 12px;
-        top: 20px;
+        top: 18px;
         z-index: 4000; /* acima de tudo no header e overlay */
         visibility: visible !important;
         opacity: 1 !important;
         pointer-events: auto !important;
-        line-height: 1;
-        -webkit-tap-highlight-color: transparent; /* melhora toque no Android */
+        width: 42px;
+        height: 42px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 10px;
+        -webkit-tap-highlight-color: transparent;
+        align-items: center;
+        justify-content: center;
     }
+    .hamburger-line {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #fff;
+        margin: 3px 0;
+        border-radius: 2px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .hamburger.active .hamburger-line:nth-child(1){ transform: translateY(5px) rotate(45deg); }
+    .hamburger.active .hamburger-line:nth-child(2){ opacity: 0; }
+    .hamburger.active .hamburger-line:nth-child(3){ transform: translateY(-5px) rotate(-45deg); }
 
     /* Garantir que a imagem da logo não fique acima do botão */
-    header .logo-img { position: relative; z-index: 1; }
+    header .logo-img { position: relative; z-index: 1; height: 200px; max-width: 260px; margin: -70px 0; }
 
     header nav#navMenu {
         position: fixed;
@@ -329,10 +348,7 @@ nav {
     }
 
     /* Garantir que o container da logo não cubra o botão */
-    header .logo-container {
-        pointer-events: none; /* evita capturar o clique do botão quando sobreposto */
-    }
-    #menuToggle { pointer-events: auto; }
+    header .logo-container { pointer-events: none; }
 
     /* Ajuste sutil de alinhamento da logo no header (somente homepage header) */
     header .logo-img {
@@ -452,6 +468,11 @@ nav a:hover::after {
     display: none;
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1000;
 }
 
 .menu-overlay.active {
@@ -1062,6 +1083,16 @@ h2 {
     border-radius: 15px;
     border: none;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* Ícone visual de fechar no modal de detalhes (sem alterar comportamento) */
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1060;
+    filter: invert(0); /* botão padrão do Bootstrap já tem ícone */
+    opacity: 1;
 }
 
 #propertyModal .modal-body {
