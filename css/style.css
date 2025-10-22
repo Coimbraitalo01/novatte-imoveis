@@ -282,7 +282,10 @@ nav {
         z-index: 1101; /* acima do header e overlay */
         position: absolute; /* fixa no canto direito do header */
         right: 16px;
-        top: 40px;
+        top: 16px;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
     }
 
     header nav#navMenu {
