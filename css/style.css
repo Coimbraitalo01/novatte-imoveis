@@ -328,7 +328,7 @@ nav {
 
     /* Ajuste sutil de alinhamento da logo no header (somente homepage header) */
     header .logo-img {
-        transform: translateX(-8px);
+        transform: translateX(-16px);
     }
 }
 
