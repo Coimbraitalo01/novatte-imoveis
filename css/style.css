@@ -281,14 +281,20 @@ nav {
     }
 
     .navbar-toggler {
-        display: flex !important; /* garante visibilidade mesmo se houver regra posterior */
-        z-index: 2000; /* acima de qualquer conteúdo do header */
-        position: absolute; /* fixa no canto direito do header */
+        display: flex !important;
+        position: absolute;
         right: 16px;
         top: 8px;
+        z-index: 3000; /* garantir acima da logo */
         visibility: visible !important;
         opacity: 1 !important;
         pointer-events: auto !important;
+    }
+
+    /* Garantir que a imagem da logo não fique acima do botão */
+    header .logo-img {
+        position: relative;
+        z-index: 1;
     }
 
     header nav#navMenu {
