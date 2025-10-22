@@ -282,21 +282,20 @@ nav {
 
     .navbar-toggler {
         display: flex !important;
-        position: absolute;
-        right: 16px;
-        top: 8px;
-        z-index: 3000; /* garantir acima da logo */
+        position: fixed; /* evita piscar ao depender do fluxo do header */
+        right: 12px;
+        top: 12px;
+        z-index: 4000; /* acima de tudo no header e overlay */
         visibility: visible !important;
         opacity: 1 !important;
         pointer-events: auto !important;
+        line-height: 1;
+        -webkit-tap-highlight-color: transparent; /* melhora toque no Android */
     }
 
     /* Garantir que a imagem da logo não fique acima do botão */
-    header .logo-img {
-        position: relative;
-        z-index: 1;
-    }
-
+    header .logo-img { position: relative; z-index: 1; }
+}
     header nav#navMenu {
         position: fixed;
         top: 0;
