@@ -295,7 +295,7 @@ nav {
 
     /* Garantir que a imagem da logo não fique acima do botão */
     header .logo-img { position: relative; z-index: 1; }
-}
+
     header nav#navMenu {
         position: fixed;
         top: 0;
