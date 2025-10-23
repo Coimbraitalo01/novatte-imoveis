@@ -330,6 +330,7 @@ function toggleMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const hamburger = document.getElementById('hamburger');
     const menuOverlay = document.getElementById('menuOverlay');
+    const navClose = document.getElementById('navClose');
     
     if (!nav || !menuOverlay) return;
     
@@ -873,6 +874,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (menuOverlay) {
         menuOverlay.addEventListener('click', closeMenu);
+    }
+    if (navClose) {
+        navClose.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); closeMenu(); });
     }
 
     // 3. Fechar menu ao clicar em links

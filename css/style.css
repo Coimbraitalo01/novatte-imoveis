@@ -7,6 +7,24 @@
     --background-color: #f8f9fa;
 }
 
+/* Botão interno de fechar no menu mobile */
+.nav-menu .nav-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 22px;
+  line-height: 32px;
+  text-align: center;
+  cursor: pointer;
+}
+.nav-menu .nav-close:hover { background: rgba(255,255,255,0.2); }
+
 /* Forçar visibilidade do X no botão de fechar do modal de detalhes */
 .modal-close-btn {
   background: none !important;
@@ -350,7 +368,7 @@ nav {
         max-width: 340px;
         height: 100vh;
         background: var(--primary-color);
-        padding: 100px 24px 24px; /* espaço para header/logo */
+        padding: 64px 24px 24px; /* espaço para botão fechar */
         box-shadow: -8px 0 24px rgba(0,0,0,0.3);
         transition: right 0.3s ease;
         opacity: 0.98;
@@ -2412,7 +2430,7 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
     margin-right: 72px;
   }
   header .header-container .logo-img {
-    height: 192px; width: auto; max-width: 600px; margin: 0; object-fit: contain;
+    height: 220px; width: auto; max-width: 650px; margin: 0; object-fit: contain;
   }
   .nav-menu { display: flex !important; flex: 1 1 auto; align-items: center; justify-content: flex-end; margin-left: 40px; flex-direction: row !important; }
   .nav-list { display: flex !important; flex-direction: row !important; align-items: center; gap: 24px; margin: 0; padding: 0; }
