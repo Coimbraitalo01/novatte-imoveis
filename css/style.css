@@ -1693,6 +1693,8 @@ link[rel="icon"] {
         position: relative;
         z-index: 1000;
     }
+    /* Reservar espaço à direita para o hambúrguer em dispositivos reais */
+    header { padding-right: 96px !important; }
     
     .logo-container {
         flex: 1;
@@ -1701,12 +1703,15 @@ link[rel="icon"] {
         align-items: center;
         height: 100%;
         margin-right: 10px;
+        pointer-events: none !important; /* não bloquear clique do hambúrguer */
     }
     
     .logo-img {
         height: 300px !important;
         max-width: 400px !important;
         margin: -100px 0 !important;
+        transform: translateX(-18px) !important; /* afasta da área do botão */
+        position: relative; z-index: 1;
         object-fit: contain;
     }
     
