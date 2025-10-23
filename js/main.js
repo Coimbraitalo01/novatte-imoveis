@@ -351,8 +351,10 @@ function openMenu() {
     
     if (!nav || !menuOverlay) return;
     
-    nav.classList.add('show');
     nav.classList.add('active');
+    nav.classList.add('show'); // compatibilidade com CSS que usa .show
+    // fallback direto caso algum CSS use inline right
+    try { nav.style.right = '0'; } catch(_) {}
     menuOverlay.classList.add('active');
     if (menuToggle) {
         menuToggle.classList.add('active');
@@ -365,6 +367,13 @@ function openMenu() {
     }
     nav.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    // Adicionar evento de fechamento ao clicar em links
+    const links = nav.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+        });
+    });
 }
 
 function closeMenu() {
@@ -375,8 +384,10 @@ function closeMenu() {
     
     if (!nav || !menuOverlay) return;
     
-    nav.classList.remove('show');
     nav.classList.remove('active');
+    nav.classList.remove('show'); // compatibilidade com CSS que usa .show
+    // fallback inline
+    try { nav.style.right = ''; } catch(_) {}
     menuOverlay.classList.remove('active');
     if (menuToggle) {
         menuToggle.classList.remove('active');
@@ -1102,3 +1113,43 @@ window.openInGoogleMaps = openInGoogleMaps;
 window.getDirections = getDirections;
 window.scrollToTop = scrollToTop;
 window.openDataManagement = openDataManagement;
+
+// ====== Fallback global: garantir funcionamento do menu hambúrguer mesmo com conflitos ======
+document.addEventListener('click', function(e){
+  const hb = e.target.closest && e.target.closest('#hamburger');
+  if (hb) {
+    e.preventDefault(); e.stopPropagation();
+    try { toggleMenu(); } catch(_){}
+    return;
+  }
+  const closeBtn = e.target.closest && e.target.closest('#navClose');
+  if (closeBtn) {
+    e.preventDefault(); e.stopPropagation();
+    try { closeMenu(); } catch(_){}
+    return;
+  }
+  const overlay = e.target.closest && e.target.closest('#menuOverlay');
+  if (overlay) {
+    e.preventDefault(); e.stopPropagation();
+    try { closeMenu(); } catch(_){}
+    return;
+  }
+  const linkInsideMenu = e.target.closest && e.target.closest('#navMenu a');
+  if (linkInsideMenu) {
+    try { closeMenu(); } catch(_){}
+  }
+}, true);
+
+// Suporte a toque (iOS/Android) para o hambúrguer e overlay
+document.addEventListener('touchstart', function(e){
+  const hb = e.target.closest && e.target.closest('#hamburger');
+  if (hb) {
+    e.preventDefault(); e.stopPropagation();
+    try { toggleMenu(); } catch(_){}
+  }
+  const overlay = e.target.closest && e.target.closest('#menuOverlay');
+  if (overlay) {
+    e.preventDefault(); e.stopPropagation();
+    try { closeMenu(); } catch(_){}
+  }
+}, { passive: false });

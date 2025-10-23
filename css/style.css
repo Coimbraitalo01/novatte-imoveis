@@ -283,6 +283,8 @@ header {
 
 /* Ajustes apenas para o header da página inicial em desktop */
 @media (min-width: 992px) {
+  /* Remover botão de fechar do menu no desktop */
+  .nav-menu .nav-close { display: none !important; }
     header .logo-img {
         height: 360px;
         max-width: 470px;
@@ -2393,7 +2395,11 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
 
 @media (max-width: 480px) {
   .nav-menu { width: 85%; }
-  header .header-container .logo-img { height: 250px !important; max-width: 350px !important; margin: -80px 0 !important; }
+  /* Reservar mais espaço à direita para o hambúrguer e garantir clique */
+  header { padding-right: 96px !important; }
+  .hamburger { right: 12px !important; top: 16px !important; z-index: 5000 !important; }
+  header .logo-container { margin-right: auto !important; pointer-events: none !important; }
+  header .logo-img { height: 250px !important; max-width: 350px !important; margin: -80px 0 !important; transform: translateX(-20px) !important; pointer-events: none !important; }
 }
 
 /* ===== Mobile amplo (tablets e celulares com largura CSS maior) ===== */
@@ -2420,18 +2426,18 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
 @media (min-width: 992px) {
   header .header-container {
     display: flex; align-items: center; justify-content: space-between;
-    gap: 14px; padding: 12px 40px;
+    gap: 12px; padding: 10px 32px;
   }
   header .header-container .logo-container {
-    display: flex; align-items: center; margin-right: 24px;
+    display: flex; align-items: center; margin-right: 16px;
   }
   header .header-container .logo-img {
     height: 240px; width: auto; max-width: 680px; margin: 0; object-fit: contain;
   }
-  .nav-menu { display: flex !important; flex: 1 1 auto; min-width: 0; align-items: center; justify-content: flex-end; margin-left: 8px; flex-direction: row !important; }
-  .nav-list { display: flex !important; flex-direction: row !important; align-items: center; gap: 10px; margin: 0; padding: 0; flex-wrap: nowrap; }
+  .nav-menu { display: flex !important; flex: 1 1 auto; min-width: 0; align-items: center; justify-content: flex-end; margin-left: 0; flex-direction: row !important; }
+  .nav-list { display: flex !important; flex-direction: row !important; align-items: center; gap: 8px; margin: 0; padding: 0; flex-wrap: nowrap; }
   .nav-list li { list-style: none; margin: 0; padding: 0; }
-  .nav-list a { display: inline-block; white-space: nowrap; font-size: 14px; letter-spacing: 1.4px; text-transform: uppercase; padding: 6px 6px; }
+  .nav-list a { display: inline-block; white-space: nowrap; font-size: 14px; letter-spacing: 1.2px; text-transform: uppercase; padding: 6px 4px; }
 }
 
 /* Desktop: botão fechar do modal ligeiramente maior */
