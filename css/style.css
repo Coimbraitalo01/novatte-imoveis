@@ -2409,12 +2409,14 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
 
 /* ===== Mobile amplo (tablets e celulares com largura CSS maior) ===== */
 @media (max-width: 991.98px) {
+  /* Header base mobile unificado */
   header .header-container { padding: 12px 16px; height: 100px; position: sticky; top: 0; }
-  header .header-container { position: relative; justify-content: flex-start; padding-left: 72px; }
-  header .header-container .logo-img { transform: none; position: relative; z-index: 1; }
-  header .header-container .logo-container { pointer-events: none; position: relative; z-index: 1; }
+  header { padding-right: 96px !important; }
+  header .header-container { position: relative; justify-content: flex-start; }
+  header .header-container .logo-container { pointer-events: none !important; position: relative; z-index: 1; margin-right: auto; display: flex; align-items: center; }
+  header .header-container .logo-img { height: 260px !important; max-width: 380px !important; margin: -90px 0 !important; transform: none !important; position: relative; z-index: 1; object-fit: contain; }
   #hamburger { pointer-events: auto; }
-  .hamburger { display: flex; position: fixed; right: 12px; top: 20px; z-index: 4000; margin-left: 0; }
+  .hamburger { display: flex; position: fixed; right: 12px; top: 16px; z-index: 5000; margin-left: 0; }
 
   .nav-menu { position: fixed; top: 0; right: -100%; width: 78%; max-width: 340px; height: 100vh; background: var(--primary-color); box-shadow: -2px 0 10px rgba(0,0,0,0.1); transition: right .3s ease; z-index: 1100; padding: 100px 24px 24px; margin: 0; flex-direction: column; justify-content: flex-start; }
   .nav-menu.active { right: 0; }
@@ -2432,10 +2434,11 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
 
 /* ===== Ajuste específico para celulares ~360–430px de largura (Galaxy A05s, etc.) ===== */
 @media (max-width: 430px) {
-  header { padding-right: 104px !important; }
-  header .header-container { justify-content: flex-start !important; }
-  header .header-container .logo-container { margin-right: auto !important; pointer-events: none !important; }
-  header .header-container .logo-img { transform: translateX(-12px) !important; }
+  header { padding-right: 104px !important; height: 96px !important; min-height: 96px !important; }
+  header .header-container { justify-content: flex-start !important; align-items: center !important; }
+  header .header-container .logo-container { margin-right: auto !important; pointer-events: none !important; display: flex !important; align-items: center !important; }
+  /* Dimensão controlada da logo para não deslocar header */
+  header .header-container .logo-img { height: 240px !important; max-width: 360px !important; margin: -80px 0 !important; transform: translateX(-8px) !important; object-fit: contain !important; }
   #hamburger.hamburger { position: fixed !important; right: 12px !important; top: 16px !important; z-index: 6000 !important; }
   /* Garantir camadas corretas */
   #menuOverlay { z-index: 1000 !important; }
