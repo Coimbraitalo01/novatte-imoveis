@@ -2430,6 +2430,18 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
   header .header-container .logo-img { transform: none !important; margin-left: 0 !important; position: relative; z-index: 1; }
 }
 
+/* ===== Ajuste específico para celulares ~360–430px de largura (Galaxy A05s, etc.) ===== */
+@media (max-width: 430px) {
+  header { padding-right: 104px !important; }
+  header .header-container { justify-content: flex-start !important; }
+  header .header-container .logo-container { margin-right: auto !important; pointer-events: none !important; }
+  header .header-container .logo-img { transform: translateX(-12px) !important; }
+  #hamburger.hamburger { position: fixed !important; right: 12px !important; top: 16px !important; z-index: 6000 !important; }
+  /* Garantir camadas corretas */
+  #menuOverlay { z-index: 1000 !important; }
+  #navMenu { z-index: 1100 !important; }
+}
+
 /* Desktop: garantir layout consistente */
 @media (min-width: 769px) {
   .hamburger { display: none !important; }
