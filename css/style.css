@@ -2414,7 +2414,7 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
   header { padding-right: 96px !important; }
   header .header-container { position: relative; justify-content: flex-start; }
   header .header-container .logo-container { pointer-events: none !important; position: relative; z-index: 1; margin-right: auto; display: flex; align-items: center; }
-  header .header-container .logo-img { height: 260px !important; max-width: 380px !important; margin: -90px 0 !important; transform: none !important; position: relative; z-index: 1; object-fit: contain; }
+  header .header-container .logo-img { height: 260px !important; max-width: 380px !important; margin: -90px 0 !important; transform: translateX(-14px) !important; position: relative; z-index: 1; object-fit: contain; }
   #hamburger { pointer-events: auto; }
   .hamburger { display: flex; position: fixed; right: 12px; top: 16px; z-index: 5000; margin-left: 0; }
 
