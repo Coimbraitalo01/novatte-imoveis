@@ -308,9 +308,9 @@ nav {
     margin-left: 40px;
 }
 
-/* ===== Mobile Header & Nav (restauração do hambúrguer) ===== */
+/* ===== Mobile Header & Nav (hambúrguer à direita, logo à esquerda) ===== */
 @media (max-width: 991.98px) {
-    /* Garante âncora, centralização da logo e espaço para o hambúrguer à direita */
+    /* Garante âncora, logo à esquerda e espaço para o hambúrguer à direita */
     header {
         position: relative;
         padding: 12px 16px;
@@ -349,8 +349,8 @@ nav {
     .hamburger.active .hamburger-line:nth-child(2){ opacity: 0; }
     .hamburger.active .hamburger-line:nth-child(3){ transform: translateY(-5px) rotate(-45deg); }
 
-    /* Centraliza a logo; reserva espaço à direita via padding do header */
-    header .logo-container { pointer-events: none; margin: 0 auto; }
+    /* Logo à esquerda (não cobre o hambúrguer) */
+    header .logo-container { pointer-events: none; margin-right: auto; }
     header .logo-img {
         position: relative;
         z-index: 1;
@@ -395,7 +395,7 @@ nav {
     /* Garantir que o container da logo não cubra o botão */
     header .logo-container { pointer-events: none; }
 
-    /* Sem deslocamento lateral para manter centralização */
+    /* Sem deslocamento lateral */
     header .logo-img { transform: none; }
 }
 
@@ -2419,21 +2419,23 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
 /* ===== Desktop header organization (>= 992px) ===== */
 @media (min-width: 992px) {
   header .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 15px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; padding: 15px 56px;
   }
   header .header-container .logo-container {
-    display: flex; align-items: center;
-    margin-right: 72px;
+    display: flex; align-items: center; margin-right: 48px;
   }
   header .header-container .logo-img {
-    height: 220px; width: auto; max-width: 650px; margin: 0; object-fit: contain;
+    height: 240px; width: auto; max-width: 680px; margin: 0; object-fit: contain;
   }
-  .nav-menu { display: flex !important; flex: 1 1 auto; align-items: center; justify-content: flex-end; margin-left: 40px; flex-direction: row !important; }
-  .nav-list { display: flex !important; flex-direction: row !important; align-items: center; gap: 24px; margin: 0; padding: 0; }
+  .nav-menu { display: flex !important; flex: 1 1 auto; min-width: 0; align-items: center; justify-content: flex-end; margin-left: 24px; flex-direction: row !important; }
+  .nav-list { display: flex !important; flex-direction: row !important; align-items: center; gap: 18px; margin: 0; padding: 0; flex-wrap: nowrap; }
   .nav-list li { list-style: none; margin: 0; padding: 0; }
   .nav-list a { display: inline-block; white-space: nowrap; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 0; }
+}
+
+/* Desktop: botão fechar do modal ligeiramente maior */
+@media (min-width: 992px) {
+  .modal-close-btn { width: 48px !important; height: 48px !important; }
+  .modal-close-btn::before { line-height: 48px; font-size: 28px; }
 }
