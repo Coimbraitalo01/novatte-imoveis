@@ -774,48 +774,6 @@ function openPropertyInNewTab(propertyId) {
     const logoPath = window.location.origin + '/novatte-imoveis/assets/logo.png';
     
     let propertyPageHTML = PropertyTemplates.createPropertyPage(property, corretor);
-    // Injeta script para garantir navegação de imagens no contexto da nova guia (mobile)
-    const injectedScript = `
-      <script>(function(){
-        try {
-          var images = ${JSON.stringify(property.images || [])};
-          var currentIndex = 0;
-          function updateView(i){
-            var img = document.querySelector('.main-image') || document.querySelector('img.main-image');
-            if (!img || !images.length) return;
-            var bounded = Math.max(0, Math.min(i, images.length-1));
-            currentIndex = bounded;
-            img.src = images[bounded];
-            var counter = document.querySelector('.image-counter-modal') || document.getElementById('galleryModalCounter');
-            if (counter) counter.textContent = (bounded+1) + '/' + images.length;
-            var thumbs = document.querySelectorAll('.thumbnail, .thumbnail-modal');
-            if (thumbs && thumbs.length){ thumbs.forEach(function(t,idx){ t.classList.toggle('active', idx===bounded); }); }
-          }
-          function next(){ if(!images.length) return; updateView((currentIndex+1)%images.length); }
-          function prev(){ if(!images.length) return; updateView((currentIndex-1+images.length)%images.length); }
-          // Bind em diversos seletores comuns
-          function bind(){
-            var prevBtns = Array.from(document.querySelectorAll('#galleryModalPrev, .gallery-modal-prev, .gallery-btn.prev, .gallery-prev, .image-lightbox-prev, #pagePrev'));
-            var nextBtns = Array.from(document.querySelectorAll('#galleryModalNext, .gallery-modal-next, .gallery-btn.next, .gallery-next, .image-lightbox-next, #pageNext'));
-            prevBtns.forEach(function(b){ b.onclick = function(e){ e.preventDefault(); e.stopPropagation(); prev(); }; });
-            nextBtns.forEach(function(b){ b.onclick = function(e){ e.preventDefault(); e.stopPropagation(); next(); }; });
-            var thumbBtns = Array.from(document.querySelectorAll('.thumbnail, .thumbnail-modal'));
-            thumbBtns.forEach(function(t, idx){ t.onclick = function(e){ e.preventDefault(); e.stopPropagation(); updateView(idx); }; });
-
-            // Swipe (mobile) na imagem principal
-            var container = (document.querySelector('.main-image')||{}).parentElement || document.querySelector('.main-gallery-container') || document.body;
-            var sx=null, sy=null; var threshold=40;
-            container.addEventListener('touchstart', function(ev){ if(!ev.touches||ev.touches.length===0) return; sx=ev.touches[0].clientX; sy=ev.touches[0].clientY; }, {passive:true});
-            container.addEventListener('touchend', function(ev){ if(sx===null) return; var ex=(ev.changedTouches&&ev.changedTouches[0]?ev.changedTouches[0].clientX:sx); var ey=(ev.changedTouches&&ev.changedTouches[0]?ev.changedTouches[0].clientY:sy); var dx=ex-sx; var dy=ey-sy; if(Math.abs(dx)>Math.abs(dy) && Math.abs(dx)>threshold){ if(dx<0){ next(); } else { prev(); } } sx=sy=null; }, {passive:true});
-
-            // Teclado
-            document.addEventListener('keydown', function(e){ if(e.key==='ArrowLeft'){ prev(); } else if(e.key==='ArrowRight'){ next(); } });
-          }
-          document.addEventListener('DOMContentLoaded', function(){ updateView(0); bind(); });
-          window.addEventListener('load', function(){ updateView(0); bind(); });
-        } catch(e) { console.warn('Gallery injection failed:', e); }
-      })();<\/script>`;
-    propertyPageHTML += injectedScript;
     
     const newWindow = window.open('', '_blank');
     if (newWindow) {

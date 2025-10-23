@@ -7,6 +7,22 @@
     --background-color: #f8f9fa;
 }
 
+/* Forçar visibilidade do X no botão de fechar do modal de detalhes */
+.modal-close-btn {
+  background: none !important;
+  opacity: 1 !important;
+}
+.modal-close-btn::before {
+  content: "\00d7"; /* multiplicação (X) */
+  display: block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -317,9 +333,9 @@ nav {
     header .logo-img {
         position: relative;
         z-index: 1;
-        height: 180px;
-        max-width: 220px;
-        margin: -60px 0;
+        height: 200px;
+        max-width: 240px;
+        margin: -70px 0;
         transform: none; /* remove deslocamento anterior */
     }
 
