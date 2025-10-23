@@ -959,6 +959,63 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, { passive: false });
 
+// ====== GALLERY MODAL (abre a partir da imagem principal no modal de detalhes) ======
+(function(){
+  const galleryState = { urls: [], index: 0 };
+
+  function collectImagesFromContext(ctx){
+    const thumbs = ctx.querySelectorAll('.thumbnail, .thumbnail img');
+    const list = [];
+    thumbs.forEach(t => {
+      const src = t.getAttribute('data-src') || t.getAttribute('src');
+      if (src) list.push(src);
+    });
+    return list;
+  }
+
+  function openGalleryWith(urls, startIdx){
+    if (!Array.isArray(urls) || urls.length === 0) return;
+    const img = document.getElementById('galleryModalImg');
+    const counter = document.getElementById('galleryModalCounter');
+    const modalEl = document.getElementById('galleryModal');
+    if (!img || !modalEl) return;
+    galleryState.urls = urls;
+    galleryState.index = Math.max(0, Math.min(startIdx || 0, urls.length - 1));
+    function render(){
+      img.src = galleryState.urls[galleryState.index];
+      if (counter) counter.textContent = `${galleryState.index+1} / ${galleryState.urls.length}`;
+    }
+    render();
+    try { new bootstrap.Modal(modalEl).show(); } catch(_) { modalEl.style.display = 'block'; }
+    // Bind prev/next
+    const prev = document.getElementById('galleryModalPrev');
+    const next = document.getElementById('galleryModalNext');
+    if (prev) prev.onclick = (e)=>{ e.preventDefault(); galleryState.index = (galleryState.index - 1 + galleryState.urls.length) % galleryState.urls.length; render(); };
+    if (next) next.onclick = (e)=>{ e.preventDefault(); galleryState.index = (galleryState.index + 1) % galleryState.urls.length; render(); };
+    // Swipe support
+    let sx = 0, sy = 0;
+    img.ontouchstart = (e)=>{ const t=e.touches[0]; sx=t.clientX; sy=t.clientY; };
+    img.ontouchend = (e)=>{ const t=e.changedTouches[0]; const dx=t.clientX - sx; const dy=t.clientY - sy; if (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy)) { if (dx<0) { galleryState.index = (galleryState.index + 1) % galleryState.urls.length; } else { galleryState.index = (galleryState.index - 1 + galleryState.urls.length) % galleryState.urls.length; } render(); } };
+  }
+
+  // Delegated click: imagem principal dentro do modal de detalhes
+  document.addEventListener('click', function(e){
+    const mainImg = e.target.closest && e.target.closest('#propertyModal .property-gallery .main-image, #propertyModal .property-gallery-modal .main-image');
+    if (!mainImg) return;
+    e.preventDefault();
+    const ctx = mainImg.closest('.property-gallery, .property-gallery-modal, #propertyModal');
+    const urls = collectImagesFromContext(ctx);
+    const currentSrc = mainImg.getAttribute('data-src') || mainImg.getAttribute('src');
+    let startIdx = 0;
+    if (currentSrc) {
+      const idx = urls.indexOf(currentSrc);
+      startIdx = idx >= 0 ? idx : 0;
+    }
+    if (urls.length === 0 && currentSrc) urls.push(currentSrc);
+    openGalleryWith(urls, startIdx);
+  }, true);
+})();
+
     // Delegação extra para toque no mobile (iOS/Safari): garante bloqueio de propagação
     document.addEventListener('touchstart', function(e) {
         const detailsBtn = e.target.closest && e.target.closest('.btn-booking-secondary');
