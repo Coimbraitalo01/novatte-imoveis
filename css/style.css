@@ -2415,7 +2415,7 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
   header { padding-right: 96px !important; }
   header .header-container { position: relative; justify-content: flex-start; }
   header .header-container .logo-container { pointer-events: none !important; position: relative; z-index: 1; margin-right: auto; margin-left: 0 !important; display: flex; align-items: center; justify-content: flex-start; }
-  header .header-container .logo-img { height: 260px !important; max-width: 380px !important; margin: -90px 0 !important; transform: translateX(-48px) !important; position: relative; z-index: 1; object-fit: contain; }
+  header .header-container .logo-img { height: 260px !important; max-width: 380px !important; margin: -90px 0 !important; transform: translateX(-44px) !important; position: relative; z-index: 1; object-fit: contain; }
   #hamburger { pointer-events: auto; }
   .hamburger { display: flex; position: fixed; right: 12px; top: 16px; z-index: 5000; margin-left: 0; }
 
@@ -2439,7 +2439,7 @@ header .header-container .logo-img { height: 400px; width: auto; object-fit: con
   header .header-container { justify-content: flex-start !important; align-items: center !important; padding-left: 0 !important; }
   header .header-container .logo-container { margin-right: auto !important; pointer-events: none !important; display: flex !important; align-items: center !important; }
   /* Dimensão controlada da logo para não deslocar header */
-  header .header-container .logo-img { height: 240px !important; max-width: 360px !important; margin: -80px 0 !important; transform: translateX(-50px) !important; object-fit: contain !important; }
+  header .header-container .logo-img { height: 240px !important; max-width: 360px !important; margin: -80px 0 !important; transform: translateX(-46px) !important; object-fit: contain !important; }
   #hamburger.hamburger { position: fixed !important; right: 12px !important; top: 16px !important; z-index: 6000 !important; }
   /* Garantir camadas corretas */
   #menuOverlay { z-index: 1000 !important; }
